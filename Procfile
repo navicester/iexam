@@ -1,0 +1,1 @@
+web: gunicorn iexam.wsgi --log-file -
