@@ -4,7 +4,6 @@ lib/
 
 
 pip-selfcheck.json
-*.sqlite3
 .DS_STORE
 .Python
 *.py[cod]
@@ -13,11 +12,6 @@ pip-selfcheck.json
 .project
 .settings/
 
-
-static_in_env/
-
-security_setting.py
-settings_security.py
 
 *.sublime-project
 *.sublime-workspace

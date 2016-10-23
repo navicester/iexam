@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+	<div class='col-xs-12 text-center'>
+		<table class='table'>
+			<tr>
+				<td>#</a></td>
+				<td>title</td>
+				<td>A</td>
+				<td>B</td>
+				<td>C</td>
+				<td>D</td>
+				<td>score</td>
+				<td>category</td>
+				<td>source</td>
+				<td>contributor</td>
+			</tr>		
+		{% for object in object_list %}
+			<tr>
+				<td><a href='{{ object.get_absolute_url_detailview }}'>Question #{{object.id}}</a></td>
+				<td>{{object.title}}</td>
+				<td>{{object.a}}</td>
+				<td>{{object.b}}</td>
+				<td>{{object.c}}</td>
+				<td>{{object.d}}</td>
+				<td>{{object.score}}</td>
+				<td>{{object.category}}</td>
+				<td>{{object.source}}</td>
+				<td>{{object.contributor}}</td>
+			</tr>
+		{% endfor %}
+
+		</table>
+	</div>
+</div>
+{% endblock %}

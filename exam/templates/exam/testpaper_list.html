@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	<table class='table'>
+	{% for object in object_list %}
+		<tr>
+			<td>
+				<a href='{{ object.get_absolute_url_for_testitem }}'>Paper #{{object.id}}</a>
+				<!-- <a href='{{ object.get_absolute_url }}'>View #{{object.id}}</a> -->
+			</td>
+			<td>
+				<!-- Item Count: {{ object.cart.items.count }} -->
+			</td>
+		</tr>
+	{% endfor %}
+
+	</table>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+<div class='col-sm-4 col-sm-offset-4 text-center'>
+<table class='table'>
+{% for exam_result in exam_results %}
+<tr>
+	<td><a href='{{ exam_result.get_absolute_url }}'>{{exam_result.pk}}</a></td>
+	<td>{{exam_result.user}}</td>
+	<td>{{exam_result.paper.name}}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<!-- 	<table class='table'>
+	{% for object in object_list %}
+		<tr>
+			<td>
+				<a href='{{ object.get_absolute_url }}'>Question #{{object.id}}</a>
+			</td>
+		</tr>
+	{% endfor %}
+
+	</table> -->
+
+<form method="POST" action=""> {% csrf_token %}
+
+{{ formset.management_form }}
+{% for form in formset %}
+
+	<label >Question {{forloop.counter}} : {{ form.instance.title }} (Score : {{ form.instance.score }})</label><br />
+	{% if form.instance.type == "Choice" %}
+		<label >A: </label> {{ form.instance.a }}<br />
+		<label >B: </label> {{ form.instance.b }}<br />
+		<label >C: </label> {{ form.instance.c }}<br />
+		<label >D: </label> {{ form.instance.d }}<br />
+	{% endif %}	
+
+	{{form|crispy}}
+
+{% endfor %}
+<br/>
+<input type="submit" value='Submit' class='btn' />
+</form>
+
+
+{% endblock %}

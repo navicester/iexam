@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+<table class='table'>
+	<tr><td>Title : {{ object.title }} </td></tr>
+	<tr><td>Answer A: {{ object.a }} </td></tr>
+	<tr><td>Answer B: {{ object.b }} </td></tr>
+	<tr><td>Answer C: {{ object.c }} </td></tr>
+	<tr><td>Answer D: {{ object.d }} </td></tr>
+	<tr><td>REF Answer: {{ object.ref_answer }} </td></tr>
+	<tr><td>category: {{ object.category }} </td></tr>
+	<tr><td>source: {{ object.source }} </td></tr>
+	<tr><td>contributor: {{ object.contributor }} </td></tr>
+</table>
+
+
+{% endblock %}
