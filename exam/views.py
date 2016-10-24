@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic.detail import DetailView
 from  django.views.generic.list import ListView
 from .models import ExamLibItem, ExamItem, Paper, ExamResult
-from .forms import ExamItemForm, ExamLibItemForm, ExamItemFormSet, ExamLibItemFormSet
+from .forms import ExamItemForm, TestItemForm, ExamItemFormSet, TestItemFormSet
 from django.contrib import messages
 from django.http import Http404
 
@@ -13,7 +13,7 @@ from django.http import Http404
 
 # 	def get_context_data(self, *args, **kwargs):
 # 		context = super(PaperList, self).get_context_data(*args, **kwargs)
-# 		# context["formset"] = ExamLibItemFormSet(queryset=self.get_queryset())
+# 		# context["formset"] = TestItemFormSet(queryset=self.get_queryset())
 # 		return context
 
 class PaperList(ListView):
@@ -22,7 +22,7 @@ class PaperList(ListView):
 
 	def get_context_data(self, *args, **kwargs):
 		context = super(PaperList, self).get_context_data(*args, **kwargs)
-		# context["formset"] = ExamLibItemFormSet(queryset=self.get_queryset())
+		# context["formset"] = TestItemFormSet(queryset=self.get_queryset())
 		return context
 
 class ExamItemDetail(DetailView):
@@ -34,7 +34,7 @@ class ExamItemList(ListView):
 
 	def get_context_data(self, *args, **kwargs):
 		context = super(ExamItemList, self).get_context_data(*args, **kwargs)
-		# context["formset"] = ExamLibItemFormSet(queryset=self.get_queryset())
+		context["formset"] = ExamItemFormSet(queryset=self.get_queryset())
 		return context
 
 	def get_queryset(self, *args, **kwargs):
@@ -44,13 +44,25 @@ class ExamItemList(ListView):
 			queryset = ExamItem.objects.filter(exam_result=exam_result)
 		return queryset
 
+
+	def post(self, request, *args, **kwargs):
+		formset = ExamItemFormSet(request.POST, request.FILES)
+
+		if formset.is_valid():
+			instances = formset.save(commit=False)
+
+			for form in formset:
+				instance = form.save(commit=False)
+
+		return redirect("examhome")
+		
 class ExamLibItemList(ListView):
 	queryset = ExamLibItem.objects.all()
 	model = ExamLibItem
 
 	def get_context_data(self, *args, **kwargs):
 		context = super(ExamLibItemList, self).get_context_data(*args, **kwargs)
-		# context["formset"] = ExamLibItemFormSet(queryset=self.get_queryset())
+		# context["formset"] = TestItemFormSet(queryset=self.get_queryset())
 		return context
 
 	def get_queryset(self, *args, **kwargs):
@@ -59,6 +71,7 @@ class ExamLibItemList(ListView):
 			paper = get_object_or_404(Paper, pk=Paper_pk)
 			queryset = ExamLibItem.objects.filter(paper=paper)
 		return queryset
+
 
 class ExamLibItemDetail(DetailView):
 	model = ExamLibItem
@@ -73,7 +86,7 @@ class TestItemList(ListView):
 
 	def get_context_data(self, *args, **kwargs):
 		context = super(TestItemList, self).get_context_data(*args, **kwargs)
-		context["formset"] = ExamLibItemFormSet(queryset=self.get_queryset())
+		context["formset"] = TestItemFormSet(queryset=self.get_queryset())
 		return context
 
 	def get_queryset(self, *args, **kwargs):
@@ -85,7 +98,7 @@ class TestItemList(ListView):
 
 	def post(self, request, *args, **kwargs):
 		#if request.method == 'POST':
-		formset = ExamLibItemFormSet(request.POST or None, request.FILES)
+		formset = TestItemFormSet(request.POST or None, request.FILES)
 
 		print formset.is_valid()
 

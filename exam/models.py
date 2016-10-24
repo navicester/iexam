@@ -70,6 +70,9 @@ class ExamItem(models.Model):
 	def __unicode__(self): 
 		return str(self.pk)
 
+	def get_absolute_url(self):
+		return reverse("examitem_detail", kwargs={"pk": self.pk})
+
 class ExamResult(models.Model):
 	paper = models.ForeignKey(Paper, null=False)
 	score = models.IntegerField(null=True, blank=True, default =  0)

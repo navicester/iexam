@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+<table class='table'>
+	<tr><td>paper : {{ object.paper }} </td></tr>
+	<tr><td>ExamLibItem A: {{ object.ExamLibItem }} </td></tr>
+	<tr><td>Answer: {{ object.answer }} </td></tr>
+	<tr><td>exam_result: {{ object.exam_result }} </td></tr>
+	<tr><td>user: {{ object.user }} </td></tr>
+</table>
+
+
+{% endblock %}

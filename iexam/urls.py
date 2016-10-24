@@ -26,6 +26,7 @@ urlpatterns = [
     # exam
     url(r'^examhome/$', 'exam.views.examhome', name='examhome'),
     url(r'^examresult/(?P<pk>\d+)/$', ExamItemList.as_view(), name='examresult_examitem_list'),
+    url(r'^examresult/examitem/(?P<pk>\d+)/$', ExamItemDetail.as_view(), name='examitem_detail'),
 
     url(r'^admin/', include(admin.site.urls)),
 
