@@ -1,17 +1,93 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block style %}
+<style type="text/css">
+
+.examlibitem  {
+  line-height: 1.1!important;
+}
+.examlibitem>label  {
+  color:#4c2c2c;
+}
+.examlibitem>p {
+	background-color: #9d9d9d!important;
+	line-height: 2!important;
+}
+.examlibitem>input, .examlibitem>select {
+/*	display: block!important; */
+	width: 100%; 
+	border: 1px solid #ccc;
+	margin-bottom:5px;
+}
+.examlibitem>textarea {
+	/*display: block!important; */
+	width: 100%; 
+	border: 1px solid #ccc;
+	resize: auto;
+    cursor: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border-radius: 4px;
+    margin-bottom:5px;
+}
+ul.errorlist{
+	color: #a93a3a;
+}
+.paperform select{
+	/*min-height:500px!important*/
+	/*overflow-y:hidden;*/ /* http://www.jb51.net/css/68100.html */
+}
+
+.paperform select option{
+	word-wrap:break-all;
+	white-space: pre-wrap; /* css-3 */ 
+	white-space: -moz-pre-wrap; /* Mozilla, since 1999 */ 
+	white-space: -pre-wrap; /* Opera 4-6 */ 
+	white-space: -o-pre-wrap; /* Opera 7 */
+}
+
+
+</style>
+{% endblock %}
+
+<script>
+{% block jquery %}
+
+	function ShowHideChoiceAnswer(elem) {
+		var choice = $(".field-type select option:selected").val();
+		if('choice' == choice)
+		{
+			elem.parent().parent().children(".field-answer").show();
+		}
+		// else if('answer' == choice)
+		// {
+		// 	elem.parent().parent().children(".field-answer").hide();
+		// }
+		else
+		{
+			elem.parent().parent().children(".field-answer").hide();
+		}
+	}
+
+	$(".field-type").change(function(){
+		ShowHideChoiceAnswer($(this));
+	});
+
+{% endblock %}
+</script>
+
 
 {% block content %}
 
+{% comment %}
 <div class="row">
 	<div class='col-xs-12 text-center'>
 		<table class='table'>
 			<tr>
 				<td>#</a></td>
 				<td>title</td>
-				<td>A</td>
-				<td>B</td>
-				<td>C</td>
-				<td>D</td>
 				<td>score</td>
 				<td>category</td>
 				<td>source</td>
@@ -21,10 +97,6 @@
 			<tr>
 				<td><a href='{{ object.get_absolute_url_detailview }}'>Question #{{object.id}}</a></td>
 				<td>{{object.title}}</td>
-				<td>{{object.a}}</td>
-				<td>{{object.b}}</td>
-				<td>{{object.c}}</td>
-				<td>{{object.d}}</td>
 				<td>{{object.score}}</td>
 				<td>{{object.category}}</td>
 				<td>{{object.source}}</td>
@@ -32,7 +104,50 @@
 			</tr>
 		{% endfor %}
 
+		<tr>
+			<td>Total</td>
+			<td colspan='3'>{{total_score}}</td>
+		</tr>
+
 		</table>
 	</div>
 </div>
+{% endcomment %}
+
+	<form method="POST" action=""> {% csrf_token %}
+		{{ formset.management_form }}
+		{{ formset.non_form_errors }}
+		{% for form in formset %}
+			<hr>
+			<p style='color:red;'><a href='{{ form.instance.get_absolute_url_detailview }}'>Question : {{ form.instance.title }}</a></p>
+			<div class="row" style="color:red">
+				{% if form.errors %}
+				<ul class="messages">
+				    {% for message in form.non_field_errors %}
+				    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+				    {% endfor %}
+				</ul>
+				{% endif %}				
+			</div>					
+			{% for field in form %}		
+					<div class="row % {%if field.name == 'a' or field.name == 'b' or field.name == 'c' or field.name == 'd' %}field-answer{% endif %}" {% if field.name == 'id' %} style="display: none;" {% endif %}>	
+						{% if field.errors %}{{field.errors}}{% endif %}			
+						<div class='col-sm-2 examlibitem'>
+					            {{ field.label_tag }}
+						</div>
+						<div class='col-sm-6 col-xs-12 examlibitem {% if field.name == "type" %}field-type{% endif %}'>
+					            {{ field }}<br>
+						</div>	
+					</div>	
+	        {% endfor %}
+	        Related Papers:<br>			
+		{% endfor %}
+		<br>
+		<div class="row paperform">
+			<div class='col-sm-10'>
+				{{paperForm.as_p}}
+			</div>
+		</div>
+		<input type="submit" value='Update' class='btn' /><br>
+	</form>
 {% endblock %}

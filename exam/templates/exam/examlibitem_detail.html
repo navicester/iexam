@@ -1,9 +1,17 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
+{% block style %}
+<style type="text/css">
+.form-group  {
+  line-height: 1.1!important;
+}
 
+</style>
+{% endblock %}
 
 {% block content %}
-
+{% comment %}
 <table class='table'>
 	<tr><td>Title : {{ object.title }} </td></tr>
 	<tr><td>Answer A: {{ object.a }} </td></tr>
@@ -15,6 +23,15 @@
 	<tr><td>source: {{ object.source }} </td></tr>
 	<tr><td>contributor: {{ object.contributor }} </td></tr>
 </table>
+{% endcomment %}
 
+<div class="row">
+	<div class='col-sm-8'>
+		<form method="POST" action=""> {% csrf_token %}
+			{{ form|crispy }}
+			<input type="submit" value='Update' class='btn' />
+		</form>
+	</div>
+</div>
 
 {% endblock %}

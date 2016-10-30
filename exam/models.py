@@ -13,6 +13,15 @@ QuestionType = (
 
 )
 
+CategoryType = (
+	('ip', 'IP'),
+	('lte', 'LTE'),
+	('python', 'Python'),
+	('robot', 'Robot'),
+	('test', 'Test'),
+	('log', 'LOG'),
+
+)
 class ExamLibItem(models.Model):
 	title = models.TextField(max_length=500)
 	type = models.CharField(max_length=45, choices=QuestionType) #Choice
@@ -22,7 +31,7 @@ class ExamLibItem(models.Model):
 	d = models.TextField(max_length=500, blank=True)
 	score = models.PositiveIntegerField(blank=False)
 	ref_answer = models.TextField(max_length=500,verbose_name='ref_answer')
-	category = models.CharField(max_length=45, blank=True, null=True) #Linux, IP
+	category = models.CharField(max_length=45, choices=CategoryType) #Linux, IP
 	source = models.CharField(max_length=120, blank=True, null=True) #EDU, Internet
 	contributor = models.CharField(max_length=45, blank=True, null=True) #HE Bin
 	# pic = models.ImageField(upload_to=image_upload_to, blank=True, null=True)
@@ -30,10 +39,13 @@ class ExamLibItem(models.Model):
 	updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
 	def __unicode__(self): #Python 3.3 is __str__
-		return "(%s): [type] %s [title] %s" % (self.id, self.type, self.title)
+		return "%s" % (self.title)
 
 	def get_absolute_url_detailview(self):
-		return reverse("examlibitem_detail", kwargs={"pk": self.pk}) #pk for ExamLibItem
+		try:
+			return reverse("examlibitem_detail", kwargs={"pk": self.pk}) #pk for ExamLibItem
+		except:
+			return '#'
 		
 
 PaperType = (
@@ -46,7 +58,7 @@ PaperType = (
 class Paper(models.Model):
 	name = models.CharField(max_length=120) #pre-test	
 	type = models.CharField(max_length=45, choices=PaperType) #A,B	
-	ExamLibItem = models.ManyToManyField('ExamLibItem', blank=True)
+	ExamLibItem = models.ManyToManyField(ExamLibItem, blank=True)
 	total_score = models.IntegerField()
 
 	def __unicode__(self): 

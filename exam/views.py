@@ -2,29 +2,15 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic.detail import DetailView
 from  django.views.generic.list import ListView
 from .models import ExamLibItem, ExamItem, Paper, ExamResult
-from .forms import ExamItemForm, TestItemForm, ExamItemFormSet, TestItemFormSet
+from .forms import PaperForm, ExamItemForm, TestItemForm, ExamLibItemForm, ExamLibItemFormSet, ExamItemFormSet, TestItemFormSet
+from django.views.generic.edit import FormMixin
 from django.contrib import messages
 from django.http import Http404
+from django import forms
 
 # Create your views here.
-# class TestPaperList(ListView):
-# 	queryset = Paper.objects.all()
-# 	model = Paper
 
-# 	def get_context_data(self, *args, **kwargs):
-# 		context = super(PaperList, self).get_context_data(*args, **kwargs)
-# 		# context["formset"] = TestItemFormSet(queryset=self.get_queryset())
-# 		return context
-
-class PaperList(ListView):
-	queryset = Paper.objects.all()
-	model = Paper
-
-	def get_context_data(self, *args, **kwargs):
-		context = super(PaperList, self).get_context_data(*args, **kwargs)
-		# context["formset"] = TestItemFormSet(queryset=self.get_queryset())
-		return context
-
+#Examhome -> ExamItem (model)
 class ExamItemDetail(DetailView):
 	model = ExamItem
 
@@ -47,14 +33,42 @@ class ExamItemList(ListView):
 
 	def post(self, request, *args, **kwargs):
 		formset = ExamItemFormSet(request.POST, request.FILES)
-
+		bValid = True
 		if formset.is_valid():
 			instances = formset.save(commit=False)
 
 			for form in formset:
-				instance = form.save(commit=False)
+				if form.is_valid:
+					instance = form.save(commit=False)
+					if form.cleaned_data['score_result'] == None:
+						bValid = False
+					else:
+						form.save()	
+				else:
+					bValid = False				
+		else:
+			bValid = False
 
-		return redirect("examhome")
+		if bValid == True:
+			return redirect("examhome")
+		else:
+			template = 'exam/examitem_list.html'
+			context = {
+				'formset' : formset,
+			}
+			return render(request, template, context)
+			# return redirect("examhome")
+
+
+# Paper -> Examlib
+class PaperList(ListView):
+	queryset = Paper.objects.all()
+	model = Paper
+
+	def get_context_data(self, *args, **kwargs):
+		context = super(PaperList, self).get_context_data(*args, **kwargs)
+		# context["formset"] = TestItemFormSet(queryset=self.get_queryset())
+		return context
 		
 class ExamLibItemList(ListView):
 	queryset = ExamLibItem.objects.all()
@@ -62,7 +76,19 @@ class ExamLibItemList(ListView):
 
 	def get_context_data(self, *args, **kwargs):
 		context = super(ExamLibItemList, self).get_context_data(*args, **kwargs)
-		# context["formset"] = TestItemFormSet(queryset=self.get_queryset())
+		queryset = self.get_queryset()
+		total_score=0
+		for object in queryset:
+			total_score += object.score
+		context["total_score"] = total_score
+		context["formset"] = ExamLibItemFormSet(queryset=self.get_queryset())		
+		try:
+			Paper_pk = self.kwargs.get("pk")
+			if Paper_pk:
+				paper = get_object_or_404(Paper, pk=Paper_pk)		
+				context['paperForm'] = PaperForm(instance = paper)
+		except:
+			raise Http404
 		return context
 
 	def get_queryset(self, *args, **kwargs):
@@ -72,13 +98,76 @@ class ExamLibItemList(ListView):
 			queryset = ExamLibItem.objects.filter(paper=paper)
 		return queryset
 
+	def post(self, request, *args, **kwargs):
+		formset = ExamLibItemFormSet(request.POST, request.FILES)
+		paperForm = PaperForm(request.POST)
 
-class ExamLibItemDetail(DetailView):
+		if paperForm.is_valid():
+			paper = paperForm.save(commit=False)
+			# paper.save() # it will create a new object, maybe the reason is two Form in this view
+			# paperForm.save_m2m()
+			# GET the option value, it's the model id
+			# <option value="1" selected="selected">How to ?  </option>
+			# print paperForm['ExamLibItem']['select']['option']
+			print request.POST['ExamLibItem']
+
+		if formset.is_valid():
+			formset.save(commit=False)
+			for form in formset:
+				if form.is_valid():
+					new_item = form.save(commit=False)
+					if new_item.title != '':	 #prevent empty form						
+						Paper_pk = self.kwargs.get("pk")
+						paper = get_object_or_404(Paper, pk=Paper_pk)
+						new_item.save()
+						if form in formset.deleted_forms:
+							new_item.paper_set.remove(paper)
+						else:
+							new_item.paper_set.add(paper)
+
+						# form.save_m2m()
+						# https://docs.djangoproject.com/en/dev/topics/forms/modelforms/#the-save-method
+				
+			messages.success(request, "Exam lib item updated.") 
+			return redirect("paper")
+		template = 'exam/examlibitem_list.html'
+		context = {
+			'formset' : formset,
+			'paperForm' : paperForm
+		}
+		return render(request, template, context)
+		#raise Http404
+
+
+class ExamLibItemDetail(FormMixin, DetailView):
 	model = ExamLibItem
+	form_class = ExamLibItemForm
+	#template_name = "carts/checkout_view.html"
+
+	def get_context_data(self, *args, **kwargs):
+		context = super(ExamLibItemDetail, self).get_context_data(*args, **kwargs)
+		context["form"] = ExamLibItemForm(instance = self.get_object())
+		return context
+
+	def get_object(self, *args, **kwargs):
+		ExamLibItem_pk = self.kwargs.get("pk")
+		if ExamLibItem_pk:
+			examlibitem = get_object_or_404(ExamLibItem, pk=ExamLibItem_pk)
+		return examlibitem
+
+	def get_success_url(self):
+		return reverse("paper")		
+
+	def post(self, request, *args, **kwargs):
+		form = self.get_form()
+		if form.is_valid():
+			return self.form_valid(form)
+		else:
+			return self.form_invalid(form)
 
 #default context object
 
-
+#Testhome -> TestItem (form)
 class TestItemList(ListView):
 	queryset = ExamLibItem.objects.all()
 	model = ExamLibItem
@@ -86,7 +175,17 @@ class TestItemList(ListView):
 
 	def get_context_data(self, *args, **kwargs):
 		context = super(TestItemList, self).get_context_data(*args, **kwargs)
-		context["formset"] = TestItemFormSet(queryset=self.get_queryset())
+		context["formset"] = TestItemFormSet(queryset=self.get_queryset(),
+											initial=[{'ref_answer': '',}])
+		paper_pk = self.kwargs.get("pk")
+		paper = get_object_or_404(Paper, pk=paper_pk)
+		bExist = False
+		try:
+			ExamResult.objects.get(paper=paper, user=self.request.user)
+			bExist = True
+		except:
+			bExist = False
+		context["bExist"] = bExist
 		return context
 
 	def get_queryset(self, *args, **kwargs):
@@ -97,10 +196,7 @@ class TestItemList(ListView):
 		return queryset
 
 	def post(self, request, *args, **kwargs):
-		#if request.method == 'POST':
-		formset = TestItemFormSet(request.POST or None, request.FILES)
-
-		print formset.is_valid()
+		formset = TestItemFormSet(request.POST, request.FILES)
 
 		if formset.is_valid():
 			instances = formset.save(commit=False)
@@ -117,7 +213,6 @@ class TestItemList(ListView):
 					try:
 						exam_item, created = ExamItem.objects.get_or_create(ExamLibItem=examLibItem, 
 							paper=paper, user=self.request.user)
-						print "get_or_create OK"
 					except:
 						exam_item = ExamItem.objects.create(
 							ExamLibItem=examLibItem, 
@@ -126,64 +221,26 @@ class TestItemList(ListView):
 							answer = '',
 							exam_result = None,
 							score_result  = 1)
-						print "get_or_create fail"
-					exam_item.answer = form.cleaned_data.get("ref_answer")
+					exam_item.answer = form.cleaned_data.get("answer")
 
 					try:
-						print paper
-						print self.request.user
-						print ExamResult.objects.all()
-						print ExamItem.objects.all()
-						print ExamLibItem.objects.all()
 						exam_result, created = ExamResult.objects.get_or_create(
 							paper=paper, user=self.request.user)
-						print "get_or_create 2 OK"
 					except:
 						exam_result = ExamResult.objects.create(
 							paper=paper, 
 							user = self.request.user,
 							score  = 1)						
-						print "get_or_create 2 fail"
 					exam_item.exam_result = exam_result
-					print exam_item
 					exam_item.save()
-					print exam_item
 				except:
 					raise Http404
 		else:
 			print formset.errors
 		return redirect("paper")
 
-		# if formset.is_valid():
-		# 	formset.save(commit=False)
-		# 	for form in formset:
-		# 		# new_item = form.save(commit=False)
-
-		# 		paper_pk = self.kwargs.get("pk")
-		# 		try:
-		# 			paper = get_object_or_404(Paper, pk=paper_pk)
-		# 			examLibItem = form.instance
-		# 			# exam_item = ExamItem.objects.create(ExamLibItem=cart, paper=paper, user = self.request.user)
-		# 			exam_item = ExamItem.objects.get_or_create(ExamLibItem=examLibItem, paper=paper, user = self.request.user)[0]
-		# 			exam_item.save()
-
-		# 		except:
-		# 			raise Http404
-				
-		# 	messages.success(request, "Your inventory and pricing has been updated.")
-		# 	return redirect("paper")
-		# raise Http404
-
-
 #default context object_list	
 
-# class ExamItemCreateView(CreateView):
-# 	form_class = UserAddressForm
-# 	template_name = "forms.html"
-# 	success_url = "/checkout/address/"
-
-# 	def form_valid(self, form, *args, **kwargs):
-# 		return super(UserAddressCreateView, self).form_valid(form, *args, **kwargs)
 
 def examhome(request):
 	exam_results = ExamResult.objects.filter(user=request.user)

@@ -2,11 +2,6 @@ from django.contrib import admin
 from .models import ExamLibItem, Paper, ExamItem, ExamResult
 
 # Register your models here.
-# class ExamLibItemInline(admin.TabularInline):
-# 	model = ExamLibItem
-
-# class ExamLibItemInline(admin.TabularInline):
-# 	model = ExamLibItem
 
 class ExamItemInline(admin.TabularInline):
 	model = ExamItem

@@ -20,7 +20,7 @@
             <li><a href="{% url 'testhome' %}">Test</a></li>
             <li><a href="{% url 'paper' %}">Paper</a></li>
             {% if request.user.is_authenticated and user.is_superuser%}
-            <li><a href="{% url 'examhome' %}">Exam</a></li>
+            <li><a href="{% url 'examhome' %}">ExamResult</a></li>
             {% endif%}
           </ul>
 
