@@ -15,6 +15,7 @@ QuestionType = (
 
 CategoryType = (
 	('ip', 'IP'),
+	('linux', 'Linux'),
 	('lte', 'LTE'),
 	('python', 'Python'),
 	('robot', 'Robot'),
