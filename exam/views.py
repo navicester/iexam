@@ -100,19 +100,21 @@ class ExamLibItemList(ListView):
 
 	def post(self, request, *args, **kwargs):
 		formset = ExamLibItemFormSet(request.POST, request.FILES)
-		paperForm = PaperForm(request.POST)
+		paperForm = PaperForm(request.POST, request.FILES)
 
 		if paperForm.is_valid():
-			paper = paperForm.save(commit=False)
+			paper = paperForm.save(commit=False)			
 			# paper.save() # it will create a new object, maybe the reason is two Form in this view
-			# paperForm.save_m2m()
+			paper.id = self.kwargs.get("pk")
+			paper.save()		
+			paperForm.save_m2m()
 			# GET the option value, it's the model id
 			# <option value="1" selected="selected">How to ?  </option>
 			# print paperForm['ExamLibItem']['select']['option']
 			print request.POST['ExamLibItem']
 
 		if formset.is_valid():
-			formset.save(commit=False)
+			instances = formset.save(commit=False)
 			for form in formset:
 				if form.is_valid():
 					new_item = form.save(commit=False)
