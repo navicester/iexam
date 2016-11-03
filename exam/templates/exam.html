@@ -6,11 +6,18 @@
 
 <div class='col-sm-4 col-sm-offset-4 text-center'>
 <table class='table'>
+<tr>
+	<td>Paper ID</a></td>
+	<td>User</td>
+	<td>Paper Name</td>
+	<td>Score</td>
+</tr>
 {% for exam_result in exam_results %}
 <tr>
 	<td><a href='{{ exam_result.get_absolute_url }}'>{{exam_result.pk}}</a></td>
 	<td>{{exam_result.user}}</td>
 	<td>{{exam_result.paper.name}}</td>
+	<td>{{exam_result.score}}</td>
 </tr>
 {% endfor %}
 </table>
