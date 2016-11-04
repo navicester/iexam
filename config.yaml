@@ -3,7 +3,7 @@ version: 1
 
 libraries:
 - name: "django"
-  version: "1.8.4"
+  version: "1.8"
 
 - name: "django-crispy-forms"
   version: "1.6.0"
