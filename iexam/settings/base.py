@@ -87,9 +87,7 @@ WSGI_APPLICATION = 'iexam.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-if 'SERVER_SOFTWARE' in os.environ:
-    pass
-else:    
+if not 'SERVER_SOFTWARE' in os.environ: 
     DATABASES = {
     	'default': {
     		'ENGINE': 'django.db.backends.sqlite3',

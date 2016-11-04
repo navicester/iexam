@@ -12,10 +12,10 @@ MYSQL_USER = 'xw4o0y0lj1' #ACCESSKEY
 MYSQL_PASS = 'jx2kzh220z1iwl34l51y3jlxm4k5i5ji0mhxki3w' #SECRETKEY
 MYSQL_DB   = 'app_iexam'
 
-'''
-from sae._restful_mysql import monkey
-monkey.patch()
-'''
+if not 'SERVER_SOFTWARE' in os.environ:
+	import sae
+	from sae._restful_mysql import monkey
+	monkey.patch()
 
 DATABASES = {
     'default': {
