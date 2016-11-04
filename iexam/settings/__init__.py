@@ -1,13 +1,14 @@
 from .base import *
 
-sae = True
+sae = False
 live = False
+mysql = True
 
 if live:
 	from .production import *
 
 if sae:
 	from .sae import *
-	
-# print STATIC_ROOT
-# print DATABASES['default']
+
+if mysql:
+	from .mysql import *
