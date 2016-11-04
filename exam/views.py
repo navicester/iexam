@@ -217,7 +217,7 @@ class TestItemList(ListView):
 							paper=paper, user=self.request.user)
 					except:
 						exam_item = ExamItem.objects.create(
-							ExamLibItem=examLibItem, 
+							examlibitem=examLibItem, 
 							paper=paper, 
 							user = self.request.user,
 							answer = '',

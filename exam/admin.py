@@ -18,8 +18,8 @@ class PaperAdmin(admin.ModelAdmin):
 
 class ExamItemAdmin(admin.ModelAdmin):
 
-	list_display = ('ExamLibItem','answer','score_result','user',)
-	search_fields = ('ExamLibItem__title','score_result')
+	list_display = ('examlibitem','answer','score_result','user',)
+	search_fields = ('examlibitem__title','score_result')
 	list_filter = ('user','score_result',)
 	ordering = ('user__email','score_result')
 

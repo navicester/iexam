@@ -13,7 +13,7 @@ class PaperForm(ModelForm):
 	class Meta:
 		model = Paper 
 		fields = [
-			'ExamLibItem',
+			'examlibitem',
 			'total_score'
 		]
 
@@ -65,7 +65,7 @@ class ExamItemForm(ModelForm):
 			'user',
 			'paper',
 			'exam_result',
-			'ExamLibItem'
+			'examlibitem'
 		]
 
 		# looks below didn't take effect ???????????

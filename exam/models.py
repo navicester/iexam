@@ -59,7 +59,7 @@ PaperType = (
 class Paper(models.Model):
 	name = models.CharField(max_length=120) #pre-test	
 	type = models.CharField(max_length=45, choices=PaperType) #A,B	
-	ExamLibItem = models.ManyToManyField(ExamLibItem, blank=True)
+	examlibitem = models.ManyToManyField(ExamLibItem, blank=True)
 	total_score = models.IntegerField()
 
 	def __unicode__(self): 
@@ -72,7 +72,7 @@ class Paper(models.Model):
 		return reverse("paper_examlibitem_list", kwargs={"pk": self.pk})
 
 class ExamItem(models.Model):
-	ExamLibItem = models.ForeignKey(ExamLibItem, null=False, blank=False)	
+	examlibitem = models.ForeignKey(ExamLibItem, null=False, blank=False)	
 	paper = models.ForeignKey(Paper, null=False, blank=False)	
 	answer = models.TextField(max_length=500, blank=True, default='')	
 	# answer = models.TextField(max_length=500,verbose_name='answer')	
