@@ -4,7 +4,7 @@ from django.conf import settings
 #DEBUG = False
 #TEMPLATE_DEBUG = False
 
-#DATABASES = settings.DATABASES
+DATABASES = settings.DATABASES
 
 MYSQL_HOST = 'w.rdc.sae.sina.com.cn'
 MYSQL_PORT = '3307'

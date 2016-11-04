@@ -1,6 +1,6 @@
 from .base import *
 
-sae = False
+sae = True
 live = False
 
 if live:
