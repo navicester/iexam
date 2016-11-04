@@ -1,6 +1,7 @@
 from .base import *
 
 sae = True
+live = False
 
 if live:
 	from .production import *
