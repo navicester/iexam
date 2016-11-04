@@ -14,6 +14,10 @@ framework.
 
 """
 import os
+# for sina cloud
+import sys
+root = os.path.dirname(__file__)
+sys.path.insert(0, os.path.join(root, '..', 'site-packages'))
 
 # We defer to a DJANGO_SETTINGS_MODULE already in the environment. This breaks
 # if running multiple sites in the same mod_wsgi process. To fix this, use
