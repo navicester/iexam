@@ -1,8 +1,8 @@
 from .base import *
 
-sae = False
+sae = True
 live = False
-mysql = True
+mysql = False
 
 if live:
 	from .production import *
