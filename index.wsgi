@@ -1,4 +1,11 @@
 import sae
 from iexam import wsgi
 
-application = sae.create_wsgi_app(wsgi.application)
+def app(environ, start_response):
+    status = '200 OK'
+    response_headers = [('Content-type', 'text/plain')]
+    start_response(status, response_headers)
+    return ['Hello, world!']
+
+#application = sae.create_wsgi_app(wsgi.application)
+application = sae.create_wsgi_app(app)
