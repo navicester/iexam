@@ -12,8 +12,8 @@ MYSQL_USER = 'ACCESSKEY'
 MYSQL_PASS = 'SECRETKEY'
 MYSQL_DB   = 'app_iexam'
 
-from sae._restful_mysql import monkey
-monkey.patch()
+#from sae._restful_mysql import monkey
+#monkey.patch()
 
 DATABASES = {
     'default': {
