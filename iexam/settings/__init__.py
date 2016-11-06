@@ -1,7 +1,7 @@
 from .base import *
 
-sae = True
-live = False
+sae = False
+live = True
 mysql = False
 
 if live:
