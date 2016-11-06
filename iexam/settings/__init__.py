@@ -1,10 +1,10 @@
 from .base import *
 
-sae = False
-live = True
+sae = True
+heroku = False
 mysql = False
 
-if live:
+if heroku:
 	from .production import *
 
 if sae:
