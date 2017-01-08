@@ -1,0 +1,83 @@
+{% load i18n admin_static admin_modify %}
+{% load admin_urls %}
+{% load admin_modify_extend %}
+
+<script type="text/javascript">
+$(document).ready(function() {
+ 
+   {% ifequal opts.object_name.lower "platform" %}
+        var array_td = ["2%", "13%", "25%", "25%", "30%"]; //%
+        adjust_link_formset("div#lab_device_item_set-group>div>fieldset>table", array_td);
+    	
+        var array_td = ["2%", "13%", "20%", "20%", "10%", "10%", "10%", "10%", "10%"]; //%
+        adjust_link_formset("div#lab_ip_set-group>div>fieldset>table", array_td);
+
+        var array_td = ["2%", "13%", "10%", "10%", "10%", "10%", "10%", "10%", "10%"]; //%
+        adjust_link_formset("div#lab_configuration_set-group>div>fieldset>table", array_td);
+        
+        $(".tabular .field-id input").css("width","5%");
+
+    {% endifequal%}
+
+    {% ifequal opts.object_name.lower "pc" %}
+        var array_td = ["2%", "5%", "25%", "25%", "30%"]; //%
+        adjust_link_formset("div#lab_device_item_set-group>div>fieldset>table", array_td);
+
+        var array_td = ["2%", "5%", "20%", "20%", "10%", "10%", "10%", "10%", "10%"]; //%
+        adjust_link_formset("div#lab_ip_set-group>div>fieldset>table", array_td);
+
+        var array_td = ["2%", "5%", "10%", "10%", "10%", "10%", "10%", "10%", "10%"]; //%
+        adjust_link_formset("div#lab_configuration_set-group>div>fieldset>table", array_td);
+
+        $(".tabular .field-id input").css("width","5%");
+
+    {% endifequal%}
+
+    {% ifequal opts.object_name.lower "product" %}
+        var array_td = ["2%", "8%", "5%","25%", "38%", "10%", "5%"]; //%
+        adjust_link_formset("div#lab_device_item_set-group>div>fieldset>table", array_td);
+    	
+        var array_td = ["2%", "8%","15%", "14%", "14%", "10%", "10%", "10%", "10%", "10%"]; //%
+        adjust_link_formset("div#lab_ip_set-group>div>fieldset>table", array_td);
+
+        var array_td = ["2%", "8%", "15%", "14%", "14%", "10%", "10%", "10%", "10%", "10%"]; //%
+        adjust_link_formset("div#lab_configuration_set-group>div>fieldset>table", array_td);
+
+        var array_td = ["2%", "8%", "15%", "14%", "14%", "15%", "15%", "10%", "10%"]; //%
+        adjust_link_formset("div#product_set-group>div>fieldset>table", array_td);
+
+        $(".tabular .field-id input").css("width","65%");
+    
+    {% endifequal%}
+
+    {% ifequal opts.object_name.lower "lab_device_item" %}
+        adjust_stackInline_fieldset();
+
+        var array_td = ["2%", "12%", "15%", "55%", "10%", "10%"]; //%
+        adjust_link_formset("div#rail_oem_project_set-group>div>fieldset>table", array_td);
+        $(".tabular .field-id input").css("width","5%");
+
+        {% ifequal is_add_new "True" %}
+            //$("input#id_Created_by").val("{{user.username}}");
+            $("input#id_Create_Time_0").val("{{CreateDate}}");
+            $("input#id_Create_Time_1").val("{{CreateTime}}");        
+        {% endifequal%}
+        
+    {% endifequal%}
+
+    {% ifequal opts.object_name.lower "ue" %}
+        adjust_stackInline_fieldset();
+
+        var array_td = ["2%", "13%", "25%", "25%", "30%"]; //%
+        adjust_link_formset("div#lab_device_item_set-group>div>fieldset>table", array_td);
+    	    
+        var array_td = ["2%", "13%", "20%", "20%", "10%", "10%", "10%", "10%", "10%"]; //%
+        adjust_link_formset("div#lab_ip_set-group>div>fieldset>table", array_td);
+
+        var array_td = ["2%", "13%", "10%", "10%", "10%", "10%", "10%", "10%", "10%"]; //%
+        adjust_link_formset("div#lab_configuration_set-group>div>fieldset>table", array_td);
+        
+        $(".tabular .field-id input").css("width","60%");    
+    {% endifequal%}    
+});
+</script>

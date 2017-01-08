@@ -1,0 +1,65 @@
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+    {% if opts.module_name == 'lab_device_item' or opts.module_name == 'product' %}
+        
+        var product_class_subclass_arrays_parent_value = [];
+        var product_class_subclass_arrays_id = [];
+        var product_class_subclass_arrays_value = []; 
+        var product_class_subclass_init_son_value;
+
+        {% for ay in product_class_subclasss %}                              //  #
+            product_class_subclass_arrays_parent_value.push("{{ay.Product_Class}}");  //  #
+            product_class_subclass_arrays_id.push("{{ay.Product_SubClass.id}}");      //  #
+            product_class_subclass_arrays_value.push("{{ay.Product_SubClass}}");      //  #
+        {% endfor %}
+        product_class_subclass_init_son_value = "{{cur_Product_SubClass}}";           //  #
+
+        $("#id_Product_Class").change(function(){update_relation('id_Product_Class','id_Product_SubClass', product_class_subclass_init_son_value, product_class_subclass_arrays_parent_value, product_class_subclass_arrays_id, product_class_subclass_arrays_value )});
+
+        $("#id_Product_Class").change();    
+
+
+        var product_item_type_arrays_parent_value = [];
+        var product_item_type_arrays_id = [];
+        var product_item_type_arrays_value = []; 
+        var product_item_type_init_son_value;
+
+        {% for ay in product_item_types %}                              //  #
+            product_item_type_arrays_parent_value.push("{{ay.Product_Item}}");  //  #
+            product_item_type_arrays_id.push("{{ay.Device_Item_Type.id}}");      //  #
+            product_item_type_arrays_value.push("{{ay.Device_Item_Type}}");      //  #
+        {% endfor %}
+        product_item_type_init_son_value = "{{cur_Device_Item_Type}}";           //  #
+
+        $("#id_Product_Item").change(function(){update_relation('id_Product_Item','id_Device_Item_Type', product_item_type_init_son_value, product_item_type_arrays_parent_value, product_item_type_arrays_id, product_item_type_arrays_value )});
+
+        $("#id_Product_Item").change();    
+
+    {% endif %}
+
+    {% ifequal opts.module_name 'lab_device_item' %}
+        
+        var product_subclass_item_arrays_parent_value = [];
+        var product_subclass_item_arrays_id = [];
+        var product_subclass_item_arrays_value = []; 
+        var product_subclass_item_init_son_value;
+
+        {% for ay in product_subclass_items %}                              //  #
+            product_subclass_item_arrays_parent_value.push("{{ay.Product_SubClass}}");  //  #
+            product_subclass_item_arrays_id.push("{{ay.Product_Item.id}}");      //  #
+            product_subclass_item_arrays_value.push("{{ay.Product_Item}}");      //  #
+        {% endfor %}
+        product_subclass_item_init_son_value = "{{cur_Product_Item}}";           //  #
+
+        $("#id_Product_SubClass").change(function(){update_relation('id_Product_SubClass','id_Product_Item', product_subclass_item_init_son_value, product_subclass_item_arrays_parent_value, product_subclass_item_arrays_id, product_subclass_item_arrays_value )});
+
+        $("#id_Product_SubClass").change();    
+
+    {% endifequal %}
+
+});
+
+</script>

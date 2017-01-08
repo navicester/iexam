@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 	'newsletter',
     'exam',
+	'engdict',
     'crispy_forms',
     'registration',
 )
@@ -67,7 +68,7 @@ ROOT_URLCONF = 'iexam.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates")],
+        'DIRS': [os.path.join(BASE_DIR, "templates"), os.path.join(BASE_DIR, "engdict", "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,7 +95,6 @@ if not 'SERVER_SOFTWARE' in os.environ:
     		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     	}
     }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -139,7 +139,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_in_env", "static_root")
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static_in_pro", "our_static"),
-    #os.path.join(BASE_DIR, "static_in_env"),
+    os.path.join(BASE_DIR, "engdict", "static"),
     #'/var/www/static/',
 )
 

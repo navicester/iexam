@@ -1,0 +1,27 @@
+
+{% load i18n admin_static admin_modify %}
+
+<html>
+    <head>
+
+        <script type="text/javascript" src={% static "admin/js/jquery.js" %}></script>
+        <script type="text/javascript" src={% static "admin/js/jquery-ui.js" %}></script>
+        <script type="text/javascript" src={% static "admin/js/admin/RelatedObjectLookups.js" %}></script>
+
+        <script type="text/javascript">
+        $(document).ready(function() {
+
+            var newId = "{{newId}}";
+            var newRepr = "{{newRepr}}";
+            var arrays = [];
+            {% for ay in array %}
+                arrays.push("{{ay}}");
+            {% endfor %}
+
+            window.opener.dismissAddAnotherPopupForLinkObj(window, newId, newRepr,arrays);
+        });
+        </script>
+        
+    </head>
+    <body></body>
+<html>
