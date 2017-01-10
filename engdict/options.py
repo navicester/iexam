@@ -6,6 +6,7 @@ from .models import *
 from .helpers_linkmodelform import LinkModelAdminFormSet
 from .helpers_linkform import LinkFormAdminFormset
 
+from django.db import transaction
 csrf_protect_m = method_decorator(csrf_protect)
 
 ###########################################################################    
@@ -79,8 +80,8 @@ class MyModelAdmin(admin.ModelAdmin):
     def filter_objects(self, fk_model, LinkObjClass, obj):
         link_objs = None
         
-        if  fk_model == WordExp:
-            link_objs = LinkObjClass.objects.filter(WordExp = obj)
+        if  fk_model == Word:
+            link_objs = LinkObjClass.objects.filter(word = obj)
 
         return link_objs
         
@@ -147,6 +148,12 @@ class MyModelAdmin(admin.ModelAdmin):
     ############################
     def _save_obj(self, fk_model, link_obj, link_m2m, obj): # this function can change to global
         setattr(link_obj, fk_model._meta.object_name + "_id", obj._get_pk_val())
+        if fk_model == Word:
+            if link_m2m == False:
+                link_obj.word = obj
+            else:
+                link_obj.word.add(obj)
+                
 
 # add_form_link
         '''
@@ -197,7 +204,8 @@ class MyModelAdmin(admin.ModelAdmin):
     def _delete_obj(self, fk_model, link_obj, link_m2m, obj):
 
         if link_m2m == True:
-            fk = getattr(link_obj, fk_model._meta.many_to_many)
+            #fk = getattr(link_obj, fk_model._meta.many_to_many)
+            fk = getattr(link_obj, fk_model._meta.object_name.lower())
             fk.remove(obj)
         else:
             setattr(link_obj, fk_model._meta.object_name + "_id", None)
@@ -433,7 +441,7 @@ class MyModelAdmin(admin.ModelAdmin):
                 return self.import_all(request, None)
         return super(MyModelAdmin, self).changelist_view( request, extra_context)
               
-    @csrf_protect_m
+    @transaction.atomic
     def add_view(self, request, form_url='', extra_context=None):
 
         if not self.has_add_permission(request):
@@ -543,9 +551,8 @@ class MyModelAdmin(admin.ModelAdmin):
 
         
     @csrf_protect_m
-    #@transaction.commit_on_success
+    @transaction.atomic
     def change_view(self, request, object_id, form_url='', extra_context=None):
-
         if request.method == 'POST':
             self.bAllowAddLink = False
         else:

@@ -6,7 +6,7 @@ class Word(models.Model):
 	phonetic = models.CharField(max_length=45)
 	explain = models.TextField(max_length=120,blank=True, null=True, default = '')
 	progress = models.DecimalField(max_digits=50, decimal_places=0, default = 0 )
-	members = models.ManyToManyField('Word', through='Membership')
+	# members = models.ManyToManyField('Word', through='Membership')
 	timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
 	updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
@@ -22,14 +22,31 @@ BOOK_NAME = (
 	('mail', 'MAIL'),
 	('20000', '20000'),
 	('22000', '22000'),
+	('100days', '100days'),
 )
 
+RELATION = (
+	('Self', 'Self'),
+	('synonym', 'Synonym'),
+	('antonym', 'Antonym'),
+	('homograph', 'Homograph'),
+	('etymon', 'etymon'),
+)
+
+
 class WordExp(models.Model):
+	name =  models.CharField(max_length=45)
 	phonetic = models.CharField(max_length=45)
 	explain = models.CharField(max_length=120, default = '')
 	sentence = models.TextField(blank=True, null=True)
 	book = models.CharField(max_length=120, choices=BOOK_NAME)
-	word = models.ManyToManyField('Word', blank=True, null = True)	
+	word = models.ManyToManyField(Word, blank=True)
+	relation = models.CharField(max_length=120, default='Self', choices=RELATION)
+	etymon = models.CharField(max_length=45, null=True, blank=True)
+
+	def getitems(self):
+		return {'id':self.pk, "phonetic":self.phonetic,"explain":self.explain, 
+        "sentence":self.sentence, "book":self.book,"word":self.word}
 
 	def __unicode__(self): 
 		return self.explain
@@ -55,12 +72,6 @@ class WordDict(models.Model):
 		return self.word.name
 
 
-RELATION = (
-	('synonym', 'Synonym'),
-	('antonym', 'Antonym'),
-	('homograph', 'Homograph'),
-	('etymon', 'etymon'),
-)
 
 class Membership(models.Model):
 	word = models.ForeignKey(Word)

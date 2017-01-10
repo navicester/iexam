@@ -1,6 +1,6 @@
 from .base import *
 
-sae = True
+sae = False
 heroku = False
 mysql = False
 

@@ -10,6 +10,11 @@ from .options import MyModelAdmin
 from django.contrib.admin.options import *
 csrf_protect_m = method_decorator(csrf_protect)
 
+class WordDictInline(admin.TabularInline):
+    model = WordDict
+    extra = 0
+
+
 class WordExpLinkFormAdmin(LinkFormAdmin):
 
     extra = 0
@@ -19,26 +24,45 @@ class WordExpLinkFormAdmin(LinkFormAdmin):
     link_m2m = True
     link_init_search = True
 
-class ExampleWordInline(admin.TabularInline):
-    model = ExampleWord
-    extra = 0
-
-class WordDictInline(admin.TabularInline):
-    model = WordDict
-    extra = 0
-
 class WordExpAdmin(MyModelAdmin):
-    list_display = ['phonetic','explain', 'sentence']
+    list_display = ['name','phonetic','explain', 'sentence']
+    search_fields = ['name','phonetic','explain', 'sentence']
+    ordering = ['name','book','relation', 'etymon']
+    list_filter = ('name','book','relation', 'etymon')
     self_form_link = WordExpForm
-    
+
+    fieldsets= [
+        (None,{
+             'fields':
+                (
+                 'name',
+                 'phonetic',
+                 'explain',
+                 'sentence',
+                 'book',
+                 # 'word',
+                 'relation',
+                 'etymon',
+                 )}),
+        ]    
+
+    readonly_fields= (
+                 'name',
+                 ) 
+
+    # fieldsets_fk= (None,{
+    #          'fields':
+    #             (
+    #              'word',
+    #              )})
+
     class Meta:
         model = WordExp
 
 class WordAdmin(MyModelAdmin):
     list_display = ['name','phonetic', 'progress']
     inlines = [
-        # ExampleWordInline,
-        # WordDictInline,
+        WordDictInline,
     ]
 
     form_links = [WordExpLinkFormAdmin]
@@ -47,9 +71,8 @@ class WordAdmin(MyModelAdmin):
         model = Word
 
     @csrf_protect_m
-    #@transaction.commit_on_success
     def add_view(self, request, form_url='', extra_context=None):
-        extra_context = {'app_name': 'engdict'}        
+        extra_context = {'app_name': 'engdict'}     
         extra_context_cur = {
         }
 
@@ -57,16 +80,19 @@ class WordAdmin(MyModelAdmin):
         
         return super(WordAdmin, self).add_view(request,form_url,extra_context)
 
-    # @csrf_protect_m
-    # #@transaction.commit_on_success
-    # def change_view(self, request, object_id, form_url='', extra_context=None):
-    #     extra_context = {}        
-    #     extra_context_cur = {
-    #     }
+    @csrf_protect_m
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = {'app_name': 'engdict'}     
+        extra_context_cur = {
+        }
 
-    #     extra_context.update(extra_context_cur)
+        extra_context.update(extra_context_cur)
 
-    #     return super(WordAdmin, self).change_view(request,object_id, form_url,extra_context)
+        return super(WordAdmin, self).change_view(request,object_id, form_url,extra_context)
+
+class ExampleWordInline(admin.TabularInline):
+    model = ExampleWord
+    extra = 0
 
 class MembershipAdmin(admin.ModelAdmin):
     list_display = ['word','exampleWord', 'relation']
@@ -75,4 +101,4 @@ class MembershipAdmin(admin.ModelAdmin):
 
 admin.site.register(Word, WordAdmin)
 admin.site.register(WordExp, WordExpAdmin)
-admin.site.register(Membership, MembershipAdmin)
+# admin.site.register(Membership, MembershipAdmin)

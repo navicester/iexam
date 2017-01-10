@@ -135,10 +135,10 @@ div.form-row div label, label.required{
 }
 
 .gifCenter{
-    vertical-align: middle;
+    vertical-align: middle;/*
     width : 15px;
     margin: 10px;
-    padding-top: 10px;
+    padding-top: 10px;*/
 }
 
 .inactive {

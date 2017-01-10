@@ -47,26 +47,26 @@
                             str = '<a id = "add_' + el.id;
                             str = str + '" class="add-another gifCenter"' ;                    
                             str = str + ' onclick="return showAddAnotherPopup(this);"' ;
-                            str = str + ' href="' + options.href_prefix + '/add/' + '"';
+                            str = str + ' href="' + options.href_prefix + '/add/' + '?_popup=1"';
                             str = str + ' >';
                             str = str + '<img width="10" height="10" alt="Add Another" src=' + options.bg_addlink + '>';
                         }
                         else{//search for many2many
                             str = '<a id = "lookup_' + el.id;
-                            str = str + '" class="add-another gifCenter"' ;                    
+                            str = str + '" class="related-lookup gifCenter"' ;                    
                             str = str + ' onclick="return showRelatedObjectLookupPopup(this);"' ;
                             str = str + ' href="' + options.href_prefix + '/?' + '"';
                             str = str + ' >';
-                            str = str + '<img width="10" height="10" alt="Add Another" src=' + options.bg_searchlink + '>';                            
+                            //str = str + '<img width="10" height="10" alt="related lookup" src=' + options.bg_searchlink + '>';                            
                         }
                     }
                     else{//change
                         str = '<a id = "add_' + el.id;
-                        str = str + '" class="add-another gifCenter"' ;                    
+                        str = str + '" class="inlinechangelink gifCenter"' ;                    
                         str = str + ' onclick="return showAddAnotherPopup(this);"' ;
-                        str = str + ' href="' + options.href_prefix + '/' + obj_id + '"';
+                        str = str + ' href="' + options.href_prefix + '/' + obj_id + '/?_popup=1"';
                         str = str + ' >';
-                        str = str + '<img width="10" height="10" alt="Add Another" src=' + options.bg_changelink + '>';
+                        //str = str + '<img width="10" height="10" alt="change related" src=' + options.bg_changelink + '>';
                     }
                     str = str + '</a>';
                         
