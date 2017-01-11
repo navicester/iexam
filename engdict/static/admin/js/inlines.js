@@ -20,14 +20,16 @@
     var $this = $(this);
     var $parent = $this.parent();
     var updateElementIndex = function(el, prefix, ndx) {
+//modify hebin   
       var id_regex = new RegExp("(" + prefix + "-(\\d+|__prefix__))");
+//end modify
       var replacement = prefix + "-" + ndx;
       if ($(el).prop("for")) {
         $(el).prop("for", $(el).prop("for").replace(id_regex, replacement));
       }
       if (el.id) {
         el.id = el.id.replace(id_regex, replacement);
-        //hebinn add
+//hebinn add
         if(options.isLink == "True"){ //check whether it's link form
             var a = $(el).prev("a");
             if(a.length > 0){
@@ -74,7 +76,7 @@
                 }
             }
         }
-        //end hebinn
+//end hebinn
       }
       if (el.name) {
         el.name = el.name.replace(id_regex, replacement);
@@ -91,16 +93,15 @@
     });
     if ($this.length && showAddButton) {
       var addButton;
-      //hebinn add
+//hebinn add
 //      if ($this.prop("tagName") == "TR") {
-
       var trobj = $this.get(0);
       if (trobj && trobj.tagName == "TR") {
         // If forms are laid out as table rows, insert the
         // "add" button in a new table row:
         var numCols = this.eq(-1).children().length;
 	numCols = trobj.childNodes.length;
-	//end hebinn
+//end hebinn
         $parent.append('<tr class="' + options.addCssClass + '"><td colspan="' + numCols + '"><a href="javascript:void(0)">' + options.addText + "</a></tr>");
         addButton = $parent.find("tr:last a");
       } else {
@@ -134,11 +135,11 @@
         });
         // Insert the new form when it has been fully edited
         row.insertBefore($(template));
-        //hebinn
+//hebinn
         var set = "div#"+options.prefix+ "-" + nextIndex;
         var sFieldset = set + ">fieldset";
         adjust_fieldset_horizontal(sFieldset); 
-        //end hebinn
+//end hebinn
         // Update number of total forms
         $(totalForms).val(parseInt(totalForms.val(), 10) + 1);
         nextIndex += 1;
@@ -180,7 +181,7 @@
         }
       });
     }
-    //hebinn
+//hebinn
     if(options.isLink == "True"){
         var forms = $("." + "dynamic-" + options.prefix);
         $("#id_" + options.prefix + "-TOTAL_FORMS").val(forms.length);
@@ -192,7 +193,7 @@
           });
         }
     }    
-    //end hebinn
+//end hebinn
     return this;
   };
 
@@ -211,7 +212,7 @@
 
 
   // Tabular inlines ---------------------------------------------------------
-  $.fn.tabularFormset = function(options) {
+  $.fn.tabularFormset = function(options) { //this = the elem who call tabularFormset function, options = parameter in calling function
     var $rows = $(this);
     var alternatingRows = function(row) {
       $($rows.selector).not(".add-row").removeClass("row1 row2")
@@ -265,7 +266,7 @@
       deleteText: options.deleteText,
       emptyCssClass: "empty-form",
       removed: alternatingRows,
-      //hebinn
+//hebinn
       bg_addlink : options.bg_addlink, //add icon
       bg_changelink : options.bg_changelink, //change icon
       bg_searchlink : options.bg_searchlink, //search icon
@@ -273,7 +274,7 @@
       isInitSearch: options.isInitSearch, //
       href_prefix: options.href_prefix,
       isLink: options.isLink,      
-      //end hebinn
+//end hebinn
       added: function(row) {
         initPrepopulatedFields(row);
         reinitDateTimeShortCuts();

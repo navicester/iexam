@@ -14,9 +14,11 @@ a.section:link, a.section:visited {
     //padding-right: .6em;
 }
 
+/*
 #mbutton{
     float: left;
 }
+*/
 
 .dashboard .module table th {
     width: 100%;

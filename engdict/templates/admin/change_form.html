@@ -17,8 +17,8 @@
 {% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
 <!-- hebinn -->
 <link rel="stylesheet" type="text/css" href="{% static "admin/css/fieldset_extend.css" %}" />
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/jquery-ui.css" %}" />
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/style.css" %}" />
+<!-- <link rel="stylesheet" type="text/css" href="{% static "admin/css/jquery-ui.css" %}" /> 
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/style.css" %}" />-->
 
 {% endblock %}
 
@@ -70,12 +70,28 @@
 {% endblock %}
 
 {% block after_field_sets %}{% endblock %}
+            {% if opts.module_name == 'word' %}
+                <div id="tabs">
+                    <ul>            
+                        {% ifequal opts.module_name 'word' %}
+                            <li><a href="#wordexp_set-group">word exp</a></li>
+                        {% endifequal %}                        
+                    </ul>
+
+                    <div id="tabs-inline">
+                        {% include "admin/myprj/inline_form.html" %}
+                    </div>
+                    
+                </div>
+            {% else %}
+                {% include "admin/myprj/inline_form.html" %}
+            {% endif %}
 
 {% block inline_field_sets %}
-    {% include "admin/myprj/inline_form.html" %}    <!-- hebinn -->
+    <!-- hebinn 
 {% for inline_admin_formset in inline_admin_formsets %}
     {% include inline_admin_formset.opts.template %}
-{% endfor %}
+{% endfor %} -->
 {% endblock %}
 
 {% block after_related_objects %}{% endblock %}

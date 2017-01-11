@@ -46,9 +46,9 @@ class WordExpAdmin(MyModelAdmin):
                  )}),
         ]    
 
-    readonly_fields= (
-                 'name',
-                 ) 
+    # readonly_fields= (
+    #              'name',
+    #              ) 
 
     # fieldsets_fk= (None,{
     #          'fields':
@@ -90,6 +90,13 @@ class WordAdmin(MyModelAdmin):
 
         return super(WordAdmin, self).change_view(request,object_id, form_url,extra_context)
 
+class WordDictAdmin(admin.ModelAdmin):
+    list_display = ['word','book']
+    search_fields = ['word','explain','book']
+    ordering = ['book',]
+    list_filter = ('book',)
+    
+
 class ExampleWordInline(admin.TabularInline):
     model = ExampleWord
     extra = 0
@@ -101,4 +108,5 @@ class MembershipAdmin(admin.ModelAdmin):
 
 admin.site.register(Word, WordAdmin)
 admin.site.register(WordExp, WordExpAdmin)
+admin.site.register(WordDict, WordDictAdmin)
 # admin.site.register(Membership, MembershipAdmin)
