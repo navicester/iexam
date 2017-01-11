@@ -13,8 +13,10 @@
             var newId = "{{newId}}";
             var newRepr = "{{newRepr}}";
             var arrays = [];
+//            var reg=new RegExp("\r\n","g"); 
             {% for ay in array %}
                 arrays.push("{{ay}}");
+//                arrays.push("{{ay}}".replace(reg,"");
             {% endfor %}
 
             window.opener.dismissAddAnotherPopupForLinkObj(window, newId, newRepr,arrays);

@@ -8,7 +8,7 @@ class WordExpForm(LinkFormAdminForm):
         verbose_name = 'Word Exp'
         class_name = "WordExp"
         
-    id = forms.CharField(max_length=11, label = "id", widget = forms.TextInput(attrs={'readonly':'readonly','disable':True})) 
+    id = forms.CharField(max_length=11, label = "id", widget = forms.TextInput(attrs={'readonly':'readonly','disable':True, 'hidden':True})) 
     phonetic = forms.CharField(max_length=11, label = "phonetic", required=False, widget = 
                              forms.TextInput(attrs={'readonly':'readonly','disable':True}))    
     explain = forms.CharField(max_length=50, label = "explain", required=False, widget = 
@@ -31,7 +31,7 @@ class WordExpForm(LinkFormAdminForm):
         array.append("explain")
         array.append(escape(obj.explain))
         array.append("sentence")
-        array.append(escape(obj.sentence))        
+        array.append(escape(obj.sentence.replace('\r\n',"brbr")))        
         array.append("book")
         array.append(escape(obj.book))
 

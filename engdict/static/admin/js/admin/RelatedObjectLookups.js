@@ -171,8 +171,9 @@ function dismissAddAnotherPopupForLinkObj(win,newId, newRepr, array) {
                     if(el){
                         el.value = array[i+1];
                     }
-                    
-                    next.text(array[i+1]);
+					
+                    var reg=new RegExp("brbr","g");
+                    next.text(array[i+1].replace(reg,"\r\n<br>"))
                     next = next.next();
                 }
                 if("" == init_value){
