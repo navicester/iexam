@@ -7,7 +7,7 @@ if 'SERVER_SOFTWARE' in os.environ:
 else:
 	sae = False
 	heroku = False
-	mysql = False
+	mysql = True
 
 
 if mysql:
