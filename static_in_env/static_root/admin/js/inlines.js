@@ -20,13 +20,63 @@
     var $this = $(this);
     var $parent = $this.parent();
     var updateElementIndex = function(el, prefix, ndx) {
+//modify hebin   
       var id_regex = new RegExp("(" + prefix + "-(\\d+|__prefix__))");
+//end modify
       var replacement = prefix + "-" + ndx;
       if ($(el).prop("for")) {
         $(el).prop("for", $(el).prop("for").replace(id_regex, replacement));
       }
       if (el.id) {
         el.id = el.id.replace(id_regex, replacement);
+//hebinn add
+        if(options.isLink == "True"){ //check whether it's link form
+            var a = $(el).prev("a");
+            if(a.length > 0){
+                a.remove();
+            }
+            if(!$(el).parent().hasClass("original"))
+            {
+                var pattern = new RegExp("(" + prefix + "-(\\d+|__prefix__|empty))" + "-id");
+                var pattern2 = new RegExp("add_");  //can't be "a", should merge pattern & pattern2
+                if(pattern.exec(el.id) && !pattern2.exec(el.id)){
+                    var str;                    
+
+                    var obj_id =el.value;
+             
+                    if('' == obj_id){
+                        if("False" == options.isMany2Many && "False" == options.isInitSearch){ //add 
+                            str = '<a id = "add_' + el.id;
+                            str = str + '" class="add-another gifCenter"' ;                    
+                            str = str + ' onclick="return showAddAnotherPopup(this);"' ;
+                            str = str + ' href="' + options.href_prefix + '/add/' + '?_popup=1"';
+                            str = str + ' >';
+                            str = str + '<img width="10" height="10" alt="Add Another" src=' + options.bg_addlink + '>';
+                        }
+                        else{//search for many2many
+                            str = '<a id = "lookup_' + el.id;
+                            str = str + '" class="related-lookup gifCenter"' ;                    
+                            str = str + ' onclick="return showRelatedObjectLookupPopup(this);"' ;
+                            str = str + ' href="' + options.href_prefix + '/?' + '"';
+                            str = str + ' >';
+                            //str = str + '<img width="10" height="10" alt="related lookup" src=' + options.bg_searchlink + '>';                            
+                        }
+                    }
+                    else{//change
+                        str = '<a id = "add_' + el.id;
+                        str = str + '" class="inlinechangelink gifCenter"' ;                    
+                        str = str + ' onclick="return showAddAnotherPopup(this);"' ;
+                        str = str + ' href="' + options.href_prefix + '/' + obj_id + '/?_popup=1"';
+                        str = str + ' >';
+                        //str = str + '<img width="10" height="10" alt="change related" src=' + options.bg_changelink + '>';
+                    }
+                    str = str + '</a>';
+                        
+                    $(el).before(str);
+                }
+            }
+        }
+//end hebinn
       }
       if (el.name) {
         el.name = el.name.replace(id_regex, replacement);
@@ -43,10 +93,15 @@
     });
     if ($this.length && showAddButton) {
       var addButton;
-      if ($this.prop("tagName") == "TR") {
+//hebinn add
+//      if ($this.prop("tagName") == "TR") {
+      var trobj = $this.get(0);
+      if (trobj && trobj.tagName == "TR") {
         // If forms are laid out as table rows, insert the
         // "add" button in a new table row:
         var numCols = this.eq(-1).children().length;
+	numCols = trobj.childNodes.length;
+//end hebinn
         $parent.append('<tr class="' + options.addCssClass + '"><td colspan="' + numCols + '"><a href="javascript:void(0)">' + options.addText + "</a></tr>");
         addButton = $parent.find("tr:last a");
       } else {
@@ -80,6 +135,11 @@
         });
         // Insert the new form when it has been fully edited
         row.insertBefore($(template));
+//hebinn
+        var set = "div#"+options.prefix+ "-" + nextIndex;
+        var sFieldset = set + ">fieldset";
+        adjust_fieldset_horizontal(sFieldset); 
+//end hebinn
         // Update number of total forms
         $(totalForms).val(parseInt(totalForms.val(), 10) + 1);
         nextIndex += 1;
@@ -121,6 +181,19 @@
         }
       });
     }
+//hebinn
+    if(options.isLink == "True"){
+        var forms = $("." + "dynamic-" + options.prefix);
+        $("#id_" + options.prefix + "-TOTAL_FORMS").val(forms.length);
+        for (var i=0, formCount=forms.length; i<formCount; i++)
+        {
+          updateElementIndex($(forms).get(i), options.prefix, i);
+          $(forms.get(i)).find("*").each(function() {
+            updateElementIndex(this, options.prefix, i);
+          });
+        }
+    }    
+//end hebinn
     return this;
   };
 
@@ -139,7 +212,7 @@
 
 
   // Tabular inlines ---------------------------------------------------------
-  $.fn.tabularFormset = function(options) {
+  $.fn.tabularFormset = function(options) { //this = the elem who call tabularFormset function, options = parameter in calling function
     var $rows = $(this);
     var alternatingRows = function(row) {
       $($rows.selector).not(".add-row").removeClass("row1 row2")
@@ -193,6 +266,15 @@
       deleteText: options.deleteText,
       emptyCssClass: "empty-form",
       removed: alternatingRows,
+//hebinn
+      bg_addlink : options.bg_addlink, //add icon
+      bg_changelink : options.bg_changelink, //change icon
+      bg_searchlink : options.bg_searchlink, //search icon
+      isMany2Many: options.isMany2Many, //flag many2many
+      isInitSearch: options.isInitSearch, //
+      href_prefix: options.href_prefix,
+      isLink: options.isLink,      
+//end hebinn
       added: function(row) {
         initPrepopulatedFields(row);
         reinitDateTimeShortCuts();

@@ -56,8 +56,15 @@
 
 #changelist table thead th {
     padding: 0;
-    white-space: nowrap;
+/*    white-space: nowrap;*/
     vertical-align: middle;
+}
+
+#changelist table tbody td {
+	word-wrap:break-word;
+	word-break: break-all;
+	white-space:normal;
+	/*overflow: auto;*/ /*hidden*/
 }
 
 #changelist table thead th.action-checkbox-column {
