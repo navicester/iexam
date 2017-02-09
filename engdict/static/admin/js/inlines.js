@@ -59,7 +59,7 @@
                             str = str + ' onclick="return showRelatedObjectLookupPopup(this);"' ;
                             str = str + ' href="' + options.href_prefix + '/?' + '"';
                             str = str + ' >';
-                            //str = str + '<img width="10" height="10" alt="related lookup" src=' + options.bg_searchlink + '>';                            
+                            str = str + '<img width="10" height="10" alt="related lookup" src=' + options.bg_searchlink + '>';                            
                         }
                     }
                     else{//change
