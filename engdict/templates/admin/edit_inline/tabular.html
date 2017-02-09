@@ -76,6 +76,7 @@
 (function($) {
   $("#{{ inline_admin_formset.formset.prefix }}-group .tabular.inline-related tbody tr").tabularFormset({
     prefix: "{{ inline_admin_formset.formset.prefix }}",
+    //add hebin
     adminStaticPrefix: '{% static "admin/" %}',
     bg_addlink: "{% static "admin/img/icon_addlink.gif" %}",
     bg_changelink: "{% static "admin/img/icon_changelink.gif" %}",
@@ -83,7 +84,8 @@
     isMany2Many : "{{inline_admin_formset.link_m2m}}",
     isInitSearch : "{{inline_admin_formset.link_init_search}}",    
     isLink : "{{inline_admin_formset.bLink}}",    
-    href_prefix : "/index/Rail/{{inline_admin_formset.opts.opts.module_name|lower}}",    
+    href_prefix : "/admin/{{app_name}}/{{inline_admin_formset.opts.opts.module_name|lower}}",    
+    //end add
     addText: "{% blocktrans with inline_admin_formset.opts.verbose_name|capfirst as verbose_name %}Add another {{ verbose_name }}{% endblocktrans %}",
     deleteText: "{% trans 'Remove' %}"
   });
