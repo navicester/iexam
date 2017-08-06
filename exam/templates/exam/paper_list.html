@@ -2,19 +2,23 @@
 
 {% block content %}
 
+<div class='col-sm-6'>
 	<table class='table'>
-	{% for object in object_list %}
-		<tr>
+	    <tr>
+		    <th style="width:20%">Paper</th>
+		    <th style="width:10%">ID</th>
+		    <th>Title </th>
+	    </tr>	
+		{% for object in object_list %}
+		<tr {% if forloop.counter|divisibleby:2 %} style="background-color: rgba(169, 179, 149, 0.27);" {% endif %}>
 			<td>
-				<a href='{{ object.get_absolute_url }}'>Paper #{{object.id}}</a>
-				<!-- <a href='{{ object.get_absolute_url }}'>View #{{object.id}}</a> -->
+				<a href='{{ object.get_absolute_url }}'>Paper</a>
 			</td>
-			<td>
-				<!-- Item Count: {{ object.cart.items.count }} -->
-			</td>
+			<td>{{ object.id }}</td>
+			<td>{{ object.name }}</td>
 		</tr>
-	{% endfor %}
-
+		{% endfor %}
 	</table>
+</div>
 
 {% endblock %}

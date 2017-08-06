@@ -63,7 +63,7 @@ class Paper(models.Model):
 	total_score = models.IntegerField()
 
 	def __unicode__(self): 
-		return "%s %s" % (self.pk, self.name)
+		return "[%003d] %s" % (self.pk, self.name)
 
 	def get_absolute_url_for_testitem(self):
 		return reverse("test_testitem_list", kwargs={"pk": self.pk})

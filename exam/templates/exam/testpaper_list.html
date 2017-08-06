@@ -1,20 +1,26 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
+
 
 {% block content %}
 
+<div class='col-sm-6 text-center'>
 	<table class='table'>
-	{% for object in object_list %}
 		<tr>
-			<td>
-				<a href='{{ object.get_absolute_url_for_testitem }}'>Paper #{{object.id}}</a>
-				<!-- <a href='{{ object.get_absolute_url }}'>View #{{object.id}}</a> -->
-			</td>
-			<td>
-				<!-- Item Count: {{ object.cart.items.count }} -->
-			</td>
+			<th>Paper ID</a></th>
+			<th>Name</th>
+			<th>Type</th>
+			<th>Total Score</th>
+		</tr>	
+		{% for test_paper in test_papers %}
+		<tr>
+			<td><a href='{{ test_paper.get_absolute_url_for_testitem }}'>Paper {{test_paper.pk}}</a></td>
+			<td>{{test_paper.name}}</td>
+			<td>{{test_paper.type}}</td>
+			<td>{{test_paper.total_score}}</td>
 		</tr>
-	{% endfor %}
-
+		{% endfor %}
 	</table>
+</div>
 
 {% endblock %}

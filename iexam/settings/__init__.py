@@ -7,15 +7,10 @@ if 'SERVER_SOFTWARE' in os.environ:
 else:
 	sae = False
 	heroku = False
-	mysql = True
+	mysql = False
 
 
-if mysql:
-	from .mysql import *
-
-if 'SERVER_SOFTWARE' in os.environ: 
-	from .sae import *
-elif sae:
+if sae:
 	from .sae import *	
 elif mysql:
 	from .mysql import *

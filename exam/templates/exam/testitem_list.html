@@ -31,15 +31,23 @@
 			{% endif %}				
 		</div>	
 
-		<label >Question {{forloop.counter}} : {{ form.instance.title }} (Score : {{ form.instance.score }})</label><br />
-		{% if form.instance.type|lower == "choice" %}
-			<label >A: </label> {{ form.instance.a }}<br />
-			<label >B: </label> {{ form.instance.b }}<br />
-			<label >C: </label> {{ form.instance.c }}<br />
-			<label >D: </label> {{ form.instance.d }}<br />
-		{% endif %}	
-
-		{{form|crispy}}
+		<div class="row">
+			<div class="row">
+			    <div class="col-sm-8"><label style="font-size: 20px; color:#094b86" >Question {{forloop.counter}} : {{ form.instance.title }}</label></div>
+			    <div class="col-sm-4 text-right"><label style="font-size: 20px; color:red;padding-right: 10px" >({{ form.instance.score }}')   </label></div>				
+			</div>
+			<hr style="margin-top: 10px; margin-bottom: 0px;">
+			<div>
+				{% if form.instance.type|lower == "choice" %}
+					<label >A: </label> {{ form.instance.a }}<br />
+					<label >B: </label> {{ form.instance.b }}<br />
+					<label >C: </label> {{ form.instance.c }}<br />
+					<label >D: </label> {{ form.instance.d }}<br />
+				{% endif %}	
+	        
+				{{form|crispy}}
+			</div>
+		</div>
 
 	{% endfor %}
 	<br/>

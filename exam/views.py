@@ -7,16 +7,19 @@ from django.views.generic.edit import FormMixin
 from django.contrib import messages
 from django.http import Http404
 from django import forms
+from django.core.urlresolvers import reverse
 
 # Create your views here.
 
 #Examhome -> ExamItem (model)
 class ExamItemDetail(DetailView):
 	model = ExamItem
+	template_name = 'exam/examresultitem_detail.html'
 
 class ExamItemList(ListView):
 	queryset = ExamItem.objects.all()
 	model = ExamItem
+	template_name = 'exam/examresultitem_list.html'
 
 	def get_context_data(self, *args, **kwargs):
 		context = super(ExamItemList, self).get_context_data(*args, **kwargs)
@@ -52,7 +55,7 @@ class ExamItemList(ListView):
 		if bValid == True:
 			return redirect("examhome")
 		else:
-			template = 'exam/examitem_list.html'
+			template = 'exam/examresultitem_list.html'
 			context = {
 				'formset' : formset,
 			}
@@ -81,7 +84,8 @@ class ExamLibItemList(ListView):
 		for object in queryset:
 			total_score += object.score
 		context["total_score"] = total_score
-		context["formset"] = ExamLibItemFormSet(queryset=self.get_queryset())		
+		context["formset"] = ExamLibItemFormSet(queryset=self.get_queryset())
+		context["queryset"] = self.get_queryset(args, kwargs)
 		try:
 			Paper_pk = self.kwargs.get("pk")
 			if Paper_pk:
@@ -111,7 +115,7 @@ class ExamLibItemList(ListView):
 			# GET the option value, it's the model id
 			# <option value="1" selected="selected">How to ?  </option>
 			# print paperForm['ExamLibItem']['select']['option']
-			print request.POST['ExamLibItem']
+			#print request.POST['ExamLibItem']
 
 		if formset.is_valid():
 			instances = formset.save(commit=False)
@@ -253,7 +257,7 @@ def examhome(request):
 		"exam_results": exam_results
 	}
 
-	return render(request, "exam.html", context)
+	return render(request, "exam/examresultpaper_list.html", context)
 
 def testhome(request): #no Model to track test itself. it dynamically generate other Models
 	test_papers = Paper.objects.all()
@@ -262,4 +266,4 @@ def testhome(request): #no Model to track test itself. it dynamically generate o
 		"test_papers": test_papers
 	}
 
-	return render(request, "test.html", context)	
+	return render(request, "exam/testpaper_list.html", context)	

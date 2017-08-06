@@ -1,0 +1,23 @@
+from django.conf.urls import include, url
+
+from exam.views import (TestItemList,                 
+                examhome,ExamItemList, ExamItemDetail,
+                PaperList,ExamLibItemList, ExamLibItemDetail,
+                )
+
+urlpatterns = [
+    # test operation
+    url(r'^testhome/$', 'exam.views.testhome', name='testhome'),
+    url(r'^test/(?P<pk>\d+)/$', TestItemList.as_view(), name='test_testitem_list'),
+
+    # paper lib
+    url(r'^paper/$', PaperList.as_view(), name='paper'),
+    url(r'^paper/(?P<pk>\d+)/$', ExamLibItemList.as_view(), name='paper_examlibitem_list'),
+    url(r'^paper/examlibitem/(?P<pk>\d+)/$', ExamLibItemDetail.as_view(), name='examlibitem_detail'),
+
+    # exam result
+    url(r'^examhome/$', 'exam.views.examhome', name='examhome'),
+    url(r'^examresult/(?P<pk>\d+)/$', ExamItemList.as_view(), name='examresult_examitem_list'),
+    url(r'^examresult/examitem/(?P<pk>\d+)/$', ExamItemDetail.as_view(), name='examitem_detail'),
+]
+
