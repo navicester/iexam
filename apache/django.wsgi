@@ -2,6 +2,9 @@
 import os
 import sys
 
+root = os.path.dirname(__file__)
+sys.path.insert(0, os.path.join(root, '..', 'site-packages'))
+
 #Calculate the path based on the location of the WSGI script.
 apache_configuration= os.path.dirname(__file__) 
 project = os.path.dirname(apache_configuration)

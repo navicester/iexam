@@ -13,8 +13,14 @@ class ExamLibItemAdmin(admin.ModelAdmin):
 		model = ExamLibItem
 
 class PaperAdmin(admin.ModelAdmin):
+	list_display = ('id','name','type','__unicode__')
+
 	class Meta:
 		model = Paper
+
+	inlines = [
+		ExamItemInline
+	]
 
 class ExamItemAdmin(admin.ModelAdmin):
 

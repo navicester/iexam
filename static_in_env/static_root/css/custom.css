@@ -41,3 +41,7 @@
 .navbar-toggle {
 	background-color: #5ACDFF !important;
 }
+
+#changelist table tbody tr {
+  background:red!important;
+}

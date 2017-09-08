@@ -1,0 +1,35 @@
+#changelist table {
+    width: 100%;
+}
+
+#changelist table
+{
+    table-layout:fixed;
+}
+
+#changelist table tbody td, #changelist table tbody th {
+	word-wrap: break-word;
+	word-break: break-all;
+	white-space: normal;
+	/*overflow: auto;*/ /*hidden*/
+}
+
+#changelist table tbody th {
+    white-space: normal;
+}
+
+body.model-paper #changelist table tbody tr td:nth-child(1) {
+    background-color: green;
+}
+
+body.model-paper #changelist table tbody tr th:nth-child(2) {
+    width:5%!important;
+}
+
+body.model-paper #changelist table tbody tr td:nth-child(3) {
+    width:2px!important;
+}
+
+body.model-paper #changelist table tbody tr td:nth-child(4) {
+    width:5%!important;
+}

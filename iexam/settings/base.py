@@ -68,7 +68,7 @@ ROOT_URLCONF = 'iexam.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates"), os.path.join(BASE_DIR, "engdict", "templates"), os.path.join(BASE_DIR, "exam", "templates")],
+        'DIRS': [os.path.join(BASE_DIR, "templates"), os.path.join(BASE_DIR, "exam", "templates"), os.path.join(BASE_DIR, "engdict", "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,7 +136,8 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "static_root")
 STATIC_ROOT = os.path.join(BASE_DIR, "static_in_env", "static_root")
 
-STATICFILES_DIRS = (
+STATICFILES_DIRS = (        
+    os.path.join(BASE_DIR, "static_in_pro",), # href="{% static "admin/css/changelists.css" %}"
     os.path.join(BASE_DIR, "static_in_pro", "our_static"),
     os.path.join(BASE_DIR, "engdict", "static"),
     #'/var/www/static/',
