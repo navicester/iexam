@@ -74,7 +74,7 @@ class WordAdmin(MyModelAdmin):
     ]
 
 #    form_links = [WordExpLinkFormAdmin, WordDictFormAdmin]
-    form_links = [ WordDictFormAdmin]
+    form_links = [ WordExpLinkFormAdmin]
 
     class Meta:
         model = Word

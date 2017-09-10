@@ -80,16 +80,8 @@ class MyModelAdmin(admin.ModelAdmin):
         return linkFromset
         '''
 
-    def filter_objects(self, fk_model, link_model, fk_obj):
-        link_objs = None
-
-        
-        print fk_model.__name__
-        print link_model.__name__
-
-        link_object = link_model()
-        link_field_name = None            
-        
+    def _get_related_field_name(self, fk_model, link_model):
+        link_field_name = None        
         for fieldname in link_model._meta.get_all_field_names():
             field = link_model._meta.get_field(fieldname)
             if hasattr(field, 'related_model'):
@@ -98,6 +90,12 @@ class MyModelAdmin(admin.ModelAdmin):
                     if loop_link_model.__name__ == fk_model.__name__:
                         link_field_name = fieldname
                         break
+        return link_field_name
+
+    def filter_objects(self, fk_model, link_model, fk_obj):
+        link_objs = None
+
+        link_field_name = self._get_related_field_name( fk_model, link_model)
 
         if link_field_name:
             link_objs = link_model.objects.filter(**{link_field_name:fk_obj})
@@ -122,14 +120,14 @@ class MyModelAdmin(admin.ModelAdmin):
 
         initials = []
 
-        for LinkForm, link_model in zip(self.get_linkform_forms(request), self.get_linkform_models(request)):           
+        for link_form, link_model in zip(self.get_linkform_forms(request), self.get_linkform_models(request)):           
             link_objs = self.get_linkform_queryset_from_model(obj, link_model)
             initial = [] #list
             if link_objs != None:
                 for link_obj in link_objs:
                     form = {} #dict
                     items = self.get_obj_items(link_obj)
-                    for field in LinkForm.base_fields:                    
+                    for field in link_form.base_fields:                    
                         form[field] = items[field]
                     initial.append(form)
             initials.append(initial)
@@ -170,24 +168,14 @@ class MyModelAdmin(admin.ModelAdmin):
 
     ############################
     def _save_obj(self, fk_model, link_obj, link_m2m, obj): # this function can change to global
-#        setattr(link_obj, fk_model._meta.object_name + "_id", obj._get_pk_val())
 
-        '''
+        link_field_name = self._get_related_field_name(fk_model, link_obj.__class__)
         if link_m2m == False:
-            setattr(link_obj, fk_model._meta.object_name, obj)
+            setattr(link_obj, link_field_name, obj)
         else:
-            fk_instance =  getattr(link_obj, fk_model._meta.object_name, None)
-        '''
-        
-        from engdict.models import Word             
-        if fk_model == Word:
-            if link_m2m == False:
-                link_obj.word = obj
-            else:
-                link_obj.word.add(obj)
-                        
+            fk_obj =  getattr(link_obj, link_field_name)
+            fk_obj.add(obj)      
 
-# add_form_link
         '''
         if fk_model == lab_device_item:
             if link_m2m == False:
@@ -198,10 +186,10 @@ class MyModelAdmin(admin.ModelAdmin):
             
         link_obj.save()
         
-    def _delete_empty_objs(self, fk_model, linkobj, link_m2m):
+    def _delete_empty_objs(self, fk_model, link_obj, link_m2m):
 
         if link_m2m == False:
-            self.filter_objects(fk_model, linkobj, None).delete()
+            self.filter_objects(fk_model, link_obj, None).delete()
             
             '''
             if fk_model == lab_device_item:                    
@@ -230,22 +218,6 @@ class MyModelAdmin(admin.ModelAdmin):
                 link_obj.lab_device_item.remove(obj)
             else:
                 link_obj.delete()
-        if fk_model == PC:
-            if link_m2m == True:
-                link_obj.PC.remove(obj)
-            else:
-                link_obj.delete()
-        if fk_model == UE:
-            if link_m2m == True:
-                link_obj.UE.remove(obj)
-            else:
-                link_obj.delete()
-        if fk_model == Platform:
-            if link_m2m == True:
-                link_obj.Platform.remove(obj)
-            else:
-                link_obj.delete()
-
         else:
             link_obj.delete()
         '''
@@ -276,14 +248,14 @@ class MyModelAdmin(admin.ModelAdmin):
     def _save_link_obj(self, request, obj, link_key = 'id'):
         if self.form_links != []:
             prefixes = {}
-            for LinkForm, link_model, LinkObjFormSet, link_m2m in zip(self.get_linkform_forms(request), self.get_linkform_models(request), self.get_linkform_formsets(request), self.get_linkform_m2ms(request)):
+            for link_form, link_model, link_formset, link_m2m in zip(self.get_linkform_forms(request), self.get_linkform_models(request), self.get_linkform_formsets(request), self.get_linkform_m2ms(request)):
                 #prefix = LinkObjFormSet.get_default_prefix()
-                prefix = LinkForm.Meta.class_name + "_set"                
+                prefix = link_form.Meta.class_name + "_set"                
                 prefixes[prefix] = prefixes.get(prefix, 0) + 1
                 if prefixes[prefix] != 1 or not prefix:
                     prefix = "%s-%s" % (prefix, prefixes[prefix])
 
-                formset = LinkObjFormSet(request.POST, request.FILES, prefix = prefix)
+                formset = link_formset(request.POST, request.FILES, prefix = prefix)
                 for form in formset.forms:
                     if form.is_valid() and form.cleaned_data.has_key(link_key): 
                         link_obj_id = form.cleaned_data[link_key] #string
@@ -299,22 +271,22 @@ class MyModelAdmin(admin.ModelAdmin):
         if self.modelform_links != []:  #only support ForeignKey inline
             link_instances = self.get_link_instances(request, None)          
             prefixes = {}
-            for FormSet, link in zip(self.get_link_formsets(request), link_instances): 
-                prefix = FormSet.get_default_prefix()   #need to change ??????????/
+            for ifromset, ilink in zip(self.get_link_formsets(request), link_instances): 
+                prefix = ifromset.get_default_prefix()   #need to change ??????????/
                 prefixes[prefix] = prefixes.get(prefix, 0) + 1
                 if prefixes[prefix] != 1 or not prefix:
                     prefix = "%s-%s" % (prefix, prefixes[prefix])
-                formset = FormSet(data=request.POST, files=request.FILES,
+                formset = ifromset(data=request.POST, files=request.FILES,
                                   instance=obj,
                                   save_as_new="_saveasnew" in request.POST,
-                                  prefix=prefix, queryset=link.queryset(request))
+                                  prefix=prefix, queryset=ilink.queryset(request))
 
                 for form in formset.forms:
                     form.is_valid()  # this line is to get cleaned_data, but for modelForm, it's invalid, reason is ObjectExist
                     if form.instance.id != '':
                         link_obj_id = form.instance.id
                         if link_obj_id > 0 : #integer
-                            link_obj = link.model.objects.get(pk=link_obj_id)                            
+                            link_obj = ilink.model.objects.get(pk=link_obj_id)                            
                             if formset._should_delete_form(form):
                                 self._delete_obj(self.model, link_obj, False, obj)
                             else:
@@ -507,36 +479,36 @@ class MyModelAdmin(admin.ModelAdmin):
             if request.method == 'POST':
                 new_object = self.model()
                 prefixes = {}
-                for FormSet, link in zip(self.get_link_formsets(request), link_instances): 
-                    prefix = FormSet.get_default_prefix()
+                for iformset, ilink in zip(self.get_link_formsets(request), link_instances): 
+                    prefix = iformset.get_default_prefix()
                     prefixes[prefix] = prefixes.get(prefix, 0) + 1
                     if prefixes[prefix] != 1 or not prefix:
                         prefix = "%s-%s" % (prefix, prefixes[prefix])
-                    formset = FormSet(data=request.POST, files=request.FILES,
+                    formset = iformset(data=request.POST, files=request.FILES,
                                       instance=new_object,
                                       save_as_new="_saveasnew" in request.POST,
-                                      prefix=prefix, queryset=link.queryset(request))
+                                      prefix=prefix, queryset=ilink.queryset(request))
                     formsets.append(formset)
             else:
                 prefixes = {}
-                for FormSet, link in zip(self.get_link_formsets(request), link_instances):  
-                    prefix = FormSet.get_default_prefix()
+                for iformset, ilink in zip(self.get_link_formsets(request), link_instances):  
+                    prefix = iformset.get_default_prefix()
                     prefixes[prefix] = prefixes.get(prefix, 0) + 1
                     if prefixes[prefix] != 1 or not prefix:
                         prefix = "%s-%s" % (prefix, prefixes[prefix])
-                    formset = FormSet(instance=self.model(), prefix=prefix,
-                                      queryset=link.queryset(request))
+                    formset = v(instance=self.model(), prefix=prefix,
+                                      queryset=ilink.queryset(request))
                     formsets.append(formset)
 
             link_admin_formsets = []
             link_media = self.media #should implement it for further dev !!!!
-            for link, formset in zip(link_instances, formsets):
-                fieldsets = list(link.get_fieldsets(request))
-                readonly = list(link.get_readonly_fields(request))
-                prepopulated = dict(link.get_prepopulated_fields(request))
-                link_admin_formset = LinkModelAdminFormSet(link, formset,
+            for ilink, iformset in zip(link_instances, formsets):
+                fieldsets = list(ilink.get_fieldsets(request))
+                readonly = list(ilink.get_readonly_fields(request))
+                prepopulated = dict(ilink.get_prepopulated_fields(request))
+                link_admin_formset = LinkModelAdminFormSet(ilink, iformset,
                     fieldsets, prepopulated, readonly, model_admin=self)
-                link_admin_formset.link_m2m = link.link_m2m
+                link_admin_formset.link_m2m = ilink.link_m2m
                 link_admin_formsets.append(link_admin_formset)
                 
             context_tmp = {
