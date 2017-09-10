@@ -1,0 +1,26 @@
+{% load i18n admin_static admin_modify %}
+{% load admin_urls %}
+{% load admin_modify_extend %}
+
+{% block inline_field_sets %}
+    {% for inline_admin_formset in inline_admin_formsets %}
+        {% include inline_admin_formset.opts.template %}
+    {% endfor %}
+
+    <!-- link -->
+    {% for inline_admin_formset in link_admin_formsets %}
+        {% include inline_admin_formset.opts.template %}
+    {% endfor %}                
+    <!-- link -->
+
+    <!--<script type="text/javascript" src={% static "admin/js/inlines.js" %}></script>   very strange, lost this js suddendly-->
+    {% for link_form_admin_formset in link_form_admin_formsets %}
+        {% include link_form_admin_formset.opts.template  with app_name=app_name %}       
+    {% endfor %}
+
+{% endblock %}
+
+<!-- customer view -->
+
+
+

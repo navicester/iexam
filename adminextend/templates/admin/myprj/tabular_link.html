@@ -1,0 +1,123 @@
+{% load i18n admin_static admin_modify %}
+
+<!-- learn from tabular.html -->
+
+{{inline_media}}
+
+<div class="inline-group  link-group" id="{{ link_form_admin_formset.formset.prefix }}-group">
+  <div class="tabular inline-related {% if forloop.last %}last-related{% endif %}">
+{{ link_form_admin_formset.formset.management_form }}
+
+<fieldset class="module">
+   {% comment %}
+   {% if opts.module_name == 'platform'%}
+   {% else %}
+       <h2>{{ link_form_admin_formset.formset.form.Meta.verbose_name|capfirst }}</h2>
+   {% endif %}
+   {% endcomment %}
+   <h2 class="tabs-form">{{ link_form_admin_formset.formset.form.Meta.verbose_name|capfirst }}</h2>
+   {{ link_form_admin_formset.formset.non_form_errors }}
+   <table>
+     <thead><tr>
+     {% for field in link_form_admin_formset.fields %} <!-- = link_form_admin_formset.formset.form -->    
+       {% if not field.widget.is_hidden %}
+         <th
+         {% if forloop.first %} colspan="2"{% endif %}
+         {% if field.required %} class="required"{% endif %}>
+         {{ field.label|capfirst }}
+         {% if field.help_text %}
+            &nbsp;
+            <img src="{% static "admin/img/icon-unknown.gif" %}" 
+                class="help help-tooltip" 
+                width="10" 
+                height="10" 
+                alt="({{ field.help_text|striptags }})" 
+                title="{{ field.help_text|striptags }}" />
+         {% endif %}
+         </th>
+       {% endif %}
+     {% endfor %}
+     {% if link_form_admin_formset.formset.can_delete %}<th>{% trans "Delete?" %}</th>{% endif %}
+     </tr></thead>
+
+     <tbody>
+
+     {% for inline_admin_form in link_form_admin_formset %}  <!-- call LinkFormAdminFormset.__iter__-->
+        {% if inline_admin_form.non_field_errors %}
+        <tr><td colspan="1">{{ link_form_admin_formset.non_field_errors }}</td></tr>
+        {% endif %}
+        <tr class="form-row {% cycle "row1" "row2" %} 
+                    {% if forloop.last %} empty-form{% endif %}"
+             id="{{ link_form_admin_formset.formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}">
+            <td class="original">
+              {% spaceless %} <!-- Removes whitespace between HTML tags, including tab and newline characters. -->
+              {% for field in inline_admin_form %}  <!--show hidden fields-->
+                {% if field.is_hidden %} {{ field }} {% endif %}
+              {% endfor %}
+              {% endspaceless %}
+            </td>
+
+            {% for field in inline_admin_form %}
+                {% if field.name != "ORDER" %} <!-- because I used can_order for form_factory -->
+                
+                  <td{% if field.name %} class="field-{{ field.name }}"{% endif %}>
+
+                  {% if field.name == 'DELETE'%}
+                      {% if link_form_admin_formset.formset.can_delete and inline_admin_form.id.value != None %}
+                          {{ field }}
+                      {% endif %}
+                  {% else %}
+                      {% if field.is_readonly or field.name != 'id' %}
+                          {% if field.value != None %}
+                              <p>{{ field.value|linebreaksbr }}</p>
+                          {% endif %}
+                      {% else %}
+                          {{ field.errors.as_ul }}
+                          {{ field }}
+                      {% endif %}
+                  {% endif %}
+
+                  </td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+     {% endfor %}
+     
+     </tbody>
+   </table>
+</fieldset>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+(function($) {
+  $("#{{ link_form_admin_formset.formset.prefix }}-group .tabular.inline-related tbody tr").tabularFormset({
+    prefix: "{{ link_form_admin_formset.formset.prefix }}",
+    adminStaticPrefix: '{% static "admin/" %}',
+    isMany2Many : "{{link_form_admin_formset.link_m2m}}",
+    isInitSearch : "{{link_form_admin_formset.link_init_search}}",    
+    bg_addlink: "{% static "admin/img/icon_addlink.gif" %}",
+    bg_changelink: "{% static "admin/img/icon_changelink.gif" %}",
+    bg_searchlink: "{% static "admin/img/selector-search.gif" %}",
+    href_prefix : "/admin/{{app_name}}/{{link_form_admin_formset.formset.form.Meta.class_name|lower}}",    
+    isLink : "True",        
+    addText: "{% blocktrans with link_form_admin_formset.formset.form.Meta.verbose_name|title as verbose_name %}Add another {{ link_form_admin_formset.formset.form.Meta.verbose_name }}{% endblocktrans %}",
+    deleteText: "{% trans 'Remove' %}"
+  });
+
+  $(document).ready(function() {
+        
+      allowAdd = "{{bAllowAddLink}}";
+      {% comment %}
+      if(allowAdd == "False" ){
+        $("div.link-group a").addClass("inactive");
+        $("div.link-group").hide();
+      }else{
+        $("a").removeClass("inactive");
+        $("div.link-group").show();        
+      }
+      {% endcomment %}
+  });
+})(django.jQuery);
+</script>

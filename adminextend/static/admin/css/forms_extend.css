@@ -1,0 +1,12 @@
+.link-group td.field-id input{
+	width: 15px;
+	background-color: inherit;
+    border: none;
+    text-align: right;
+    /*background-image: url(../img/nav-bg-selected.gif);*/
+}
+
+.link-group td.field-id a{
+	margin-left: 0px;
+}
+

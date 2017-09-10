@@ -48,6 +48,7 @@ INSTALLED_APPS = (
 	'engdict',
     'crispy_forms',
     'registration',
+    'adminextend'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -68,7 +69,10 @@ ROOT_URLCONF = 'iexam.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates"), os.path.join(BASE_DIR, "exam", "templates"), os.path.join(BASE_DIR, "engdict", "templates")],
+        'DIRS': [os.path.join(BASE_DIR, "templates"), 
+                        os.path.join(BASE_DIR, "exam", "templates"), 
+                        os.path.join(BASE_DIR, "engdict", "templates"), 
+                        os.path.join(BASE_DIR, "adminextend", "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,9 +141,11 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static_in_env", "static_root")
 
 STATICFILES_DIRS = (        
-    os.path.join(BASE_DIR, "static_in_pro",), # href="{% static "admin/css/changelists.css" %}"
+    os.path.join(BASE_DIR, "adminextend", "static"),
+    #os.path.join(BASE_DIR, "static_in_pro", "admin_static"), # href="{% static "admin/css/changelists.css" %}"
     os.path.join(BASE_DIR, "static_in_pro", "our_static"),
-    os.path.join(BASE_DIR, "engdict", "static"),
+    #os.path.join(BASE_DIR, "site-packages","django","contrib","static"),
+    
     #'/var/www/static/',
 )
 

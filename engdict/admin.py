@@ -3,9 +3,8 @@ from django.contrib import admin
 # Register your models here.
 from .models import *
 
-from .helpers_linkform import LinkFormAdmin
-from .link_forms import *
-from .options import MyModelAdmin
+from .forms import *
+from adminextend.options import MyModelAdmin, LinkFormAdmin
 
 from django.contrib.admin.options import *
 csrf_protect_m = method_decorator(csrf_protect)
@@ -20,10 +19,19 @@ class WordExpLinkFormAdmin(LinkFormAdmin):
     extra = 0
     
     link_form = WordExpForm
-    link_obj_class = WordExp
+    link_model = WordExp
     link_m2m = True
     link_init_search = True
 
+class WordDictFormAdmin(LinkFormAdmin):
+
+    extra = 0
+    
+    link_form = WordDictForm
+    link_model = WordDict
+    link_m2m = False
+    link_init_search = True
+    
 class WordExpAdmin(MyModelAdmin):
     list_display = ['name','phonetic','explain', 'sentence']
     search_fields = ['name','phonetic','explain', 'sentence']
@@ -65,7 +73,8 @@ class WordAdmin(MyModelAdmin):
         WordDictInline,
     ]
 
-    form_links = [WordExpLinkFormAdmin]
+#    form_links = [WordExpLinkFormAdmin, WordDictFormAdmin]
+    form_links = [ WordDictFormAdmin]
 
     class Meta:
         model = Word

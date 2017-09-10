@@ -44,10 +44,6 @@ class WordExp(models.Model):
 	relation = models.CharField(max_length=120, default='Self', choices=RELATION)
 	etymon = models.CharField(max_length=45, null=True, blank=True)
 
-	def getitems(self):
-		return {'id':self.pk, "phonetic":self.phonetic,"explain":self.explain, 
-        "sentence":self.sentence, "book":self.book,"word":self.word}
-
 	def __unicode__(self): 
 		return self.explain
 
