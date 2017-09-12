@@ -17,7 +17,7 @@ csrf_protect_m = method_decorator(csrf_protect)
 
 class MyModelAdmin(admin.ModelAdmin):
 
-    bAllowAddLink = False
+    is_add_link_allowed = False
 
     modelform_links = []
     form_links = []
@@ -30,11 +30,11 @@ class MyModelAdmin(admin.ModelAdmin):
 
     ##### for LinkForm method#####
     def get_linkform_instances(self, request):
-        linkinstances = []
+        link_instances = []
         for form_link in self.form_links:
-            linkinstance = form_link()
-            linkinstances.append(linkinstance)
-        return linkinstances
+            link_instance = form_link()
+            link_instances.append(link_instance)
+        return link_instances
 
 
     def get_linkform_forms(self, request):
@@ -51,16 +51,16 @@ class MyModelAdmin(admin.ModelAdmin):
         return linkm2ms
 
     def get_linkform_initsearchs(self, request):
-        linkinitsearchs = []
+        link_init_searchs = []
         for form_link in self.form_links:
-            linkinitsearchs.append(form_link.link_init_search)
-        return linkinitsearchs
+            link_init_searchs.append(form_link.link_init_search)
+        return link_init_searchs
 
     def get_linkform_models(self, request):
-        linkmodels = []
+        link_models = []
         for form_link in self.form_links:
-            linkmodels.append(form_link.link_model)
-        return linkmodels
+            link_models.append(form_link.link_model)
+        return link_models
 
     def get_linkform_formsets(self, request, obj=None):
         for link_instance in self.get_linkform_instances(request):
@@ -311,7 +311,7 @@ class MyModelAdmin(admin.ModelAdmin):
         
     '''
     def save_model(self, request, obj, form, change):
-        self.bAllowAddLink = True
+        self.is_add_link_allowed = True
         super(MyModelAdmin, self).save_model(request,obj, form, change)
     '''
     
@@ -433,34 +433,34 @@ class MyModelAdmin(admin.ModelAdmin):
         # LineInlineFormAdimin
         link_admin_obj_formset = None
         link_admin_obj_formsets = []
-        self.bAllowAddLink = False
+        self.is_add_link_allowed = False
 
         if self.form_links != []:
             prefixes = {}
-            for LinkInstance, LinkForm, LinkMany2Many, LinkInitSearch, LinkObjFormSet in zip(self.get_linkform_instances(request), self.get_linkform_forms(request), self.get_linkform_m2ms(request), self.get_linkform_initsearchs(request), self.get_linkform_formsets(request)):   
-                #prefix = LinkObjFormSet.get_default_prefix()
-                prefix = LinkForm.Meta.class_name + "_set"
+            for link_instance, link_form, link_m2m, link_initsearch, link_formset in zip(self.get_linkform_instances(request), self.get_linkform_forms(request), self.get_linkform_m2ms(request), self.get_linkform_initsearchs(request), self.get_linkform_formsets(request)):   
+                #prefix = link_formset.get_default_prefix()
+                prefix = link_form.Meta.class_name + "_set"
                 prefixes[prefix] = prefixes.get(prefix, 0) + 1
                 if prefixes[prefix] != 1 or not prefix:
                     prefix = "%s-%s" % (prefix, prefixes[prefix])
 
                 if request.method == "POST":                
-                    formset = LinkObjFormSet(request.POST, request.FILES, prefix = prefix)                    
+                    formset = link_formset(request.POST, request.FILES, prefix = prefix)                    
                     if formset.is_valid():
                         formset = self.sort_linkform_formset(request, formset, True)
-                        link_admin_obj_formset = LinkFormAdminFormset(formset = formset, link = LinkInstance)
+                        link_admin_obj_formset = LinkFormAdminFormset(formset = formset, link = link_instance)
                     else:
-                        link_admin_obj_formset = LinkFormAdminFormset(formset = LinkObjFormSet(prefix = prefix), link = LinkInstance)
+                        link_admin_obj_formset = LinkFormAdminFormset(formset = link_formset(prefix = prefix), link = link_instance)
                 else:
-                    link_admin_obj_formset = LinkFormAdminFormset(formset = LinkObjFormSet(prefix = prefix), link = LinkInstance)
+                    link_admin_obj_formset = LinkFormAdminFormset(formset = link_formset(prefix = prefix), link = link_instance)
                     
-                link_admin_obj_formset.link_m2m = LinkMany2Many
-                link_admin_obj_formset.link_init_search = LinkInitSearch                
+                link_admin_obj_formset.link_m2m = link_m2m
+                link_admin_obj_formset.link_init_search = link_initsearch                
                 link_admin_obj_formsets.append(link_admin_obj_formset)
 
             extra_context_cur = {        
                 'link_form_admin_formsets':link_admin_obj_formsets,      
-                'bAllowAddLink': self.bAllowAddLink,
+                'is_add_link_allowed': self.is_add_link_allowed,
             }
 
             if extra_context == None:
@@ -537,33 +537,33 @@ class MyModelAdmin(admin.ModelAdmin):
     @transaction.atomic
     def change_view(self, request, object_id, form_url='', extra_context=None):
         if request.method == 'POST':
-            self.bAllowAddLink = False
+            self.is_add_link_allowed = False
         else:
-            self.bAllowAddLink = True
+            self.is_add_link_allowed = True
 
         if self.form_links != []:
             initial = self.get_linkform_formset_initial(request,object_id)
             link_admin_obj_formsets = []
 
             prefixes = {}
-            for LinkInitial, LinkInstance, LinkForm, LinkObjFormSet, link_m2m, link_initsearch in zip(initial, self.get_linkform_instances(request), self.get_linkform_forms(request),self.get_linkform_formsets(request), self.get_linkform_m2ms(request), self.get_linkform_initsearchs(request)): 
-                #prefix = LinkObjFormSet.get_default_prefix()
-                prefix = LinkForm.Meta.class_name + "_set"                
+            for link_initial, link_instance, link_form, link_formset, link_m2m, link_initsearch in zip(initial, self.get_linkform_instances(request), self.get_linkform_forms(request),self.get_linkform_formsets(request), self.get_linkform_m2ms(request), self.get_linkform_initsearchs(request)): 
+                #prefix = link_formset.get_default_prefix()
+                prefix = link_form.Meta.class_name + "_set"                
                 prefixes[prefix] = prefixes.get(prefix, 0) + 1
                 if prefixes[prefix] != 1 or not prefix:
                     prefix = "%s-%s" % (prefix, prefixes[prefix])
 
                 if request.method == "POST":                          
-                    formset = LinkObjFormSet(request.POST, request.FILES, prefix = prefix) 
+                    formset = link_formset(request.POST, request.FILES, prefix = prefix) 
                     if formset.is_valid():
                         formset = self.sort_linkform_formset(request, formset)
-                        link_admin_obj_formset = LinkFormAdminFormset(formset = formset, link = LinkInstance)                    
+                        link_admin_obj_formset = LinkFormAdminFormset(formset = formset, link = link_instance)                    
                     else:
-                        link_admin_obj_formset = LinkFormAdminFormset(formset = LinkObjFormSet(prefix = prefix), link = LinkInstance)
+                        link_admin_obj_formset = LinkFormAdminFormset(formset = link_formset(prefix = prefix), link = link_instance)
 
                 else:
-                    link_obj_formset = LinkObjFormSet(initial = LinkInitial, prefix = prefix)
-                    link_admin_obj_formset = LinkFormAdminFormset(formset = link_obj_formset, link = LinkInstance)
+                    link_obj_formset = link_formset(initial = link_initial, prefix = prefix)
+                    link_admin_obj_formset = LinkFormAdminFormset(formset = link_obj_formset, link = link_instance)
                     
                 link_admin_obj_formset.link_m2m = link_m2m
                 link_admin_obj_formset.link_init_search = link_initsearch                
@@ -571,7 +571,7 @@ class MyModelAdmin(admin.ModelAdmin):
         
             extra_context_cur = {        
                 'link_form_admin_formsets':link_admin_obj_formsets,      
-                'bAllowAddLink': self.bAllowAddLink,
+                'is_add_link_allowed': self.is_add_link_allowed,
             }
 
             if extra_context == None:
@@ -606,14 +606,14 @@ class MyModelAdmin(admin.ModelAdmin):
                     new_object = obj
 
                 prefixes = {}
-                for FormSet, link in zip(self.get_link_formsets(request, new_object), link_instances):
-                    prefix = FormSet.get_default_prefix()
+                for iformset, ilink in zip(self.get_link_formsets(request, new_object), link_instances):
+                    prefix = iformset.get_default_prefix()
                     prefixes[prefix] = prefixes.get(prefix, 0) + 1
                     if prefixes[prefix] != 1 or not prefix:
                         prefix = "%s-%s" % (prefix, prefixes[prefix])
-                    formset = FormSet(request.POST, request.FILES,
+                    formset = iformset(request.POST, request.FILES,
                                       instance=new_object, prefix=prefix,
-                                      queryset=link.queryset(request))
+                                      queryset=linkilinkqueryset(request))
 
                     formsets.append(formset)
                     
@@ -621,23 +621,23 @@ class MyModelAdmin(admin.ModelAdmin):
                     pass
             else:
                 prefixes = {}
-                for FormSet, link in zip(self.get_link_formsets(request, obj), link_instances):
-                    prefix = FormSet.get_default_prefix()
+                for iformset, ilink in zip(self.get_link_formsets(request, obj), link_instances):
+                    prefix = iformset.get_default_prefix()
                     prefixes[prefix] = prefixes.get(prefix, 0) + 1
                     if prefixes[prefix] != 1 or not prefix:
                         prefix = "%s-%s" % (prefix, prefixes[prefix])
-                    formset = FormSet(instance=obj, prefix=prefix,
-                                      queryset=link.queryset(request))
+                    formset = iformset(instance=obj, prefix=prefix,
+                                      queryset=ilink.queryset(request))
                     formsets.append(formset)
 
             link_admin_formsets = []
-            for link, formset in zip(link_instances, formsets):
-                fieldsets = list(link.get_fieldsets(request, obj))
-                readonly = list(link.get_readonly_fields(request, obj))
-                prepopulated = dict(link.get_prepopulated_fields(request, obj))
-                link_admin_formset = LinkModelAdminFormSet(link, formset,
+            for ilink, iformset in zip(link_instances, formsets):
+                fieldsets = list(ilink.get_fieldsets(request, obj))
+                readonly = list(ilink.get_readonly_fields(request, obj))
+                prepopulated = dict(ilink.get_prepopulated_fields(request, obj))
+                link_admin_formset = LinkModelAdminFormSet(ilink, iformset,
                     fieldsets, prepopulated, readonly, model_admin=self)
-                link_admin_formset.link_m2m = link.link_m2m                
+                link_admin_formset.link_m2m = ilink.link_m2m                
                 link_admin_formset.obj_id = object_id
                 link_admin_formsets.append(link_admin_formset)
 
