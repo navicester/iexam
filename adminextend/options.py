@@ -27,6 +27,7 @@ class MyModelAdmin(admin.ModelAdmin):
 
     #add_form_template = 'admin/change_form_extend.html'  # then it will use this fle instead of "change_form.html", ModelAdmin : render_change_form
     change_form_template = 'admin/change_form_extend.html'
+    change_list_template =  'admin/change_list_extend.html'
 
     ##### for LinkForm method#####
     def get_linkform_instances(self, request):

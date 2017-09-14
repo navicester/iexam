@@ -36,6 +36,8 @@ ADMINS = (
 # Application definition
 
 INSTALLED_APPS = (
+    #'grappelli', # must before admin
+    #'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,7 +50,8 @@ INSTALLED_APPS = (
 	'engdict',
     'crispy_forms',
     'registration',
-    'adminextend'
+    'adminextend',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -81,6 +84,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 "django.core.context_processors.i18n",
+                #'django.core.context_processors.request', # add for suit
             ],
         },
     },
@@ -198,3 +202,17 @@ REGISTRATION_EMAIL_SUBJECT_PREFIX = '[Django Registration iexam]'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 SEND_ACTIVATION_EMAIL = True
 
+#ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"  
+
+'''
+SUIT_CONFIG = {
+    'ADMIN_NAME': 'HSSE',
+    # each dict represent one column on left side
+    # label mean name, app mean the app installed above, models means model used
+    
+    #'MENU': ({'label': 'engdict',
+    #          'app': 'engdict',
+    #          'models': ('word',)},
+    #         ),
+}
+'''

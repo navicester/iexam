@@ -57,8 +57,9 @@
               {% endspaceless %}
             </td>
 
+            <!-- ORDER for form_factory -->
             {% for field in inline_admin_form %}
-                {% if field.name != "ORDER" %} <!-- because I used can_order for form_factory -->
+                {% if field.name != "ORDER" %}
                 
                   <td{% if field.name %} class="field-{{ field.name }}"{% endif %}>
 

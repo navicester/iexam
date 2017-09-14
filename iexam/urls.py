@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^contact/$', 'newsletter.views.contact', name='contact'),   
     url(r'^about/$', 'iexam.views.about', name='about'),
 
+    #url(r'^grappelli/',include('grappelli.urls')),   
 
     url(r'^admin/', include(admin.site.urls)),
 

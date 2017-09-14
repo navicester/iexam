@@ -36,8 +36,8 @@ function showAdminPopup(triggeringLink, name_regexp) {
     } else {
         href  += '&_popup=1';
     }
-//    var win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
-    var win = window.open(href, name, 'height=400,width=1000,resizable=yes,scrollbars=yes');	
+//    var win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes'); 
+    var win = window.open(href, name, 'height=400,width=1000,resizable=yes,scrollbars=yes'); //modify hebinn	
     win.focus();
     return false;
 }
@@ -69,7 +69,7 @@ function showRelatedObjectPopup(triggeringLink) {
     name = id_to_windowname(name);
     var href = triggeringLink.href;
     //var win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
-	var win = window.open(href, name, 'height=400,width=1000,resizable=yes,scrollbars=yes');
+	var win = window.open(href, name, 'height=400,width=1000,resizable=yes,scrollbars=yes'); //modify hebinn
     win.focus();
     return false;
 }
@@ -134,6 +134,7 @@ function dismissDeleteRelatedObjectPopup(win, objId) {
     win.close();
 };
 
+//add hebinn
 function dismissAddAnotherPopupForLinkObj(win,newId, newRepr, array) {
     // newId and newRepr are expected to have previously been escaped by
     // django.utils.html.escape.
@@ -213,6 +214,7 @@ function modify_a(el){
     }
 
 }
+//end add
 
 // Kept for backward compatibility
 showAddAnotherPopup = showRelatedObjectPopup;
