@@ -1,12 +1,12 @@
 <!-- extend from admin\includes\fieldset.html -->
-<!-- .form-row-extend / linebreaksbr-->
+<!-- .linebreaksbr-->
 <fieldset class="module aligned {{ fieldset.classes }}">
     {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
     {% if fieldset.description %}
         <div class="description">{{ fieldset.description|safe }}</div>
     {% endif %}
     {% for line in fieldset %}
-        <div class="form-row-extend form-row
+        <div class="form-row
 		{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}
 		{% for field in line %}
 		{% if field.field.name %} field-{{ field.field.name }}{% endif %}
@@ -25,7 +25,7 @@
                     {% else %}
                         {{ field.label_tag }}
                         {% if field.is_readonly %}
-                            <p>{{ field.contents|linebreaksbr }}</p>
+                            <p>{{ field.contents }}</p>
                         {% else %}
                             {{ field.field }}
                         {% endif %}

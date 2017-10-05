@@ -1,5 +1,6 @@
 
 //document.write("<script language='javascript' src='/static/admin/js/admin/RelatedObjectLookups.js'></script>");
+//document.write("<script language='javascript' src='/static/admin/js/jquery.init.both.js'></script>");
 
 
 //Use ajax to retrieve data later
@@ -36,6 +37,7 @@ function dismissAddAnotherPopupForLinkObj(win,newId, newRepr, array) {
     var init_value = elem.value;
 //end hebin
 
+//    var parent = $("#"+name).parent();
     var parent = $("#"+name).parent();
     var next = parent.next();
     
@@ -103,4 +105,3 @@ function modify_a(el){
 
 }
 //end add
-

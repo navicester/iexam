@@ -93,7 +93,7 @@
 <script type="text/javascript">
 
 (function($) {
-  $("#{{ link_form_admin_formset.formset.prefix }}-group .tabular.inline-related tbody tr").tabularFormset({
+  $("#{{ link_form_admin_formset.formset.prefix }}-group .tabular.inline-related tbody tr").tabularFormsetLinked({
     prefix: "{{ link_form_admin_formset.formset.prefix }}",
     adminStaticPrefix: '{% static "admin/" %}',
     isMany2Many : "{{link_form_admin_formset.link_m2m}}",
@@ -101,8 +101,12 @@
     bg_addlink: "{% static "admin/img/icon_addlink.gif" %}",
     bg_changelink: "{% static "admin/img/icon_changelink.gif" %}",
     bg_searchlink: "{% static "admin/img/selector-search.gif" %}",
-    href_prefix : "/admin/{{app_name}}/{{link_form_admin_formset.formset.form.Meta.class_name|lower}}",    
-    isLink : "True",        
+    href_prefix : "/admin/{{app_name}}/{{link_form_admin_formset.formset.form.Meta.class_name|lower}}",
+    isLink : "True",    
+    {%comment%}
+    	isLink : "{{link_form_admin_formset.bLink}}",
+    	href_prefix : "/admin/{{app_name}}/{{link_form_admin_formset.opts.opts.module_name|lower}}",
+    {%endcomment%}
     addText: "{% blocktrans with link_form_admin_formset.formset.form.Meta.verbose_name|title as verbose_name %}Add another {{ link_form_admin_formset.formset.form.Meta.verbose_name }}{% endblocktrans %}",
     deleteText: "{% trans 'Remove' %}"
   });

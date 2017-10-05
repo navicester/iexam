@@ -15,7 +15,7 @@
  * See: http://www.opensource.org/licenses/bsd-license.php
  */
 (function($) {
-  $.fn.formset = function(opts) {
+  $.fn.formsetLinked = function(opts) {
     var options = $.extend({}, $.fn.formset.defaults, opts);
     var $this = $(this);
     var $parent = $this.parent();
@@ -198,7 +198,7 @@
   };
 
   /* Setup plugin defaults */
-  $.fn.formset.defaults = {
+  $.fn.formsetLinked.defaults = {
     prefix: "form",          // The form prefix for your django formset
     addText: "add another",      // Text for the add link
     deleteText: "remove",      // Text for the delete link
@@ -211,8 +211,8 @@
   };
 
 
-  // Tabular inlines ---------------------------------------------------------
-  $.fn.tabularFormset = function(options) { //this = the elem who call tabularFormset function, options = parameter in calling function
+// Tabular Linked ---------------------------------------------------------
+  $.fn.tabularFormsetLinked = function(options) { //this = the elem who call tabularFormset function, options = parameter in calling function
     var $rows = $(this);
     var alternatingRows = function(row) {
       $($rows.selector).not(".add-row").removeClass("row1 row2")
@@ -258,7 +258,7 @@
       });
     };
 
-    $rows.formset({
+    $rows.formsetLinked({
       prefix: options.prefix,
       addText: options.addText,
       formCssClass: "dynamic-" + options.prefix,
@@ -284,71 +284,5 @@
     });
 
     return $rows;
-  };
-
-  // Stacked inlines ---------------------------------------------------------
-  $.fn.stackedFormset = function(options) {
-    var $rows = $(this);
-    var updateInlineLabel = function(row) {
-      $($rows.selector).find(".inline_label").each(function(i) {
-        var count = i + 1;
-        $(this).html($(this).html().replace(/(#\d+)/g, "#" + count));
-      });
-    };
-
-    var reinitDateTimeShortCuts = function() {
-      // Reinitialize the calendar and clock widgets by force, yuck.
-      if (typeof DateTimeShortcuts != "undefined") {
-        $(".datetimeshortcuts").remove();
-        DateTimeShortcuts.init();
-      }
-    };
-
-    var updateSelectFilter = function() {
-      // If any SelectFilter widgets were added, instantiate a new instance.
-      if (typeof SelectFilter != "undefined"){
-        $(".selectfilter").each(function(index, value){
-          var namearr = value.name.split('-');
-          SelectFilter.init(value.id, namearr[namearr.length-1], false, options.adminStaticPrefix);
-        });
-        $(".selectfilterstacked").each(function(index, value){
-          var namearr = value.name.split('-');
-          SelectFilter.init(value.id, namearr[namearr.length-1], true, options.adminStaticPrefix);
-        });
-      }
-    };
-
-    var initPrepopulatedFields = function(row) {
-      row.find('.prepopulated_field').each(function() {
-        var field = $(this),
-            input = field.find('input, select, textarea'),
-            dependency_list = input.data('dependency_list') || [],
-            dependencies = [];
-        $.each(dependency_list, function(i, field_name) {
-          dependencies.push('#' + row.find('.form-row .field-' + field_name).find('input, select, textarea').attr('id'));
-        });
-        if (dependencies.length) {
-          input.prepopulate(dependencies, input.attr('maxlength'));
-        }
-      });
-    };
-
-    $rows.formset({
-      prefix: options.prefix,
-      addText: options.addText,
-      formCssClass: "dynamic-" + options.prefix,
-      deleteCssClass: "inline-deletelink",
-      deleteText: options.deleteText,
-      emptyCssClass: "empty-form",
-      removed: updateInlineLabel,
-      added: (function(row) {
-        initPrepopulatedFields(row);
-        reinitDateTimeShortCuts();
-        updateSelectFilter();
-        updateInlineLabel(row);
-      })
-    });
-
-    return $rows;
-  };
+  };  
 })(django.jQuery);

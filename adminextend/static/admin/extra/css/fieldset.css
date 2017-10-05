@@ -22,10 +22,6 @@ fieldset #id_Description{
 }
 
 
-.form-row-extend, .form-row {
-    border-bottom: none;
-}
-
 .field-Reason div textarea#id_Reason  {
     width:35%;
 }

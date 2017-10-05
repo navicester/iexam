@@ -28,8 +28,8 @@ class LinkFormAdminForm(forms.Form): #REF : InlineAdminForm
                     field = model._meta.get_field(field_name)
                     array.append(field_name)
                     text = getattr(instance, field_name)
-                    if isinstance(field,models.TextField):
-                        text = text.replace('\r\n',"brbr")
+                    #if isinstance(field,models.TextField):
+                    #    text = text.replace('\r\n',"brbr")
                     array.append(escape(text))
 
         return array

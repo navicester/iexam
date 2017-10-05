@@ -3,17 +3,13 @@
 {% load admin_modify_extend %} <!-- hebinn -->
 
 {% block extrahead %}{{ block.super }}
-<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
- <!-- add hebinn -->
-<script type="text/javascript" src={% static "admin/js/vendor/jquery/jquery.js" %}></script>
-<!-- <script type="text/javascript" src={% static "admin/js/jquery-ui.js" %}></script> -->
+<!--
+<script type="text/javascript" src={% static "js/jquery.min.js" %}></script>
+<script type="text/javascript" src={% static "admin/js/jquery.init.both.js" %}></script>
+-->
 <script type="text/javascript" src={% static "admin/js/myprj/myprj-custom.js" %}></script>
-<!-- <script type="text/javascript" src={% static "admin/extra/js/admin/RelatedObjectLookups.js" %}></script> -->
-{% include "js_handle/select_m2m.html" %}
- <!-- end add -->
- 
-{{ media }}
-{% endblock %}
+{# include "js_handle/select_m2m.html" #}
+ {% endblock %}
 
 {% block extrastyle %}{{ block.super }}
 <!-- add hebinn -->

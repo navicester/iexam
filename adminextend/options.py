@@ -39,10 +39,16 @@ class MyModelAdmin(admin.ModelAdmin):
 
     @property
     def media(self):
+        extra = '' if settings.DEBUG else '.min'
+        #js = ['
+        #      'inlines%s.js' % extra]        
         js = [
-            'admin/RelatedObjectLookups.js',
+            'js/jquery.min.js',
+            'admin/js/jquery.init.both.js',            
+            'admin/extra/js/admin/RelatedObjectLookups.js',            
+            'admin/extra/js/inlines.js',
         ]
-        return forms.Media(js=[static('admin/extra/js/%s' % url) for url in js]) + super(MyModelAdmin,self).media
+        return super(MyModelAdmin,self).media + forms.Media(js=[static('%s' % url) for url in js])
         
     ##### for LinkForm method#####
     def get_linkform_instances(self, request):
