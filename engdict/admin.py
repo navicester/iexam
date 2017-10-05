@@ -37,22 +37,32 @@ class WordExpAdmin(MyModelAdmin):
     search_fields = ['name','phonetic','explain', 'sentence']
     ordering = ['name','book','relation', 'etymon']
     list_filter = ('name','book','relation', 'etymon')
+    filter_horizontal = ['word']
+    list_editable  = ['explain']
+    list_per_page = 4
+
     self_form_link = WordExpForm
 
-    fieldsets= [
+    fieldsets= (
         (None,{
-             'fields':
+            'classes': ('filedset-left',),
+            'fields':
                 (
                  'name',
                  'phonetic',
                  'explain',
                  'sentence',
                  'book',
-                 # 'word',
+                 'word',
+                 )}),
+        (None,{
+            'classes': ('filedset-right collapse0',),
+            'fields':
+                (
                  'relation',
                  'etymon',
-                 )}),
-        ]    
+                 )}),        
+        )
 
     # readonly_fields= (
     #              'name',
@@ -104,6 +114,7 @@ class WordDictAdmin(admin.ModelAdmin):
     search_fields = ['word','explain','book']
     ordering = ['book',]
     list_filter = ('book',)
+    raw_id_fields = ['word']
     
 
 class ExampleWordInline(admin.TabularInline):

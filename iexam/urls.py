@@ -17,6 +17,8 @@ urlpatterns = [
     url(r'^accounts/', include('registration.backends.default.urls')),    
 
     url(r'^exam/', include('exam.urls')),    
+
+    url(r'^test$', 'iexam.views.test', name='test'),
 ]
 
 if settings.DEBUG:

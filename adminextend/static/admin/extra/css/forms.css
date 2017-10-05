@@ -1,0 +1,68 @@
+.link-group td.field-id input{
+	width: 15px;
+	background-color: inherit;
+    border: none;
+    text-align: right;
+    /*background-image: url(../img/nav-bg-selected.gif);*/
+}
+
+.link-group td.field-id a{
+	margin-left: 0px;
+}
+
+#link-group table {
+    width: 100%;
+}
+
+.link-group table tbody td, .link-group table tbody th {
+	word-wrap: break-word;
+	word-break: break-all;
+	white-space: normal;
+	/*overflow: auto;*/ /*hidden*/
+}
+
+
+#WordExp_set-group table tbody tr td:nth-child(1) {
+    
+}
+
+#WordExp_set-group table tbody tr th:nth-child(2) {
+
+}
+
+#WordExp_set-group table tbody tr td:nth-child(3) {
+    width:5%;
+    background-color: yellow;
+}
+
+#WordExp_set-group table tbody tr td:nth-child(4) {
+    width:5%;
+}
+
+#WordExp_set-group table tbody tr td:nth-child(5) {
+    width:5%;
+}
+
+#WordExp_set-group table tbody tr td:nth-child(6) {
+    width:50%;
+}
+
+.filedset-left{
+    float:left;
+    width: 50%;
+    margin:0;
+
+}
+
+.filedset-right{
+    float: left;
+    width: 50%;
+}
+
+.filedset-right::after{
+    clear:both;
+}
+
+.submit-row{
+    clear:both;
+}

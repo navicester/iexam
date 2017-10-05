@@ -1,0 +1,62 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls admin_static admin_modify %}
+{% load admin_modify_extend %} <!-- hebinn -->
+
+{% block extrahead %}{{ block.super }}
+<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+ <!-- add hebinn -->
+<script type="text/javascript" src={% static "admin/js/vendor/jquery/jquery.js" %}></script>
+<!-- <script type="text/javascript" src={% static "admin/js/jquery-ui.js" %}></script> -->
+<script type="text/javascript" src={% static "admin/js/myprj/myprj-custom.js" %}></script>
+<!-- <script type="text/javascript" src={% static "admin/extra/js/admin/RelatedObjectLookups.js" %}></script> -->
+{% include "js_handle/select_m2m.html" %}
+ <!-- end add -->
+ 
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+<!-- add hebinn -->
+<link rel="stylesheet" type="text/css" href="{% static "admin/extra/css/fieldset.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% static "admin/extra/css/forms.css" %}" />
+<!-- <link rel="stylesheet" type="text/css" href="{% static "admin/css/jquery-ui.css" %}" /> >-->
+<!-- <link rel="stylesheet" type="text/css" href="{% static "admin/css/style.css" %}" />-->
+<!-- end add -->
+{% endblock %}
+
+{% block field_sets %}
+{% for fieldset in adminform %}
+  {% include "admin/includes/fieldset.html" %}
+{% endfor %}
+{% endblock %}
+
+
+{% block inline_field_sets %}
+    <!-- hebinn 
+{% for inline_admin_formset in inline_admin_formsets %}
+    {% include inline_admin_formset.opts.template %}
+{% endfor %} -->
+
+{% if opts.module_name == 'word' %}
+    <div id="tabs">
+        <ul>            
+            {% ifequal opts.module_name 'word' %}
+                <li><a href="#wordexp_set-group">word exp</a></li>
+            {% endifequal %}                        
+        </ul>
+
+        <div id="tabs-inline">
+            {% include "admin/linked/inline_form.html" %}
+        </div>
+        
+    </div>
+{% else %}
+    {% include "admin/linked/inline_form.html" %}
+{% endif %}
+
+{% endblock %}
+
+
+{% block submit_buttons_bottom %}{% submit_row_extend %}{% endblock %} <!-- hebinn -->
+
+

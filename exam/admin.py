@@ -14,6 +14,12 @@ class ExamLibItemAdmin(admin.ModelAdmin):
 
 class PaperAdmin(admin.ModelAdmin):
 	list_display = ('id','name','type','__unicode__')
+	filter_horizontal = ['examlibitem']
+
+	class Media:
+	    css = {
+	        "all": ("admin/extra/css/changelists.css",)
+	    }
 
 	class Meta:
 		model = Paper

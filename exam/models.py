@@ -57,9 +57,9 @@ PaperType = (
 )
 
 class Paper(models.Model):
-	name = models.CharField(max_length=120) #pre-test	
-	type = models.CharField(max_length=45, choices=PaperType) #A,B	
-	examlibitem = models.ManyToManyField(ExamLibItem, blank=True)
+	name = models.CharField(verbose_name = "Paper Name", max_length=120) #pre-test	
+	type = models.CharField(verbose_name = "Paper Type", max_length=45, choices=PaperType) #A,B	
+	examlibitem = models.ManyToManyField(ExamLibItem, verbose_name = "Exam Library Item", blank=True)
 	total_score = models.IntegerField()
 
 	def __unicode__(self): 

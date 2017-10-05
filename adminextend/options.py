@@ -17,6 +17,14 @@ csrf_protect_m = method_decorator(csrf_protect)
 
 class MyModelAdmin(admin.ModelAdmin):
 
+    """
+    class Media:
+        css = {
+            "all": ("my_styles.css",)
+        }
+        js = ("my_code.js",)
+    """
+    
     is_add_link_allowed = False
 
     modelform_links = []
@@ -25,10 +33,17 @@ class MyModelAdmin(admin.ModelAdmin):
 
     fieldsets_fk = ()
 
-    #add_form_template = 'admin/change_form_extend.html'  # then it will use this fle instead of "change_form.html", ModelAdmin : render_change_form
-    change_form_template = 'admin/change_form_extend.html'
-    change_list_template =  'admin/change_list_extend.html'
+    #add_form_template = 'admin/extra/change_form.html'  # then it will use this fle instead of "change_form.html", ModelAdmin : render_change_form
+    change_form_template = 'admin/extra/change_form.html'
+    change_list_template =  'admin/extra/change_list.html'
 
+    @property
+    def media(self):
+        js = [
+            'admin/RelatedObjectLookups.js',
+        ]
+        return forms.Media(js=[static('admin/extra/js/%s' % url) for url in js]) + super(MyModelAdmin,self).media
+        
     ##### for LinkForm method#####
     def get_linkform_instances(self, request):
         link_instances = []
@@ -303,7 +318,7 @@ class MyModelAdmin(admin.ModelAdmin):
         from django.shortcuts import render_to_response
         from django.utils.html import escape, escapejs
 
-        return render_to_response('admin/myprj/linkback.html', 
+        return render_to_response('admin/linked/linkback.html', 
                                             {'array': self.self_form_link().get_back_array(obj), 
                                             'newId' : escape(pk_value), 
                                             'newRepr' : escape(obj),
