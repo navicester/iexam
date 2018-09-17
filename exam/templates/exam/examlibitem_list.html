@@ -117,16 +117,16 @@ tr td{
 			<table class='table'>
 				<tr>
 					<td style="width:10%;">#</a></td>
-					<td>title</td>
-					<td>score</td>
-					<td>category</td>
-					<td>source</td>
-					<td>contributor</td>
+					<td>Title</td>
+					<td>Score</td>
+					<td>Category</td>
+					<td>Source</td>
+					<td>Contributor</td>
 				</tr>		
 			{% for object in object_list %}
 				<tr>
 					<td><a href='{{ object.get_absolute_url_detailview }}'>{{object.id}}</a></td>
-					<td>{{object.title}}</td>
+					<td style="text-align: left;">{{object.title}}</td>
 					<td>{{object.score}}</td>
 					<td>{{object.category}}</td>
 					<td>{{object.source}}</td>
@@ -135,8 +135,8 @@ tr td{
 			{% endfor %}
 
 			<tr>
-				<td>Total Score</td>
-				<td colspan='5'>{{total_score}}</td>
+				<td colspan='2' style="text-align: left;">Total Score</td>
+				<td>{{total_score}}</td>
 			</tr>
 
 			</table>
@@ -144,6 +144,7 @@ tr td{
 	</div>
 {# endcomment #}
 
+{% comment %}
 	<form method="POST" action=""> {% csrf_token %}
 	    <div id="formset_itemlib">
 			{{ formset.management_form }}
@@ -185,5 +186,6 @@ tr td{
 		<hr>
 		<input type="submit" value='Save' class='btn' /><br>
 	</form>
+{% endcomment %}
 
 {% endblock %}

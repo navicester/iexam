@@ -1,17 +1,28 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
+{% block style %}
+<style type="text/css">
+.examresult thead tr th{
+    text-align: center;
+}
+</style>
+{% endblock %}
+
 
 {% block content %}
 
 <div class='col-sm-6 col-sm-offset-0 text-center'>
-	<table class='table'>
+	<table class='table examresult' style="text-align: center;">
+		<thead>
 		<tr>
 			<th>Paper ID</a></th>
 			<th>User</th>
 			<th>Paper Name</th>
 			<th>Score</th>
 		</tr>
+		</thead>
+		<tbody>
 		{% for exam_result in exam_results %}
 		<tr>
 			<td><a href='{{ exam_result.get_absolute_url }}'>{{exam_result.pk}}</a></td>
@@ -20,6 +31,7 @@
 			<td>{{exam_result.score}}</td>
 		</tr>
 		{% endfor %}
+		</tbody>
 	</table>
 </div>
 

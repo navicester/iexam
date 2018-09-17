@@ -1,6 +1,20 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
+{% comment %}
+<script src="https://cdn.bootcss.com/marked/0.3.19/marked.min.js"></script>
+<script>
+{% block jquery %}
+    $(".question-content").each(function(){    	
+        var content = $(this).text()
+        console.log(content)
+        var markedContent = marked(content)
+        $(this).html(markedContent)      
+    })
+{% endblock %}
+</script>
+{% endcomment %}
+
 {% block content %}
 
 <!-- 	<table class='table'>
@@ -35,6 +49,11 @@
 			<div class="row">
 			    <div class="col-sm-8"><label style="font-size: 20px; color:#094b86" >Question {{forloop.counter}} : {{ form.instance.title }}</label></div>
 			    <div class="col-sm-4 text-right"><label style="font-size: 20px; color:red;padding-right: 10px" >({{ form.instance.score }}')   </label></div>				
+			</div>
+			<div class="row">
+				<div class="col-sm-12 question-content">
+					{{form.instance.get_markdown}}
+				</div>
 			</div>
 			<hr style="margin-top: 10px; margin-bottom: 0px;">
 			<div>

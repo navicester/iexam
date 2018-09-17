@@ -16,11 +16,17 @@
 
 <div class="row">
 <div class='col-sm-8'>
+<h4>Examniee: {{formset.0.instance.user}}</h4>
+<hr>
 <form method="POST" action=""> {% csrf_token %}
 	{{ formset.management_form }}
 	{% for form in formset %}
-		<p style='color:red;'><a href='{{ form.instance.get_absolute_url }}'>Question : {{ form.instance.ExamLibItem.title }}</a></p>
-		Examniee: {{form.instance.user}} <br>
+		<p style='color:red;'><a href='{{ form.instance.get_absolute_url }}'>Question : {{ form.instance.examlibitem.title }} ({{ form.instance.examlibitem.score }}')</a></p>
+		<p>{{ form.instance.examlibitem.get_markdown }}</p>
+		<br>
+		<h5><b>Reference Answer:</b></h5>
+		<p>{{ form.instance.examlibitem.ref_answer }}</p>
+		<!-- Examniee: {{form.instance.user}} <br> -->
 		{{ form|crispy }}
 	{% endfor %}
 	<input type="submit" value='Update' class='btn' />

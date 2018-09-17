@@ -39,6 +39,8 @@ class ExamItemAdmin(admin.ModelAdmin):
 		model = ExamItem
 
 class ExamResultAdmin(admin.ModelAdmin):
+	list_display = ('paper','score','user',)
+	
 	inlines = [
 		ExamItemInline
 	]

@@ -25,11 +25,12 @@
 </table>
 {% endcomment %}
 
+<br>
 <div class="row">
 	<div class='col-sm-8'>
 		<form method="POST" action=""> {% csrf_token %}
 			{{ form|crispy }}
-			<input type="submit" value='Update' class='btn' />
+			<input type="submit" value='Submit' class='btn' />
 		</form>
 	</div>
 </div>
