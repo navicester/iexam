@@ -103,6 +103,30 @@ DATABASES = {
     }
 }
 
+import socket
+
+DB_SQLITE = False    
+DB_MYSQL = False
+
+if os.getenv('DJANGO_SQL_SERVER'):
+    DB_MYSQL = True
+    MEDIA_PREFIX = "DB_SQL_" + socket.gethostname()
+else:
+    DB_SQLITE = True
+    MEDIA_PREFIX = "DB_SQLITE"
+
+if DB_MYSQL:
+    DATABASES = {
+        'default': {
+            'ENGINE':   'django.db.backends.mysql',
+            'NAME':     'iexam',
+            'USER':     'root',
+            'PASSWORD': '123',
+            'HOST':     '',
+            'PORT':     '',
+        }
+    }
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
