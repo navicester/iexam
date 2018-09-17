@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
 # Create your models here.
+from django.db.models.signals import post_delete, post_save, pre_save
 
 from markdown_deux import markdown
 from django.utils.safestring import mark_safe
@@ -33,7 +34,7 @@ CategoryType = (
 )
 class ExamLibItem(models.Model):
     title = models.TextField(max_length=500)
-    content = models.TextField(max_length=500, blank=True, null=True)
+    content = models.TextField(max_length=1500, blank=True, null=True)
     type = models.CharField(max_length=45, choices=QuestionType) #Choice
     a = models.TextField(max_length=500, blank=True)
     b = models.TextField(max_length=500, blank=True)
@@ -114,6 +115,13 @@ class ExamResult(models.Model):
 
     def get_absolute_url(self):
         return reverse("examresult_examitem_list", kwargs={"pk": self.pk})
+
+def save_score(sender, instance, **kwargs):
+	instance.score = 0
+	for _ in instance.examitem_set.all():
+		instance.score += _.score_result
+
+pre_save.connect(save_score, sender=ExamResult)
 
 # class Examinee(models.Model):
 #     user = models.OneToOneField(settings.AUTH_USER_MODEL, null=True, blank=True)

@@ -27,6 +27,13 @@ class ExamResultDetailView(ListView): # should be DetailView (ExamResult) + List
         context["formset"] = ExamItemFormSet(queryset=self.get_queryset())
         return context
 
+    def get_object(self, *args, **kwargs):
+        ExamResult_pk = self.kwargs.get("pk")
+        if ExamResult_pk:
+            exam_result = get_object_or_404(ExamResult, pk=ExamResult_pk)
+            return exam_result
+        return None
+
     def get_queryset(self, *args, **kwargs):
         ExamResult_pk = self.kwargs.get("pk")
         if ExamResult_pk:
@@ -58,6 +65,10 @@ class ExamResultDetailView(ListView): # should be DetailView (ExamResult) + List
             bValid = False
 
         if bValid == True:
+            obj = self.get_object(*args, **kwargs)
+            if obj:
+                obj.save() # update score
+
             return redirect("examhome")
         else:
             
