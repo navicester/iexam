@@ -25,7 +25,7 @@
 		<p>{{ form.instance.examlibitem.get_markdown }}</p>
 		<br>
 		<h5><b>Reference Answer:</b></h5>
-		<p>{{ form.instance.examlibitem.ref_answer }}</p>
+		<p>{{ form.instance.examlibitem.get_markdown_ref_answer }}</p>
 		<!-- Examniee: {{form.instance.user}} <br> -->
 		{{ form|crispy }}
 	{% endfor %}

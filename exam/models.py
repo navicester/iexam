@@ -62,6 +62,11 @@ class ExamLibItem(models.Model):
         markdown_content = markdown(content, 'recipe')
         return mark_safe(markdown_content)
 
+    def get_markdown_ref_answer(self):
+        ref_answer = self.ref_answer
+        markdown_content = markdown(ref_answer, 'recipe')
+        return mark_safe(markdown_content)
+
 PaperType = (
     ('a', 'A'),
     ('b', 'B'),
