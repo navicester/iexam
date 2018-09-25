@@ -3,7 +3,7 @@ import os
 import sys
 
 if __name__ == "__main__":
-    root = os.path.dirname(__file__)
+    root = os.path.dirname(os.path.abspath(__file__))
     sys.path.insert(0, os.path.join(root, 'site-packages'))    
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "iexam.settings")
 
