@@ -115,6 +115,8 @@ else:
     DB_SQLITE = True
     MEDIA_PREFIX = "DB_SQLITE"
 
+DB_MYSQL = False
+
 if DB_MYSQL:
     DATABASES = {
         'default': {
