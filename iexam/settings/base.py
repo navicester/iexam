@@ -55,7 +55,6 @@ INSTALLED_APPS = (
     'crispy_forms',
     'registration',
     'adminextend',    
-    'iexam'
 )
 
 MIDDLEWARE_CLASSES = (
