@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load pagination_tags %}
+{% load i18n %}
+
+{% block content %}
+<div class='row'>
+    {% if popup_view %}
+    <div class='col-sm-12 '>
+    <br>
+    {% else %}
+    <div class='col-sm-9 '>
+    {% endif %}
+
+    <br>
+    {% include "includes/detail_panel.html" with title="Definition" %}
+
+    {% block inline_content %}
+        <hr>
+        <h1>Dictionary</h1>
+        {% for obj in object.worddict_set.all %}
+            {% include "includes/detail_panel.html" with object=obj title=obj.book fields=fields_worddict %}
+        {% endfor %}
+
+        <h1>Example</h1>
+        {% for obj in object.wordexp_set.all %}
+            {% include "includes/detail_panel.html" with object=obj title=obj.book fields=fields_wordexp %}
+        {% endfor %}        
+    {% endblock %}
+
+    {% block nav_update %}
+        {% if popup_view %}
+        {% else %}
+            {% if object.get_absolute_url_update and request.user.is_staff %}<a href="{{ object.get_absolute_url_update }}" class="btn btn-primary" >{% trans "Update" %}</a>{% endif %}
+        {% endif %}    
+    {% endblock %}
+
+    {% block nav_back %}
+        {% if back_url %}<a href="{{back_url}}" class="btn btn-default" >{% trans "Back" %}</a>{% endif %}
+        {% if popup_view %}
+        {% else %}
+            {% if object.get_absolute_url_list %}<a href="{{ object.get_absolute_url_list }}" class="btn btn-default" >{% trans "list" %}</a>{% endif %}    
+            {% if request.user.is_staff or request.user.is_superuser %}{% if object.get_absolute_url_delete %}        
+            <a class="btn btn-danger" href="{{object.get_absolute_url_delete}}"  >{% trans 'Delete' %}</a>
+            {% endif %}{% endif %}
+        {% endif %}    
+    {% endblock %}
+
+    </div>
+</div>
+
+{% endblock %}   

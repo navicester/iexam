@@ -45,12 +45,16 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    'django.contrib.flatpages',
 	'newsletter',
     'exam',
 	'engdict',
     'crispy_forms',
     'registration',
     'adminextend',
+    'breadcrumbs',
+    'plugin',
+    'pagination'
 
 )
 
@@ -65,6 +69,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',    
     'iexam.middleware.ForceDefaultLanguageMiddleware',
+    'breadcrumbs.middleware.BreadcrumbsMiddleware',
+    'pagination.middleware.PaginationMiddleware',
 )
 
 ROOT_URLCONF = 'iexam.urls'
