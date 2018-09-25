@@ -115,7 +115,8 @@ else:
     DB_SQLITE = True
     MEDIA_PREFIX = "DB_SQLITE"
 
-# DB_MYSQL = False
+if socket.gethostname() == "PC-20130414CBMY":
+    DB_MYSQL = False
 
 if DB_MYSQL:
     DATABASES = {
@@ -134,7 +135,7 @@ if DB_MYSQL:
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
