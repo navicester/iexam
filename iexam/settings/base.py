@@ -148,8 +148,8 @@ USE_TZ = True
 
 LANGUAGES = (
     ('en-us', ('English')),
-    ('zh-cn', ('中文简体')),
-    ('zh-tw', ('中文繁體')),
+    # ('zh-cn', ('中文简体')),
+    # ('zh-tw', ('中文繁體')),
 )
 '''
 ugettext = lambda s: s
