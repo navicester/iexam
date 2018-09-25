@@ -56,7 +56,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -83,7 +83,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # "django.core.context_processors.i18n",
+                "django.core.context_processors.i18n",
                 #'django.core.context_processors.request', # add for suit
             ],
         },
@@ -137,7 +137,7 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Shanghai'
 
-# USE_I18N = True
+USE_I18N = True
 
 USE_L10N = True
 
@@ -148,8 +148,8 @@ USE_TZ = True
 
 LANGUAGES = (
     ('en-us', ('English')),
-    # ('zh-cn', ('中文简体')),
-    # ('zh-tw', ('中文繁體')),
+    ('zh-cn', ('中文简体')),
+    ('zh-tw', ('中文繁體')),
 )
 '''
 ugettext = lambda s: s
