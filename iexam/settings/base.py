@@ -46,16 +46,16 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
-	'newsletter',
-    'exam',
-	'engdict',
-    'crispy_forms',
-    'registration',
-    'adminextend',
     'breadcrumbs',
     'plugin',
-    'pagination'
-
+    'pagination',
+    'newsletter',
+    'exam',
+    'engdict',
+    'crispy_forms',
+    'registration',
+    'adminextend',    
+    'iexam'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -104,8 +104,8 @@ WSGI_APPLICATION = 'iexam.wsgi.application'
 
 DATABASES = {
     'default': {
-    	    'ENGINE': 'django.db.backends.sqlite3',
-    	    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
