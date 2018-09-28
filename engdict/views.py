@@ -50,11 +50,12 @@ class WordDetailView(TableDetailViewMixin, DetailView):
             ]
         context["fields_worddict"] = [_ for _ in WordDict._meta.get_fields() if _.name in fields_worddict_name ]
         fields_wordexp_name = [
+            'word',
             'explain',
             'sentence', 
             # 'book', 
-            'relation', 
-            'etymon'
+            # 'relation', 
+            # 'etymon'
             ]
         context["fields_wordexp"] = [_ for _ in WordExp._meta.get_fields() if _.name in fields_wordexp_name]
         print context["fields_worddict"]

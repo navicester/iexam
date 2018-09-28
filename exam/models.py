@@ -96,7 +96,7 @@ class ExamItem(models.Model):
     answer = models.TextField(max_length=500, blank=True, default='')    
     # answer = models.TextField(max_length=500,verbose_name='answer')    
     exam_result = models.ForeignKey('ExamResult', null=True, blank=True, default=None)
-    score_result = models.PositiveIntegerField(blank=True, default=1)    
+    score_result = models.PositiveIntegerField(blank=True, default=0)    
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
 
     def __unicode__(self): 

@@ -17,14 +17,14 @@
 
     {% block inline_content %}
         <hr>
-        <h1>Dictionary</h1>
+        <h2>Dictionary</h2>
         {% for obj in object.worddict_set.all %}
             {% include "includes/detail_panel.html" with object=obj title=obj.book fields=fields_worddict %}
         {% endfor %}
 
-        <h1>Example</h1>
+        <h2>Example</h2>
         {% for obj in object.wordexp_set.all %}
-            {% include "includes/detail_panel.html" with object=obj title=obj.book fields=fields_wordexp %}
+            {% include "includes/detail_panel.html" with object=obj title=obj.book fields=fields_wordexp notitle=True %}
         {% endfor %}        
     {% endblock %}
 
