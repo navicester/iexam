@@ -29,6 +29,7 @@ BOOK_NAME = (
     ('20000', '20000'),
     ('22000', '22000'),
     ('100days', '100days'),
+    ('IELTS', 'IELTS'),
     ('YOUDAO', 'YOUDAO'),
 )
 
@@ -56,6 +57,7 @@ class WordExp(models.Model):
 
 DICT = (
     ('youdao', 'YOUDAO'),
+    ('kingsoft', 'kingsoft'),
 )
 class WordDict(models.Model):
     word =  models.ForeignKey(Word)
