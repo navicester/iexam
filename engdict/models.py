@@ -30,6 +30,7 @@ BOOK_NAME = (
     ('22000', '22000'),
     ('100days', '100days'),
     ('IELTS', 'IELTS'),
+    ('BSWX', 'BSWX'),
     ('YOUDAO', 'YOUDAO'),
 )
 
