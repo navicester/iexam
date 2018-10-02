@@ -26,6 +26,9 @@ class Word(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
+    class Meta:
+        ordering = 'name',
+
     def __unicode__(self): 
         return self.name
 
@@ -35,6 +38,23 @@ class Word(models.Model):
         except:
             return '#'
 
+    def get_next_by_name(self):
+        field = self.__class__._meta.get_field('name')
+        return self._get_next_or_previous_by_FIELD(field, is_next=True)
+        try:
+            return self._get_next_or_previous_by_FIELD('name', is_next=True)
+        except Word.DoesNotExist:
+            return None
+
+    def get_previous_by_name(self):
+        field = self.__class__._meta.get_field('name')
+        return self._get_next_or_previous_by_FIELD(field, is_next=False)
+        return self._get_next_or_previous_by_FIELD('name', is_next=False)
+        try:
+            return self._get_next_or_previous_by_FIELD('name', is_next=False)
+        except Word.DoesNotExist:
+            return None
+
 BOOK_NAME = (
     ('nce3', 'NCE3'),
     ('nce4', 'NCE4'),
@@ -42,6 +62,7 @@ BOOK_NAME = (
     ('voa', 'VOA'),
     ('cctvnews', 'CCTVNEWS'),
     ('mail', 'MAIL'),
+    ('life', 'LIFE'),
     ('20000', '20000'),
     ('22000', '22000'),
     ('100days', '100days'),

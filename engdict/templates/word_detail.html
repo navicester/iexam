@@ -49,4 +49,12 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-6">
+        {% if object.get_previous_by_name %}<a href="{{ object.get_previous_by_name.get_absolute_url }}" title="{% trans 'previous' %}">&laquo; {{ object.get_previous_by_name.name }}</a>{% endif %}
+    </div>
+    <div class="col-md-6">
+        {% if object.get_next_by_name %}<a href="{{ object.get_next_by_name.get_absolute_url }}" title="{% trans "next" %}">&raquo; {{ object.get_next_by_name.name }}</a>{% endif %}
+    </div>
+</div>
 {% endblock %}   

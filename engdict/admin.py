@@ -64,8 +64,8 @@ class TagAdmin(MyModelAdmin):
         model = Tag
 
 class WordExpAdmin(MyModelAdmin):
-    list_display = ['name','phonetic','explain', 'sentence']
-    search_fields = ['name','phonetic','explain', 'sentence']
+    list_display = ['name','phonetic','explain', 'sentence', 'book']
+    search_fields = ['name','phonetic','explain', 'sentence',]
     ordering = ['name','book','relation', 'etymon']
     list_filter = ('book','relation', 'etymon')
     filter_horizontal = ['word']

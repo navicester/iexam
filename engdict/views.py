@@ -22,6 +22,15 @@ from .models import *
 class WordListView(TableListViewMixin, ListView):
     model = Word
 
+    fields_exclude = [
+        'in_plan',
+        'timestamp',
+        'updated'
+        ]
+
+    def get_queryset(self, *args, **kwargs):
+        return super(WordListView, self).get_queryset().filter(in_plan=True)
+
     # fields = [
     #     'name',
     #     'phonetic',
