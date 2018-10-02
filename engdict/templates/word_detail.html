@@ -24,7 +24,7 @@
 
         <h2>Example</h2>
         {% for obj in object.wordexp_set.all %}
-            {% include "includes/detail_panel.html" with object=obj title=obj.book fields=fields_wordexp notitle=True %}
+            {% include "includes/detail_panel.html" with object=obj title=obj.name fields=fields_wordexp notitle=True %}
         {% endfor %}        
     {% endblock %}
 
