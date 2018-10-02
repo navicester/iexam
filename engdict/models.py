@@ -18,7 +18,7 @@ class Tag(models.Model):
 # Create your models here.
 class Word(models.Model):
     name =  models.CharField(max_length=45)
-    phonetic = models.CharField(max_length=45)
+    phonetic = models.CharField(max_length=45, null=True, blank=True)
     explain = models.TextField(max_length=120,blank=True, null=True, default = '')
     progress = models.DecimalField(max_digits=50, decimal_places=0, default = 0 )
     in_plan = models.BooleanField(default=False)
@@ -82,7 +82,7 @@ RELATION = (
 
 class WordExp(models.Model):
     name =  models.CharField(max_length=45)
-    phonetic = models.CharField(max_length=45)
+    phonetic = models.CharField(max_length=45, null=True, blank=True)
     explain = models.CharField(max_length=120, default = '')
     sentence = models.TextField(blank=True, null=True)
     book = models.CharField(max_length=120, choices=BOOK_NAME)
