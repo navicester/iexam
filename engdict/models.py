@@ -1,11 +1,27 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+
+class Category(models.Model):
+    name = models.CharField(max_length=45)
+    word = models.ManyToManyField('Word', blank=True, null=True)
+
+    def __unicode__(self): 
+        return self.name
+
+class Tag(models.Model):
+    name = models.CharField(max_length=45)
+    word = models.ManyToManyField('Word', blank=True, null=True)
+
+    def __unicode__(self): 
+        return self.name
+
 # Create your models here.
 class Word(models.Model):
     name =  models.CharField(max_length=45)
     phonetic = models.CharField(max_length=45)
     explain = models.TextField(max_length=120,blank=True, null=True, default = '')
     progress = models.DecimalField(max_digits=50, decimal_places=0, default = 0 )
+    in_plan = models.BooleanField(default=False)
     # members = models.ManyToManyField('Word', through='Membership')
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)

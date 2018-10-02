@@ -4,6 +4,7 @@ from django.contrib import admin
 from .models import *
 
 from .forms import *
+
 from adminextend.options import MyModelAdmin, LinkFormAdmin
 
 from django.contrib.admin.options import *
@@ -23,6 +24,24 @@ class WordExpLinkFormAdmin(LinkFormAdmin):
     link_m2m = True
     link_init_search = True
 
+class CategoryLinkFormAdmin(LinkFormAdmin):
+
+    extra = 0
+    
+    link_form = CategoryForm
+    link_model = Category
+    link_m2m = True
+    link_init_search = True
+
+class TagLinkFormAdmin(LinkFormAdmin):
+
+    extra = 0
+    
+    link_form = TagForm
+    link_model = Tag
+    link_m2m = True
+    link_init_search = True
+
 class WordDictFormAdmin(LinkFormAdmin):
 
     extra = 0
@@ -31,7 +50,19 @@ class WordDictFormAdmin(LinkFormAdmin):
     link_model = WordDict
     link_m2m = False
     link_init_search = True
-    
+
+class CategoryAdmin(MyModelAdmin):
+    filter_horizontal = ['word']
+
+    class Meta:    
+        model = Category
+
+class TagAdmin(MyModelAdmin):
+    filter_vertical = ['word']
+
+    class Meta:    
+        model = Tag
+
 class WordExpAdmin(MyModelAdmin):
     list_display = ['name','phonetic','explain', 'sentence']
     search_fields = ['name','phonetic','explain', 'sentence']
@@ -78,13 +109,24 @@ class WordExpAdmin(MyModelAdmin):
         model = WordExp
 
 class WordAdmin(MyModelAdmin):
-    list_display = ['name','phonetic', 'progress']
+    list_display = ['name','phonetic', 'progress','explain','in_plan']
+
+    search_fields = ['name','phonetic' ,'explain']
+    ordering = ['name',]
+    list_filter = ('in_plan',)
+    # filter_horizontal = ['tag']
+    # list_editable  = ['explain']
+
     inlines = [
         WordDictInline,
     ]
 
 #    form_links = [WordExpLinkFormAdmin, WordDictFormAdmin]
-    form_links = [ WordExpLinkFormAdmin]
+    form_links = [ 
+        WordExpLinkFormAdmin,
+        CategoryLinkFormAdmin,
+        TagLinkFormAdmin,
+    ]
 
     class Meta:
         model = Word
@@ -129,4 +171,6 @@ class MembershipAdmin(admin.ModelAdmin):
 admin.site.register(Word, WordAdmin)
 admin.site.register(WordExp, WordExpAdmin)
 admin.site.register(WordDict, WordDictAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(Tag, TagAdmin)
 # admin.site.register(Membership, MembershipAdmin)

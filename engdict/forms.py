@@ -105,3 +105,52 @@ class WordDictForm(LinkFormAdminForm):
 
     def is_valid(self):
         return super(WordDictForm, self).is_valid()           
+
+
+class CategoryForm(LinkFormAdminForm):
+    class Meta:
+        verbose_name = 'Category'
+        class_name = "Category"
+
+        back_field = [
+            "name",
+        ]
+
+        
+    # these declared are base field
+        
+    id = forms.CharField(
+        max_length=11, 
+        label = "id", 
+        widget = forms.TextInput(
+            attrs={
+                'readonly':'readonly',
+                'disable':True, 
+                'hidden':False
+            })) 
+
+    name = forms.CharField(
+        max_length=11, 
+        label = "name", 
+        required=False, 
+        widget = forms.TextInput(
+            attrs={
+                'readonly':'readonly',
+                'disable':True
+            }))    
+    
+    def __unicode__(self):
+        return u'%s %s' % (self.id, self.name)  
+
+    def is_valid(self):
+        return super(CategoryForm, self).is_valid()            
+
+
+class TagForm(CategoryForm):
+    class Meta:
+        verbose_name = 'Tag'
+        class_name = "Tag"
+
+        back_field = [
+            "name",
+        ]
