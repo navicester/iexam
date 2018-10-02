@@ -36,8 +36,8 @@ class WordExpAdmin(MyModelAdmin):
     list_display = ['name','phonetic','explain', 'sentence']
     search_fields = ['name','phonetic','explain', 'sentence']
     ordering = ['name','book','relation', 'etymon']
-    list_filter = ('name','book','relation', 'etymon')
-    filter_horizontal = ['book']
+    list_filter = ('book','relation', 'etymon')
+    filter_horizontal = ['word']
     list_editable  = ['explain']
     list_per_page = 20
 
