@@ -48,7 +48,7 @@
             {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=True %}
         {% endfor %}
         <h2>Word Examples</h2>
-        {% for obj in object.word.all %}
+        {% for obj in object.wordexp.all %}
             {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp notitle=True %}
         {% endfor %}
     {% endblock %}
