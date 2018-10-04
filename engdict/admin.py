@@ -157,7 +157,7 @@ class WordAdmin(MyModelAdmin):
     search_fields = ['name','phonetic' ,'explain']
     ordering = ['name',]
     list_filter = ('in_plan',)
-    filter_horizontal = ['linked_word']
+    # filter_horizontal = ['linked_word']
     # list_editable  = ['explain']
 
     inlines = [
