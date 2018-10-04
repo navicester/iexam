@@ -23,6 +23,7 @@ class Word(models.Model):
     progress = models.DecimalField(max_digits=50, decimal_places=0, default = 0 )
     in_plan = models.BooleanField(default=False)
     # members = models.ManyToManyField('Word', through='Membership')
+    linked_word = models.ManyToManyField('Word', related_name='related_word',  blank=True)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
@@ -83,12 +84,21 @@ class WordExp(models.Model):
     explain = models.CharField(max_length=120, default = '')
     sentence = models.TextField(blank=True, null=True)
     book = models.CharField(max_length=120, choices=BOOK_NAME)
-    word = models.ManyToManyField(Word, blank=True)
+    etyma = models.ManyToManyField(Word, related_name='etyma', blank=True)
+    resemblance = models.ManyToManyField(Word, related_name='resemblance', blank=True)
+    semantic = models.ManyToManyField(Word, related_name='semantic', blank=True)
+    antonymy = models.ManyToManyField(Word, related_name='antonymy', blank=True)
+    related = models.ManyToManyField(Word, related_name='related', blank=True)
+    word = models.ManyToManyField(Word, related_name='word', blank=True)
     relation = models.CharField(max_length=120, default='Self', choices=RELATION)
     etymon = models.CharField(max_length=45, null=True, blank=True)
 
     def __unicode__(self): 
         return self.explain
+
+    @property
+    def exp(self):
+        return "{} {}".format(self.name, self.explain)
 
 DICT = (
     ('youdao', 'YOUDAO'),

@@ -14,6 +14,25 @@ class WordDictInline(admin.TabularInline):
     model = WordDict
     extra = 0
 
+class WordDictLinkFormAdmin(LinkFormAdmin):
+
+    extra = 0
+    
+    link_form = WordDictForm
+    link_model = WordDict
+    link_m2m = False
+    link_init_search = True
+
+class WordLinkFormAdmin(LinkFormAdmin):
+
+    extra = 0
+    
+    link_form = WordForm
+    link_model = Word
+    link_m2m = True
+    link_init_search = True
+
+    related_name='related_word'
 
 class WordExpLinkFormAdmin(LinkFormAdmin):
 
@@ -23,6 +42,31 @@ class WordExpLinkFormAdmin(LinkFormAdmin):
     link_model = WordExp
     link_m2m = True
     link_init_search = True
+
+    related_name='word' # if have severl same m2m, related_name must be specified, otherwise _get_related_field_name will fail
+
+
+
+class WordExpEtymaLinkFormAdmin(WordExpLinkFormAdmin):
+    related_name = 'etyma'
+    link_form = WordExpEtymaForm
+
+
+class WordExpResemblanceLinkFormAdmin(WordExpLinkFormAdmin):
+    related_name = 'resemblance'
+    link_form = WordExpResemblanceForm
+
+class WordExpSemanticLinkFormAdmin(WordExpLinkFormAdmin):
+    related_name = 'semantic'
+    link_form = WordExpSemanticForm
+
+class WordExpAntonymyLinkFormAdmin(WordExpLinkFormAdmin):
+    related_name = 'antonymy'
+    link_form = WordExpAntonymyForm
+
+class WordExpRelatedLinkFormAdmin(WordExpLinkFormAdmin):
+    related_name = 'related'
+    link_form = WordExpRelatedForm
 
 class CategoryLinkFormAdmin(LinkFormAdmin):
 
@@ -114,7 +158,7 @@ class WordAdmin(MyModelAdmin):
     search_fields = ['name','phonetic' ,'explain']
     ordering = ['name',]
     list_filter = ('in_plan',)
-    # filter_horizontal = ['tag']
+    filter_horizontal = ['linked_word']
     # list_editable  = ['explain']
 
     inlines = [
@@ -124,8 +168,16 @@ class WordAdmin(MyModelAdmin):
 #    form_links = [WordExpLinkFormAdmin, WordDictFormAdmin]
     form_links = [ 
         WordExpLinkFormAdmin,
+        WordExpEtymaLinkFormAdmin,
+        WordExpResemblanceLinkFormAdmin,
+        WordExpSemanticLinkFormAdmin,
+        WordExpAntonymyLinkFormAdmin,
+        WordExpRelatedLinkFormAdmin,
         CategoryLinkFormAdmin,
         TagLinkFormAdmin,
+        WordLinkFormAdmin,
+
+        # WordDictLinkFormAdmin
     ]
 
     class Meta:

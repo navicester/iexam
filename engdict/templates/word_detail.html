@@ -13,7 +13,7 @@
     {% endif %}
 
     <br>
-    {% include "includes/detail_panel.html" with title="Definition" %}
+    {% include "includes/detail_panel.html" with title=object.name %}
 
     {% block inline_content %}
         <hr>
@@ -22,10 +22,35 @@
             {% include "includes/detail_panel.html" with object=obj title=obj.book fields=fields_worddict %}
         {% endfor %}
 
-        <h2>Example</h2>
-        {% for obj in object.wordexp_set.all %}
-            {% include "includes/detail_panel.html" with object=obj title=obj.name fields=fields_wordexp notitle=True %}
-        {% endfor %}        
+        <h2>Related Word</h2>
+        {% for obj in object.linked_word.all %}
+            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_word notitle=True %}
+        {% endfor %}
+
+        <h2>Etyma</h2>
+        {% for obj in object.etyma.all %}
+            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=True %}
+        {% endfor %}
+        <h2>Resemblance</h2>
+        {% for obj in object.resemblance.all %}
+            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=True %}
+        {% endfor %}
+        <h2>Semantic</h2>
+        {% for obj in object.semantic.all %}
+            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=True %}
+        {% endfor %}
+        <h2>Antonymy</h2>
+        {% for obj in object.antonymy.all %}
+            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=True %}
+        {% endfor %}
+        <h2>Related</h2>
+        {% for obj in object.related.all %}
+            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=True %}
+        {% endfor %}
+        <h2>Word Examples</h2>
+        {% for obj in object.word.all %}
+            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp notitle=True %}
+        {% endfor %}
     {% endblock %}
 
     {% block nav_update %}
@@ -50,10 +75,10 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-6">
+    <div class="col-xs-6">
         {% if object.get_previous_by_name %}<a href="{{ object.get_previous_by_name.get_absolute_url }}" title="{% trans 'previous' %}">&laquo; {{ object.get_previous_by_name.name }}</a>{% endif %}
     </div>
-    <div class="col-sm-6">
+    <div class="col-xs-6">
         {% if object.get_next_by_name %}<a href="{{ object.get_next_by_name.get_absolute_url }}" title="{% trans "next" %}">&raquo; {{ object.get_next_by_name.name }}</a>{% endif %}
     </div>
 </div>

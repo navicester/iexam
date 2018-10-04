@@ -54,6 +54,31 @@ class WordExpForm(LinkFormAdminForm):
         return array
 '''
 
+class WordExpEtymaForm(WordExpForm):
+    class Meta:
+        verbose_name = 'Etyma'
+        class_name = "WordExp"
+
+class WordExpResemblanceForm(WordExpForm):
+    class Meta:
+        verbose_name = 'Resemblance'
+        class_name = "WordExp"
+
+class WordExpSemanticForm(WordExpForm):
+    class Meta:
+        verbose_name = 'Semantic'
+        class_name = "WordExp"
+
+class WordExpAntonymyForm(WordExpForm):
+    class Meta:
+        verbose_name = 'Antonymy'
+        class_name = "WordExp"  
+
+class WordExpRelatedForm(WordExpForm):
+    class Meta:
+        verbose_name = 'Related'
+        class_name = "WordExp"
+ 
 
 class WordExpModelForm(ModelForm):
     class Meta:
@@ -104,8 +129,42 @@ class WordDictForm(LinkFormAdminForm):
         return u'%s %s' % (self.id, self.explain)  
 
     def is_valid(self):
-        return super(WordDictForm, self).is_valid()           
+        return super(WordDictForm, self).is_valid()        
 
+
+class WordForm(LinkFormAdminForm):
+    class Meta:
+        verbose_name = 'Word'
+        class_name = "Word"
+
+        back_field = [
+            "name",
+            "explain",
+            "book"
+        ]
+        
+    # these declared are base field
+        
+    id = forms.CharField(max_length=11, label = "id", widget = forms.TextInput(attrs={'readonly':'readonly','disable':True, 'hidden':False})) 
+    name = forms.CharField(
+        max_length=11, 
+        label = "name", 
+        required=False, 
+        widget = forms.TextInput(
+            attrs={
+                'readonly':'readonly',
+                'disable':True
+            }))  
+    phonetic = forms.CharField(max_length=11, label = "phonetic", required=False, widget = 
+                             forms.TextInput(attrs={'readonly':'readonly','disable':True}))      
+    explain = forms.CharField(max_length=50, label = "explain", required=False, widget = 
+                             forms.TextInput(attrs={'readonly':'readonly','disable':True}))  
+
+    def __unicode__(self):
+        return u'%s %s' % (self.id, self.explain)  
+
+    def is_valid(self):
+        return super(WordForm, self).is_valid()  
 
 class CategoryForm(LinkFormAdminForm):
     class Meta:

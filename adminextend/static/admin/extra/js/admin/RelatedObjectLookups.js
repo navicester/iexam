@@ -65,8 +65,10 @@ function dismissAddAnotherPopupForLinkObj(win,newId, newRepr, array) {
                         el.value = array[i+1];
                     }
 					
+                    // var reg=new RegExp("brbr","g");
+                    // next.text(array[i+1].replace(reg,"\r\n<br>"))
                     var reg=new RegExp("brbr","g");
-                    next.text(array[i+1].replace(reg,"\r\n<br>"))
+                    next.text(array[i+1].replace(reg,"\r\n"))                    
                     next = next.next();
                 }
                 if("" == init_value){

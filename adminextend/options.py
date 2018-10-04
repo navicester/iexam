@@ -59,6 +59,15 @@ class MyModelAdmin(admin.ModelAdmin):
         return link_instances
 
 
+    def get_linkform_related_names(self, request):
+        related_names = []
+        for form_link in self.form_links:
+            related_name= None
+            if hasattr(form_link, 'related_name'):
+                related_name = form_link.related_name
+            related_names.append(related_name)
+        return related_names
+
     def get_linkform_forms(self, request):
         form_links = []
         for form_link in self.form_links:
@@ -102,7 +111,11 @@ class MyModelAdmin(admin.ModelAdmin):
         return linkFromset
         '''
 
-    def _get_related_field_name(self, fk_model, link_model):
+    def _get_related_field_name(self, fk_model, link_model, **kwargs):
+        related_field_name = kwargs.get('related_name', None)
+        if related_field_name:
+            return related_field_name
+
         link_field_name = None        
         for fieldname in link_model._meta.get_all_field_names():
             field = link_model._meta.get_field(fieldname)
@@ -114,10 +127,12 @@ class MyModelAdmin(admin.ModelAdmin):
                         break
         return link_field_name
 
-    def filter_objects(self, fk_model, link_model, fk_obj):
+    def filter_objects(self, fk_model, link_model, fk_obj, **kwargs):
         link_objs = None
 
-        link_field_name = self._get_related_field_name( fk_model, link_model)
+        link_field_name = self._get_related_field_name( fk_model, link_model, **kwargs)
+
+        print ("link_field_name", link_field_name)
 
         if link_field_name:
             link_objs = link_model.objects.filter(**{link_field_name:fk_obj})
@@ -131,10 +146,10 @@ class MyModelAdmin(admin.ModelAdmin):
             r_dict.update({field_name:getattr(instance,field_name,None)})
         return r_dict
 
-    def get_linkform_queryset_from_model(self, obj, link_model):
+    def get_linkform_queryset_from_model(self, obj, link_model, **kwargs):
 
         fk_model = self.model        
-        return self.filter_objects(fk_model, link_model, obj)
+        return self.filter_objects(fk_model, link_model, obj, **kwargs)
     
     def get_linkform_formset_initial(self, request, object_id):
 
@@ -142,8 +157,12 @@ class MyModelAdmin(admin.ModelAdmin):
 
         initials = []
 
-        for link_form, link_model in zip(self.get_linkform_forms(request), self.get_linkform_models(request)):           
-            link_objs = self.get_linkform_queryset_from_model(obj, link_model)
+        for link_form, related_name, link_model in zip(
+                self.get_linkform_forms(request), 
+                self.get_linkform_related_names(request), 
+                self.get_linkform_models(request)):
+
+            link_objs = self.get_linkform_queryset_from_model(obj, link_model, related_name=related_name)
             initial = [] #list
             if link_objs != None:
                 for link_obj in link_objs:
@@ -153,7 +172,7 @@ class MyModelAdmin(admin.ModelAdmin):
                         form[field] = items[field]
                     initial.append(form)
             initials.append(initial)
-            
+        
         return initials
 
     def sort_linkform_formset(self, request, formset, is_add_view = False):
@@ -189,9 +208,9 @@ class MyModelAdmin(admin.ModelAdmin):
             yield link.get_formset(request, obj)
 
     ############################
-    def _save_obj(self, fk_model, link_obj, link_m2m, obj): # this function can change to global
+    def _save_obj(self, fk_model, link_obj, link_m2m, obj, **kwargs): # this function can change to global
 
-        link_field_name = self._get_related_field_name(fk_model, link_obj.__class__)
+        link_field_name = self._get_related_field_name(fk_model, link_obj.__class__, **kwargs)
         if link_m2m == False:
             setattr(link_obj, link_field_name, obj)
         else:
@@ -208,10 +227,10 @@ class MyModelAdmin(admin.ModelAdmin):
             
         link_obj.save()
         
-    def _delete_empty_objs(self, fk_model, link_obj, link_m2m):
+    def _delete_empty_objs(self, fk_model, link_obj, link_m2m, **kwargs):
 
         if link_m2m == False:
-            self.filter_objects(fk_model, link_obj, None).delete()
+            self.filter_objects(fk_model, link_obj, None, **kwargs).delete()
             
             '''
             if fk_model == lab_device_item:                    
@@ -222,14 +241,19 @@ class MyModelAdmin(admin.ModelAdmin):
     fk_model :  foreignkey or m2m model
     link_m2m : whether this is m2m relationship
     '''
-    def _delete_obj(self, fk_model, link_obj, link_m2m, obj):
+    def _delete_obj(self, fk_model, link_obj, link_m2m, obj, **kwargs):
+        related_name = kwargs.get('related_name', None)        
 
         if link_m2m == True:
             #fk = getattr(link_obj, fk_model._meta.many_to_many)
-            fk = getattr(link_obj, fk_model._meta.object_name.lower())
+            if not related_name:
+                related_name = fk_model._meta.object_name.lower()            
+            fk = getattr(link_obj, related_name)
             fk.remove(obj)
         else:
-            setattr(link_obj, fk_model._meta.object_name + "_id", None)
+            if not related_name:
+                related_name = fk_model._meta.object_name + "_id"
+            setattr(link_obj, related_name, None)
             link_obj.save()
 
         '''
@@ -255,22 +279,30 @@ class MyModelAdmin(admin.ModelAdmin):
             
             if self.form_links != []:
                 link_models = copy.deepcopy(self.get_linkform_models(request))
-                for linkobj, link_m2m in zip(link_models, self.get_linkform_m2ms(request)):
-                    self._delete_empty_objs(self.model, linkobj, link_m2m)
+                for linkobj, link_m2m, related_name in zip(
+                        link_models, 
+                        self.get_linkform_m2ms(request), 
+                        self.get_linkform_related_names(request)):
+                    self._delete_empty_objs(self.model, linkobj, link_m2m, related_name=related_name)
                     
             if self.modelform_links != []:
                 link_models = []
                 for link in self.modelform_links:
                     link_models.append(link.model)
-                for linkobj in link_models:
-                    self._delete_empty_objs(self.model, linkobj, False)
+                for linkobj, related_name in zip(link_models, self.get_linkform_related_names(request)):
+                    self._delete_empty_objs(self.model, linkobj, False, related_name=related_name)
 
     
     # should do this in subcass to help extend, write here for simpty !!!
     def _save_link_obj(self, request, obj, link_key = 'id'):
         if self.form_links != []:
             prefixes = {}
-            for link_form, link_model, link_formset, link_m2m in zip(self.get_linkform_forms(request), self.get_linkform_models(request), self.get_linkform_formsets(request), self.get_linkform_m2ms(request)):
+            for related_name, link_form, link_model, link_formset, link_m2m in (zip(
+                    self.get_linkform_related_names(request),
+                    self.get_linkform_forms(request), 
+                    self.get_linkform_models(request), 
+                    self.get_linkform_formsets(request), 
+                    self.get_linkform_m2ms(request))):
                 #prefix = LinkObjFormSet.get_default_prefix()
                 prefix = link_form.Meta.class_name + "_set"                
                 prefixes[prefix] = prefixes.get(prefix, 0) + 1
@@ -284,10 +316,10 @@ class MyModelAdmin(admin.ModelAdmin):
                         if link_obj_id.isdigit():
                             link_obj = link_model.objects.get(pk=link_obj_id)                            
                             if formset._should_delete_form(form):
-                                self._delete_obj(self.model, link_obj, link_m2m, obj)
+                                self._delete_obj(self.model, link_obj, link_m2m, obj, related_name=related_name)
                                 self.log_change(request, obj, '"'+force_text(link_obj)+'"' + ' deleted from  ' + '"' + force_text(obj) + '"')
                             else:
-                                self._save_obj(self.model, link_obj, link_m2m, obj)
+                                self._save_obj(self.model, link_obj, link_m2m, obj, related_name=related_name)
                                 self.log_change(request, obj, '"'+force_text(link_obj)+'"' + ' add or modified in  ' + '"' + force_text(obj) + '"')
                                 
         if self.modelform_links != []:  #only support ForeignKey inline
@@ -459,7 +491,12 @@ class MyModelAdmin(admin.ModelAdmin):
 
         if self.form_links != []:
             prefixes = {}
-            for link_instance, link_form, link_m2m, link_initsearch, link_formset in zip(self.get_linkform_instances(request), self.get_linkform_forms(request), self.get_linkform_m2ms(request), self.get_linkform_initsearchs(request), self.get_linkform_formsets(request)):   
+            for link_instance, link_form, link_m2m, link_initsearch, link_formset in zip(
+                    self.get_linkform_instances(request), 
+                    self.get_linkform_forms(request), 
+                    self.get_linkform_m2ms(request), 
+                    self.get_linkform_initsearchs(request), 
+                    self.get_linkform_formsets(request)):   
                 #prefix = link_formset.get_default_prefix()
                 prefix = link_form.Meta.class_name + "_set"
                 prefixes[prefix] = prefixes.get(prefix, 0) + 1
@@ -568,7 +605,13 @@ class MyModelAdmin(admin.ModelAdmin):
             link_admin_obj_formsets = []
 
             prefixes = {}
-            for link_initial, link_instance, link_form, link_formset, link_m2m, link_initsearch in zip(initial, self.get_linkform_instances(request), self.get_linkform_forms(request),self.get_linkform_formsets(request), self.get_linkform_m2ms(request), self.get_linkform_initsearchs(request)): 
+            for link_initial, link_instance, link_form, link_formset, link_m2m, link_initsearch in zip(
+                    initial, 
+                    self.get_linkform_instances(request), 
+                    self.get_linkform_forms(request),
+                    self.get_linkform_formsets(request), 
+                    self.get_linkform_m2ms(request), 
+                    self.get_linkform_initsearchs(request)): 
                 #prefix = link_formset.get_default_prefix()
                 prefix = link_form.Meta.class_name + "_set"                
                 prefixes[prefix] = prefixes.get(prefix, 0) + 1
@@ -680,7 +723,8 @@ class LinkFormAdmin(object):
     link_form = None
     link_model = None
     link_m2m = False
-    link_init_search = False    
+    link_init_search = False
+    related_name = None
     
     extra = 0
     max_num = None
