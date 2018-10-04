@@ -51,7 +51,6 @@ class WordExpEtymaLinkFormAdmin(WordExpLinkFormAdmin):
     related_name = 'etyma'
     link_form = WordExpEtymaForm
 
-
 class WordExpResemblanceLinkFormAdmin(WordExpLinkFormAdmin):
     related_name = 'resemblance'
     link_form = WordExpResemblanceForm

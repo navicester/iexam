@@ -89,7 +89,7 @@ class WordExp(models.Model):
     semantic = models.ManyToManyField(Word, related_name='semantic', blank=True)
     antonymy = models.ManyToManyField(Word, related_name='antonymy', blank=True)
     related = models.ManyToManyField(Word, related_name='related', blank=True)
-    word = models.ManyToManyField(Word, related_name='word', blank=True)
+    word = models.ManyToManyField(Word, related_name='wordexp', blank=True)
     relation = models.CharField(max_length=120, default='Self', choices=RELATION)
     etymon = models.CharField(max_length=45, null=True, blank=True)
 
