@@ -62,36 +62,37 @@ class Word(models.Model):
 def save_words(instance, name):
     updated = [False, False]
     ever_updated = False
-    word_set = getattr(instance, name).all()
-    for _ in word_set:
-        word = Word.objects.filter(name=_.name).first()
-        if word:
-            if not (instance in word.linked_word.all()) and not (instance is word):
-                print ">>>>>>> {} add {}".format(word.name, instance.name)
-                updated[0] = True
-                ever_updated = True
-                word.linked_word.add(instance) # this will trigger another signal   
-            else:
-                print "a ha 1, word.linked_word.all is {}".format(word.linked_word.all())
+    if hasattr(instance, name):
+        word_set = getattr(instance, name).all()
+        for _ in word_set:
+            word = Word.objects.filter(name=_.name).first()
+            if word:
+                if not (instance in word.linked_word.all()) and not (instance is word):
+                    print ">>>>>>> {} add {}".format(word.name, instance.name)
+                    updated[0] = True
+                    ever_updated = True
+                    word.linked_word.add(instance) # this will trigger another signal   
+                else:
+                    print "a ha 1, word.linked_word.all is {}".format(word.linked_word.all())
 
-            # this doesn't work? add m2m_changed to complete this reverse action
-            if not (word in instance.linked_word.all()) and not (instance is word):
-                print "<<<<<<<< {} add {}".format(instance.name, word.name)
-                updated[1] = True
-                instance.linked_word.add(word)
-                ever_updated = True                      
-            else:
-                print "a ha 2, instance.linked_word.all is {}".format(instance.linked_word.all())
+                # this doesn't work? add m2m_changed to complete this reverse action
+                if not (word in instance.linked_word.all()) and not (instance is word):
+                    print "<<<<<<<< {} add {}".format(instance.name, word.name)
+                    updated[1] = True
+                    instance.linked_word.add(word)
+                    ever_updated = True                      
+                else:
+                    print "a ha 2, instance.linked_word.all is {}".format(instance.linked_word.all())
 
-        if word and updated[0] or updated[1]:
-            print "^^^^^^ before save word"
-            word.save()
-            print "^^^^^^ end save word" 
+            if word and updated[0] or updated[1]:
+                print "^^^^^^ before save word"
+                word.save()
+                print "^^^^^^ end save word" 
 
-    # if ever_updated:
-    #     print "^^^^^^ before save instance"
-    #     instance.save()
-    #     print "^^^^^^ before save instance"
+        # if ever_updated:
+        #     print "^^^^^^ before save instance"
+        #     instance.save()
+        #     print "^^^^^^ before save instance"
 
 def words_changed1(sender, instance, **kwargs):
     print "Enter words_changed1"
