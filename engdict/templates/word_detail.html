@@ -24,7 +24,7 @@
 
         <h2>Related Word</h2>
         {% for obj in object.linked_word.all %}
-            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_word notitle=True %}
+            {% include "includes/detail_panel.html" with object=obj title=obj.name fields=fields_word notitle=True %}
         {% endfor %}
 
         <h2>Etyma</h2>

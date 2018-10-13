@@ -91,7 +91,7 @@ class WordDetailView(TableDetailViewMixin, DetailView):
         context["fields_wordexp_related"] = [_ for _ in WordExp._meta.get_fields() if _.name in fields_wordexp_related_name]
 
         fields_word_name = [
-            'name',
+            # 'name',
             'phonetic',
             'explain',
             # 'sentence', 
