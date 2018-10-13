@@ -28,7 +28,7 @@ class Word(models.Model):
     in_plan = models.BooleanField(default=False)
     # members = models.ManyToManyField('Word', through='Membership')
     # linked_word = models.ManyToManyField('Word', related_name='related_word',  blank=True)
-    linked_word = models.ManyToManyField('Word',  blank=True)
+    linked_word = models.ManyToManyField('Word',  blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
