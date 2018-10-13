@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.db.models.signals import post_save, pre_save, m2m_changed
 
 class Category(models.Model):
     name = models.CharField(max_length=45)
@@ -15,6 +16,9 @@ class Tag(models.Model):
     def __unicode__(self): 
         return self.name
 
+
+
+
 # Create your models here.
 class Word(models.Model):
     name =  models.CharField(max_length=45)
@@ -23,7 +27,8 @@ class Word(models.Model):
     progress = models.DecimalField(max_digits=50, decimal_places=0, default = 0 )
     in_plan = models.BooleanField(default=False)
     # members = models.ManyToManyField('Word', through='Membership')
-    linked_word = models.ManyToManyField('Word', related_name='related_word',  blank=True)
+    # linked_word = models.ManyToManyField('Word', related_name='related_word',  blank=True)
+    linked_word = models.ManyToManyField('Word',  blank=True)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
@@ -53,6 +58,69 @@ class Word(models.Model):
         except Word.DoesNotExist:
             return None
 
+
+def save_words(instance, name):
+    updated = [False, False]
+    ever_updated = False
+    word_set = getattr(instance, name).all()
+    for _ in word_set:
+        word = Word.objects.filter(name=_.name).first()
+        if word:
+            if not (instance in word.linked_word.all()) and not (instance is word):
+                print ">>>>>>> {} add {}".format(word.name, instance.name)
+                updated[0] = True
+                ever_updated = True
+                word.linked_word.add(instance) # this will trigger another signal   
+            else:
+                print "a ha 1, word.linked_word.all is {}".format(word.linked_word.all())
+
+            # this doesn't work? add m2m_changed to complete this reverse action
+            if not (word in instance.linked_word.all()) and not (instance is word):
+                print "<<<<<<<< {} add {}".format(instance.name, word.name)
+                updated[1] = True
+                instance.linked_word.add(word)
+                ever_updated = True                      
+            else:
+                print "a ha 2, instance.linked_word.all is {}".format(instance.linked_word.all())
+
+        if updated[0] or updated[1]:
+            print "^^^^^^ before save word"
+            word.save()
+            print "^^^^^^ end save word" 
+
+    # if ever_updated:
+    #     print "^^^^^^ before save instance"
+    #     instance.save()
+    #     print "^^^^^^ before save instance"
+
+def words_changed1(sender, instance, **kwargs):
+    print "Enter words_changed1"
+    
+    if instance:
+        save_words(instance, 'etyma')
+        save_words(instance, 'resemblance')
+        save_words(instance, 'semantic')
+        save_words(instance, 'antonymy')
+        save_words(instance, 'wordexp')
+    else:
+        print "instance is null"
+
+    print "Exit words_changed1"
+
+pre_save.connect(words_changed1, sender=Word)
+
+def toppings_changed2(sender, instance, **kwargs):
+    # be carefule, this can introduce reclusively calling if not process properly
+    for _ in instance.linked_word.all():
+        if not (instance in _.linked_word.all()) and not (_ is instance):
+            _.linked_word.add(instance)
+            _.save()
+        if not (_ in instance.linked_word.all())  and not (_ is instance):
+            instance.linked_word.add(_)
+            instance.save()
+
+m2m_changed.connect(toppings_changed2, sender=Word.linked_word.through)
+
 BOOK_NAME = (
     ('nce3', 'NCE3'),
     ('nce4', 'NCE4'),
@@ -77,6 +145,15 @@ RELATION = (
     ('etymon', 'etymon'),
 )
 
+def toppings_changed(sender, **kwargs):
+    instance = kwargs.get("instance", None)
+    if instance:
+        name = instance.name
+        try:
+            word = Word.objects.filter(name=instance.name).first()
+            instance.etyma.add(word)
+        except:
+            pass
 
 class WordExp(models.Model):
     name =  models.CharField(max_length=45)
@@ -99,6 +176,8 @@ class WordExp(models.Model):
     @property
     def exp(self):
         return "{} {}".format(self.name, self.explain)
+
+# m2m_changed.connect(toppings_changed, sender=WordExp.etyma.through)
 
 DICT = (
     ('youdao', 'YOUDAO'),

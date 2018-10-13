@@ -32,7 +32,7 @@ class WordLinkFormAdmin(LinkFormAdmin):
     link_m2m = True
     link_init_search = True
 
-    related_name='related_word'
+    related_name= 'linked_word' # 'related_word'
 
 class WordExpLinkFormAdmin(LinkFormAdmin):
 

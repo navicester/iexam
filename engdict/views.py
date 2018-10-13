@@ -51,6 +51,14 @@ class WordDetailView(TableDetailViewMixin, DetailView):
     #     'updated'
     # ]  
 
+    fields_exclude = [
+        'in_plan',
+        'timestamp',
+        'updated',
+        'linked_word'
+
+    ]    
+
     def get_context_data(self, *args, **kwargs):
         context = super(WordDetailView, self).get_context_data(*args, **kwargs)
 

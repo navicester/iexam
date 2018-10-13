@@ -132,7 +132,7 @@ class MyModelAdmin(admin.ModelAdmin):
 
         link_field_name = self._get_related_field_name( fk_model, link_model, **kwargs)
 
-        print ("link_field_name", link_field_name)
+        # print ("link_field_name", link_field_name)
 
         if link_field_name:
             link_objs = link_model.objects.filter(**{link_field_name:fk_obj})
@@ -168,7 +168,7 @@ class MyModelAdmin(admin.ModelAdmin):
                 for link_obj in link_objs:
                     form = {} #dict
                     items = self.get_obj_items(link_obj)
-                    for field in link_form.base_fields:                    
+                    for field in link_form.base_fields:                 
                         form[field] = items[field]
                     initial.append(form)
             initials.append(initial)
@@ -208,7 +208,7 @@ class MyModelAdmin(admin.ModelAdmin):
             yield link.get_formset(request, obj)
 
     ############################
-    def _save_obj(self, fk_model, link_obj, link_m2m, obj, **kwargs): # this function can change to global
+    def _save_obj(self, fk_model, link_obj, link_m2m, obj, **kwargs): # fk_model is self
 
         link_field_name = self._get_related_field_name(fk_model, link_obj.__class__, **kwargs)
         if link_m2m == False:
@@ -231,6 +231,7 @@ class MyModelAdmin(admin.ModelAdmin):
 
         if link_m2m == False:
             self.filter_objects(fk_model, link_obj, None, **kwargs).delete()
+            print "_delete_empty_objs"
             
             '''
             if fk_model == lab_device_item:                    
@@ -242,14 +243,17 @@ class MyModelAdmin(admin.ModelAdmin):
     link_m2m : whether this is m2m relationship
     '''
     def _delete_obj(self, fk_model, link_obj, link_m2m, obj, **kwargs):
-        related_name = kwargs.get('related_name', None)        
+        related_name = kwargs.get('related_name', None)      
+
 
         if link_m2m == True:
             #fk = getattr(link_obj, fk_model._meta.many_to_many)
             if not related_name:
-                related_name = fk_model._meta.object_name.lower()            
+                related_name = fk_model._meta.object_name.lower()        
+            print related_name    
             fk = getattr(link_obj, related_name)
             fk.remove(obj)
+            print "_delete_obj"
         else:
             if not related_name:
                 related_name = fk_model._meta.object_name + "_id"
