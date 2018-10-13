@@ -1,0 +1,22 @@
+{% load myform %}
+
+<div style="clear: both; overflow-x:auto;">
+    <table class="table table-striped table-hover table-responsive table-condensed table-outer-border table-inter-border">
+        <thead>
+            <tr class="table-primary">
+                {% for field in fields %}
+                <th>{{field}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in objs %}
+            <tr>                
+                {% for field in fields %}
+                <td>{{obj|my_get_field_value:field}}</td>                               
+                {% endfor %}
+            </tr>
+            {% endfor %} 
+        </tbody>
+    </table>
+</div>

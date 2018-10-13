@@ -18,39 +18,47 @@
     {% block inline_content %}
         <hr>
         <h2>Dictionary</h2>
-        {% for obj in object.worddict_set.all %}
+        {% include "table_relevant.html" with objs=object.worddict_set.all  fields=fields_worddict_name %}
+        <!-- {% for obj in object.worddict_set.all %}
             {% include "includes/detail_panel.html" with object=obj title=obj.book fields=fields_worddict %}
-        {% endfor %}
+        {% endfor %} -->
 
-        <h2>Related Word</h2>
-        {% for obj in object.linked_word.all %}
+        <h2>Related Word</h2> 
+        {% include "table_relevant.html" with objs=object.linked_word.all  fields=fields_word_name %}
+        <!-- {% for obj in object.linked_word.all %}
             {% include "includes/detail_panel.html" with object=obj title=obj.name fields=fields_word notitle=True %}
-        {% endfor %}
+        {% endfor %} -->
 
         <h2>Etyma</h2>
-        {% for obj in object.etyma.all %}
+        {% include "table_relevant.html" with objs=object.etyma.all  fields=fields_wordexp_name %}
+        <!-- {% for obj in object.etyma.all %}
             {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=True %}
-        {% endfor %}
+        {% endfor %} -->
         <h2>Resemblance</h2>
-        {% for obj in object.resemblance.all %}
+        {% include "table_relevant.html" with objs=object.resemblance.all  fields=fields_wordexp_name %}
+        <!-- {% for obj in object.resemblance.all %}
             {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=True %}
-        {% endfor %}
+        {% endfor %} -->
         <h2>Semantic</h2>
-        {% for obj in object.semantic.all %}
+        {% include "table_relevant.html" with objs=object.semantic.all  fields=fields_wordexp_name %}
+        <!-- {% for obj in object.semantic.all %}
             {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=True %}
-        {% endfor %}
+        {% endfor %} -->
         <h2>Antonymy</h2>
-        {% for obj in object.antonymy.all %}
+        {% include "table_relevant.html" with objs=object.antonymy.all  fields=fields_wordexp_name %}
+        <!-- {% for obj in object.antonymy.all %}
             {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=True %}
-        {% endfor %}
+        {% endfor %} -->
         <h2>Related</h2>
-        {% for obj in object.related.all %}
+        {% include "table_relevant.html" with objs=object.related.all  fields=fields_wordexp_name %}
+        <!-- {% for obj in object.related.all %}
             {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=True %}
-        {% endfor %}
+        {% endfor %} -->
         <h2>Word Examples</h2>
-        {% for obj in object.wordexp.all %}
+        {% include "table_relevant.html" with objs=object.wordexp.all  fields=fields_wordexp_name %}
+        <!-- {% for obj in object.wordexp.all %}
             {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp notitle=True %}
-        {% endfor %}
+        {% endfor %} -->
     {% endblock %}
 
     {% block nav_update %}

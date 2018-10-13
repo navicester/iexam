@@ -67,9 +67,10 @@ class WordDetailView(TableDetailViewMixin, DetailView):
             # 'book'
             ]
         context["fields_worddict"] = [_ for _ in WordDict._meta.get_fields() if _.name in fields_worddict_name ]
+        context["fields_worddict_name"] = fields_worddict_name
 
         fields_wordexp_name = [
-            # 'name',
+            'name',
             'phonetic',
             'explain',
             'sentence', 
@@ -78,9 +79,10 @@ class WordDetailView(TableDetailViewMixin, DetailView):
             # 'etymon'
             ]
         context["fields_wordexp"] = [_ for _ in WordExp._meta.get_fields() if _.name in fields_wordexp_name]
+        context["fields_wordexp_name"] = fields_wordexp_name
 
         fields_wordexp_related_name = [
-            # 'name',
+            'name',
             'phonetic',
             'explain',
             'sentence', 
@@ -89,9 +91,10 @@ class WordDetailView(TableDetailViewMixin, DetailView):
             # 'etymon'
             ]
         context["fields_wordexp_related"] = [_ for _ in WordExp._meta.get_fields() if _.name in fields_wordexp_related_name]
+        context["fields_wordexp_related_name"] = fields_wordexp_related_name
 
         fields_word_name = [
-            # 'name',
+            'name',
             'phonetic',
             'explain',
             # 'sentence', 
@@ -100,6 +103,7 @@ class WordDetailView(TableDetailViewMixin, DetailView):
             # 'etymon'
             ]
         context["fields_word"] = [_ for _ in Word._meta.get_fields() if _.name in fields_word_name]
+        context["fields_word_name"] = fields_word_name
 
         return context
     
