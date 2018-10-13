@@ -64,25 +64,25 @@ class WordDetailView(TableDetailViewMixin, DetailView):
 
         fields_worddict_name = [
             'explain',
-            # 'book'
+            'book'
             ]
         context["fields_worddict"] = [_ for _ in WordDict._meta.get_fields() if _.name in fields_worddict_name ]
         context["fields_worddict_name"] = fields_worddict_name
 
-        fields_wordexp_name = [
-            'name',
-            'phonetic',
-            'explain',
-            'sentence', 
-            'book', 
-            # 'relation', 
-            # 'etymon'
-            ]
-        context["fields_wordexp"] = [_ for _ in WordExp._meta.get_fields() if _.name in fields_wordexp_name]
-        context["fields_wordexp_name"] = fields_wordexp_name
+        # fields_wordexp_name = [
+        #     'name',
+        #     'phonetic',
+        #     'explain',
+        #     'sentence', 
+        #     'book', 
+        #     # 'relation', 
+        #     # 'etymon'
+        #     ]
+        # context["fields_wordexp"] = [_ for _ in WordExp._meta.get_fields() if _.name in fields_wordexp_name]
+        # context["fields_wordexp_name"] = fields_wordexp_name
 
         fields_wordexp_related_name = [
-            'name',
+            # 'name',
             'phonetic',
             'explain',
             'sentence', 
