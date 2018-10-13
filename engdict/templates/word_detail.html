@@ -18,13 +18,17 @@
     {% block inline_content %}
         <hr>
         <h2>Dictionary</h2>
-        {% include "table_relevant.html" with objs=object.worddict_set.all  fields=fields_worddict_name %}
+        {% if object.worddict_set.all %}
+            {% include "table_relevant.html" with objs=object.worddict_set.all  fields=fields_worddict_name %}
+        {% endif %}
         <!-- {% for obj in object.worddict_set.all %}
             {% include "includes/detail_panel.html" with object=obj title=obj.book fields=fields_worddict %}
         {% endfor %} -->
 
         <h2>Related Word</h2> 
-        {% include "table_relevant.html" with objs=object.linked_word.all  fields=fields_word_name %}
+        {% if object.linked_word.all %}
+            {% include "table_relevant.html" with objs=object.linked_word.all  fields=fields_word_name %}
+        {% endif %}
         <!-- {% for obj in object.linked_word.all %}
             {% include "includes/detail_panel.html" with object=obj title=obj.name fields=fields_word notitle=True %}
         {% endfor %} -->
@@ -57,7 +61,7 @@
         <h2>Word Examples</h2>
         <!-- {% include "table_relevant.html" with objs=object.wordexp.all  fields=fields_wordexp_related_name %} -->
         {% for obj in object.wordexp.all %}
-            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp notitle=True %}
+            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=True %}
         {% endfor %}
     {% endblock %}
 
