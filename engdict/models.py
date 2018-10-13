@@ -84,10 +84,10 @@ def save_words(instance, name):
                 else:
                     print "a ha 2, instance.linked_word.all is {}".format(instance.linked_word.all())
 
-            if word and updated[0] or updated[1]:
-                print "^^^^^^ before save word"
-                word.save()
-                print "^^^^^^ end save word" 
+                if updated[0] or updated[1]:
+                    print "^^^^^^ before save word"
+                    word.save()
+                    print "^^^^^^ end save word" 
 
         # if ever_updated:
         #     print "^^^^^^ before save instance"
