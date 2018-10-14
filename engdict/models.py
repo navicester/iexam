@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.db.models.signals import post_save, pre_save, m2m_changed
+from django.utils.text import slugify
 
 class Category(models.Model):
     name = models.CharField(max_length=45)
@@ -21,7 +22,8 @@ class Tag(models.Model):
 
 # Create your models here.
 class Word(models.Model):
-    name =  models.CharField(max_length=45)
+    name =  models.CharField(max_length=45, unique=True)
+    slug = models.SlugField(max_length=40)
     phonetic = models.CharField(max_length=45, null=True, blank=True)
     explain = models.TextField(max_length=120,blank=True, null=True, default = '')
     progress = models.DecimalField(max_digits=50, decimal_places=0, default = 0 )
@@ -39,8 +41,11 @@ class Word(models.Model):
         return self.name
 
     def get_absolute_url(self):
+        print self.slug
+        return reverse("word_detail", kwargs={"slug": self.slug})
         try:
-            return reverse("word_detail", kwargs={"pk": self.pk})
+            # return reverse("word_detail", kwargs={"pk": self.pk})
+            return reverse("word_detail", kwargs={"slug": self.slug})
         except:
             return '#'
 
@@ -96,6 +101,7 @@ def save_words(instance, name):
 
 def words_changed1(sender, instance, **kwargs):
     print "Enter words_changed1"
+    instance.slug = slugify(instance.name)
     
     if instance:
         save_words(instance, 'etyma')
@@ -110,6 +116,7 @@ def words_changed1(sender, instance, **kwargs):
 
 pre_save.connect(words_changed1, sender=Word)
 
+
 def toppings_changed2(sender, instance, **kwargs):
     # be carefule, this can introduce reclusively calling if not process properly
     for _ in instance.linked_word.all():
@@ -121,6 +128,7 @@ def toppings_changed2(sender, instance, **kwargs):
             instance.save()
 
 m2m_changed.connect(toppings_changed2, sender=Word.linked_word.through)
+
 
 BOOK_NAME = (
     ('nce3', 'NCE3'),
