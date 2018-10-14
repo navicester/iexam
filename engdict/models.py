@@ -31,6 +31,7 @@ BOOK_NAME = (
     ('IELTS', 'IELTS'),
     ('BSWX', 'BSWX'),
     ('YOUDAO', 'YOUDAO'),
+    ('other', 'Other'), 
 )
 
 
