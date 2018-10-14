@@ -17,6 +17,21 @@ class Tag(models.Model):
     def __unicode__(self): 
         return self.name
 
+BOOK_NAME = (
+    ('nce3', 'NCE3'),
+    ('nce4', 'NCE4'),
+    ('bbc', 'BBC'),
+    ('voa', 'VOA'),
+    ('cctvnews', 'CCTVNEWS'),
+    ('mail', 'MAIL'),
+    ('life', 'LIFE'),
+    ('20000', '20000'),
+    ('22000', '22000'),
+    ('100days', '100days'),
+    ('IELTS', 'IELTS'),
+    ('BSWX', 'BSWX'),
+    ('YOUDAO', 'YOUDAO'),
+)
 
 
 
@@ -31,6 +46,7 @@ class Word(models.Model):
     # members = models.ManyToManyField('Word', through='Membership')
     # linked_word = models.ManyToManyField('Word', related_name='related_word',  blank=True)
     linked_word = models.ManyToManyField('Word',  blank=True, null=True)
+    book = models.CharField(max_length=120, choices=BOOK_NAME, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
@@ -127,22 +143,6 @@ def toppings_changed2(sender, instance, **kwargs):
 
 m2m_changed.connect(toppings_changed2, sender=Word.linked_word.through)
 
-
-BOOK_NAME = (
-    ('nce3', 'NCE3'),
-    ('nce4', 'NCE4'),
-    ('bbc', 'BBC'),
-    ('voa', 'VOA'),
-    ('cctvnews', 'CCTVNEWS'),
-    ('mail', 'MAIL'),
-    ('life', 'LIFE'),
-    ('20000', '20000'),
-    ('22000', '22000'),
-    ('100days', '100days'),
-    ('IELTS', 'IELTS'),
-    ('BSWX', 'BSWX'),
-    ('YOUDAO', 'YOUDAO'),
-)
 
 RELATION = (
     ('Self', 'Self'),
