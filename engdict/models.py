@@ -41,8 +41,6 @@ class Word(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        print self.slug
-        return reverse("word_detail", kwargs={"slug": self.slug})
         try:
             # return reverse("word_detail", kwargs={"pk": self.pk})
             return reverse("word_detail", kwargs={"slug": self.slug})
