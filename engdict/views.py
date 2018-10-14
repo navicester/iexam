@@ -52,6 +52,7 @@ class WordDetailView(TableDetailViewMixin, DetailView):
     # ]  
 
     fields_exclude = [
+        'slug',
         'in_plan',
         'timestamp',
         'updated',
