@@ -23,7 +23,7 @@ class Tag(models.Model):
 # Create your models here.
 class Word(models.Model):
     name =  models.CharField(max_length=45, unique=True)
-    slug = models.SlugField(max_length=40)
+    slug = models.SlugField(max_length=40, blank=True)
     phonetic = models.CharField(max_length=45, null=True, blank=True)
     explain = models.TextField(max_length=120,blank=True, null=True, default = '')
     progress = models.DecimalField(max_digits=50, decimal_places=0, default = 0 )

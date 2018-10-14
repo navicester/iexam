@@ -164,6 +164,8 @@ class WordAdmin(MyModelAdmin):
         WordDictInline,
     ]
 
+    self_form_link = WordForm
+
 #    form_links = [WordExpLinkFormAdmin, WordDictFormAdmin]
     form_links = [ 
         WordExpLinkFormAdmin,

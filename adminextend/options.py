@@ -360,8 +360,13 @@ class MyModelAdmin(admin.ModelAdmin):
         from django.shortcuts import render_to_response
         from django.utils.html import escape, escapejs
 
+        print self.self_form_link
+        print "-------"
+
+        form = self.self_form_link()
+
         return render_to_response('admin/linked/linkback.html', 
-                                            {'array': self.self_form_link().get_back_array(obj), 
+                                            {'array': form.get_back_array(obj), 
                                             'newId' : escape(pk_value), 
                                             'newRepr' : escape(obj),
                                             })
