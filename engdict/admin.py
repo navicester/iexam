@@ -36,7 +36,7 @@ class WordLinkFormAdmin(LinkFormAdmin):
 
 class WordLinkForCategoryFormAdmin(LinkFormAdmin):
 
-    extra = 1
+    extra = 0
     
     link_form = WordForm
     link_model = Word
@@ -132,6 +132,27 @@ class CategoryAdmin(MyModelAdmin):
     class Meta:
         model = Category
 
+    @csrf_protect_m
+    def add_view(self, request, form_url='', extra_context=None):
+        extra_context = {'app_name': 'engdict'}     
+        extra_context_cur = {
+        }
+
+        extra_context.update(extra_context_cur)
+        
+        return super(CategoryAdmin, self).add_view(request,form_url,extra_context)
+
+    @csrf_protect_m
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = {'app_name': 'engdict'}     
+        extra_context_cur = {
+        }
+
+        extra_context.update(extra_context_cur)
+
+        return super(CategoryAdmin, self).change_view(request,object_id, form_url,extra_context)
+
+
 class TagAdmin(MyModelAdmin):
     list_display = ['name',]
     search_fields = ['name',]
@@ -147,6 +168,28 @@ class TagAdmin(MyModelAdmin):
 
     class Meta:    
         model = Tag
+
+    # app_name will be used to get HREF of search or add
+    @csrf_protect_m
+    def add_view(self, request, form_url='', extra_context=None):
+        extra_context = {'app_name': 'engdict'}     
+        extra_context_cur = {
+        }
+
+        extra_context.update(extra_context_cur)
+        
+        return super(TagAdmin, self).add_view(request,form_url,extra_context)
+
+    @csrf_protect_m
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = {'app_name': 'engdict'}     
+        extra_context_cur = {
+        }
+
+        extra_context.update(extra_context_cur)
+
+        return super(TagAdmin, self).change_view(request,object_id, form_url,extra_context)
+
 
 class WordExpAdmin(MyModelAdmin):
     list_display = ['name','phonetic','explain', 'sentence', 'book']
