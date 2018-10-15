@@ -132,7 +132,8 @@ class MyModelAdmin(admin.ModelAdmin):
 
         link_field_name = self._get_related_field_name( fk_model, link_model, **kwargs)
 
-        # print ("link_field_name", link_field_name)
+        print ("link_field_name", link_field_name, "fk_obj", fk_obj)
+        print ("fk_model", fk_model, "link_model", link_model)
 
         if link_field_name:
             link_objs = link_model.objects.filter(**{link_field_name:fk_obj})

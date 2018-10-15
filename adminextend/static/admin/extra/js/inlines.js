@@ -15,8 +15,8 @@
  * See: http://www.opensource.org/licenses/bsd-license.php
  */
 (function($) {
-  $.fn.formsetLinked = function(opts) {
-    var options = $.extend({}, $.fn.formset.defaults, opts);
+  $.fn.formsetLinked = function(opts) {  
+    var options = $.extend({}, $.fn.formsetLinked.defaults, opts);
     var $this = $(this);
     var $parent = $this.parent();
     var updateElementIndex = function(el, prefix, ndx) {

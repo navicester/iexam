@@ -5,14 +5,14 @@ from django.utils.text import slugify
 
 class Category(models.Model):
     name = models.CharField(max_length=45)
-    word = models.ManyToManyField('Word', blank=True, null=True)
+    word = models.ManyToManyField('Word', related_name="category", blank=True, null=True)
 
     def __unicode__(self): 
         return self.name
 
 class Tag(models.Model):
     name = models.CharField(max_length=45)
-    word = models.ManyToManyField('Word', blank=True, null=True)
+    word = models.ManyToManyField('Word', related_name="tag", blank=True, null=True)
 
     def __unicode__(self): 
         return self.name

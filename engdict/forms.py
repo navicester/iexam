@@ -180,10 +180,8 @@ class CategoryForm(LinkFormAdminForm):
         back_field = [
             "name",
         ]
-
         
-    # these declared are base field
-        
+    # these declared are base field        
     id = forms.CharField(
         max_length=11, 
         label = "id", 

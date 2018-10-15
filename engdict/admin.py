@@ -34,6 +34,28 @@ class WordLinkFormAdmin(LinkFormAdmin):
 
     related_name= 'linked_word' # 'related_word'
 
+class WordLinkForCategoryFormAdmin(LinkFormAdmin):
+
+    extra = 1
+    
+    link_form = WordForm
+    link_model = Word
+    link_m2m = True
+    link_init_search = True
+
+    related_name= 'category'
+
+class WordLinkForTagFormAdmin(LinkFormAdmin):
+
+    extra = 0
+    
+    link_form = WordForm
+    link_model = Word
+    link_m2m = True
+    link_init_search = True
+
+    related_name= 'tag'
+
 class WordExpLinkFormAdmin(LinkFormAdmin):
 
     extra = 0
@@ -95,13 +117,33 @@ class WordDictFormAdmin(LinkFormAdmin):
     link_init_search = True
 
 class CategoryAdmin(MyModelAdmin):
-    filter_horizontal = ['word']
+    list_display = ['name',]
+    search_fields = ['name',]
+    ordering = ['name',]
 
-    class Meta:    
+    # filter_horizontal = ['word']
+
+    self_form_link = CategoryForm
+
+    form_links = [ 
+        WordLinkForCategoryFormAdmin,
+    ]
+
+    class Meta:
         model = Category
 
 class TagAdmin(MyModelAdmin):
-    filter_vertical = ['word']
+    list_display = ['name',]
+    search_fields = ['name',]
+    ordering = ['name',]
+
+    # filter_horizontal = ['word']
+
+    self_form_link = TagForm
+
+    form_links = [ 
+        WordLinkForTagFormAdmin,
+    ]
 
     class Meta:    
         model = Tag
@@ -156,7 +198,7 @@ class WordAdmin(MyModelAdmin):
 
     search_fields = ['name','phonetic' ,'explain']
     ordering = ['name',]
-    list_filter = ('in_plan',)
+    list_filter = ('in_plan', 'book')
     # filter_horizontal = ['linked_word']
     # list_editable  = ['explain']
 
@@ -203,6 +245,9 @@ class WordAdmin(MyModelAdmin):
         extra_context.update(extra_context_cur)
 
         return super(WordAdmin, self).change_view(request,object_id, form_url,extra_context)
+
+
+
 
 class WordDictAdmin(admin.ModelAdmin):
     list_display = ['word','book']
