@@ -25,7 +25,7 @@ class WordDictLinkFormAdmin(LinkFormAdmin):
 
 class WordLinkFormAdmin(LinkFormAdmin):
 
-    extra = 0
+    extra = 1
     
     link_form = WordForm
     link_model = Word
@@ -36,7 +36,7 @@ class WordLinkFormAdmin(LinkFormAdmin):
 
 class WordLinkForCategoryFormAdmin(LinkFormAdmin):
 
-    extra = 0
+    extra = 1
     
     link_form = WordForm
     link_model = Word
@@ -47,7 +47,7 @@ class WordLinkForCategoryFormAdmin(LinkFormAdmin):
 
 class WordLinkForTagFormAdmin(LinkFormAdmin):
 
-    extra = 0
+    extra = 1
     
     link_form = WordForm
     link_model = Word
@@ -58,7 +58,7 @@ class WordLinkForTagFormAdmin(LinkFormAdmin):
 
 class WordExpLinkFormAdmin(LinkFormAdmin):
 
-    extra = 0
+    extra = 1
     
     link_form = WordExpForm
     link_model = WordExp
