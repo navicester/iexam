@@ -106,5 +106,7 @@ class WordDetailView(TableDetailViewMixin, DetailView):
         context["fields_word"] = [_ for _ in Word._meta.get_fields() if _.name in fields_word_name]
         context["fields_word_name"] = fields_word_name
 
+        context["fields_lb_content"] = ['explain', 'sentence']
+
         return context
     

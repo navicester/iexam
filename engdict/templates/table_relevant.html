@@ -13,7 +13,7 @@
             {% for obj in objs %}
             <tr>                
                 {% for field in fields %}
-                <td>{{obj|my_get_field_value:field}}</td>                               
+                <td>{{obj|my_get_field_value_safe:field}}</td>                               
                 {% endfor %}
             </tr>
             {% endfor %} 
