@@ -41,7 +41,7 @@ class Word(models.Model):
     name =  models.CharField(max_length=45, unique=True)
     slug = models.SlugField(max_length=40, blank=True)
     phonetic = models.CharField(max_length=45, null=True, blank=True)
-    explain = models.TextField(max_length=120,blank=True, null=True, default = '')
+    explain = models.TextField(max_length=300,blank=True, null=True, default = '')
     progress = models.DecimalField(max_digits=50, decimal_places=0, default = 0 )
     in_plan = models.BooleanField(default=False)
     # members = models.ManyToManyField('Word', through='Membership')
