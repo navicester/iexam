@@ -16,9 +16,9 @@
     {% include "includes/detail_panel.html" with title=object.name fields_lb_content=fields_lb_content %}
 
     {% block inline_content %}
-        <hr>
-        <h2>Dictionary</h2>
+        <hr>        
         {% if object.worddict_set.all %}
+        <h2>Dictionary</h2>
             {% include "table_relevant.html" with objs=object.worddict_set.all  fields=fields_worddict_name %}
         {% endif %}
         <!-- {% for obj in object.worddict_set.all %}
