@@ -145,6 +145,7 @@ class WordForm(LinkFormAdminForm):
 
         back_field = [
             "name",
+            'phonetic',
             "explain",
             "book"
         ]
@@ -165,7 +166,8 @@ class WordForm(LinkFormAdminForm):
                              forms.TextInput(attrs={'readonly':'readonly','disable':True}))      
     explain = forms.CharField(max_length=50, label = "explain", required=False, widget = 
                              forms.TextInput(attrs={'readonly':'readonly','disable':True}))  
-
+    book = forms.CharField(max_length=11, label = "book", required=False, widget = 
+                             forms.TextInput(attrs={'readonly':'readonly','disable':True}))   
     def __unicode__(self):
         return u'%s %s' % (self.id, self.explain)  
 

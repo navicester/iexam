@@ -194,7 +194,7 @@ DICT = (
 class WordDict(models.Model):
     word =  models.ForeignKey(Word)
     explain = models.TextField(blank=True, null=True)
-    book = models.CharField(max_length=120, choices=DICT)
+    book = models.CharField(max_length=120, choices=DICT, default='youdao')
 
     def __unicode__(self): 
         return self.word.name
