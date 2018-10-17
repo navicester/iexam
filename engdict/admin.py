@@ -12,7 +12,7 @@ csrf_protect_m = method_decorator(csrf_protect)
 
 class WordDictInline(admin.TabularInline):
     model = WordDict
-    extra = 0
+    extra = 1
 
 class WordDictLinkFormAdmin(LinkFormAdmin):
 
@@ -34,6 +34,26 @@ class WordLinkFormAdmin(LinkFormAdmin):
 
     related_name= 'linked_word' # 'related_word'
 
+class WordLinkEtymaFormAdmin(WordLinkFormAdmin):
+
+    related_name= 'etyma_word'
+    link_form = WordEtymaForm
+
+class WordLinkResemblanceFormAdmin(WordLinkFormAdmin):
+
+    related_name= 'resemblance_word'
+    link_form = WordResemblanceForm
+
+class WordLinkSemanticFormAdmin(WordLinkFormAdmin):
+
+    related_name= 'semantic_word'
+    link_form = WordSemanticForm
+
+class WordLinkAntonymyFormAdmin(WordLinkFormAdmin):
+
+    related_name= 'antonymy_word'
+    link_form = WordAntonymyForm
+            
 class WordLinkForCategoryFormAdmin(LinkFormAdmin):
 
     extra = 1
@@ -253,21 +273,29 @@ class WordAdmin(MyModelAdmin):
 
 #    form_links = [WordExpLinkFormAdmin, WordDictFormAdmin]
     form_links = [ 
+        WordLinkFormAdmin,
+        WordLinkEtymaFormAdmin,
+        WordLinkResemblanceFormAdmin,
+        WordLinkSemanticFormAdmin,
+        WordLinkAntonymyFormAdmin,
+
         WordExpLinkFormAdmin,
         WordExpEtymaLinkFormAdmin,
         WordExpResemblanceLinkFormAdmin,
         WordExpSemanticLinkFormAdmin,
         WordExpAntonymyLinkFormAdmin,
         WordExpRelatedLinkFormAdmin,
+        
         CategoryLinkFormAdmin,
         TagLinkFormAdmin,
-        WordLinkFormAdmin,
 
         # WordDictLinkFormAdmin
     ]
 
     class Meta:
         model = Word
+
+    form = WordAdminForm
 
     @csrf_protect_m
     def add_view(self, request, form_url='', extra_context=None):

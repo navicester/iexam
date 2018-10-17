@@ -47,6 +47,10 @@ class Word(models.Model):
     # members = models.ManyToManyField('Word', through='Membership')
     # linked_word = models.ManyToManyField('Word', related_name='related_word',  blank=True)
     linked_word = models.ManyToManyField('Word',  blank=True, null=True)
+    etyma_word = models.ManyToManyField('Word', related_name='etyma_word_reverse', blank=True)
+    resemblance_word = models.ManyToManyField('Word', related_name='resemblance_word_reverse', blank=True)
+    semantic_word = models.ManyToManyField('Word', related_name='semantic_word_reverse', blank=True)
+    antonymy_word = models.ManyToManyField('Word', related_name='antonymy_word_reverse', blank=True)    
     book = models.CharField(max_length=120, choices=BOOK_NAME, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
@@ -78,56 +82,95 @@ class Word(models.Model):
         except Word.DoesNotExist:
             return None
 
+def get_related_name_reverse(name):
+    name_dict = {
+        'etyma' : 'etyma_word',
+        'resemblance' : 'resemblance_word',
+        'semantic': 'semantic_word',
+        'antonymy': 'antonymy_word',
+
+    }
+    return name_dict.get(name, None)
+
+# def get_related_word(name):
+
+def save_related_words(instance1, instance2, related_name_reverse):
+
+    if not related_name_reverse:
+        return False
+
+    updated = False
+    object1_reserve_set = getattr(instance2, related_name_reverse).all()
+
+    if not (instance1 in object1_reserve_set) and not (instance1 is instance2):
+        print "{} add {}".format(instance2.name, instance1.name)
+        updated = True
+        getattr(instance2, related_name_reverse).add(instance1) # this will trigger another signal   
+    else:
+        print "instance2 related set is {}".format(object1_reserve_set)   
+
+    return updated 
 
 def save_words(instance, name):
-    updated = [False, False]
+    
     ever_updated = False
     if hasattr(instance, name):
-        word_set = getattr(instance, name).all()
-        for _ in word_set:
+        wordexp_set = getattr(instance, name).all()
+        for _ in wordexp_set:
             word = Word.objects.filter(name=_.name).first()
             if word:
-                if not (instance in word.linked_word.all()) and not (instance is word):
-                    print ">>>>>>> {} add {}".format(word.name, instance.name)
-                    updated[0] = True
-                    ever_updated = True
-                    word.linked_word.add(instance) # this will trigger another signal   
-                else:
-                    print "a ha 1, word.linked_word.all is {}".format(word.linked_word.all())
+                related_name_reverse = get_related_name_reverse(name)
+                if related_name_reverse:
+                    saved = [False, False]
+                    saved[0] = save_related_words(instance, word, related_name_reverse)
+                    saved[1] = save_related_words(word,instance, related_name_reverse)
+                    if saved[0] or saved[1]:
+                        ever_updated = True
+                        word.save()
+
+                # if not (instance in word.linked_word.all()) and not (instance is word):
+                #     print ">>>>>>> {} add {}".format(word.name, instance.name)
+                #     updated[0] = True
+                #     ever_updated = True
+                #     word.linked_word.add(instance) # this will trigger another signal   
+                # else:
+                #     print "a ha 1, word.linked_word.all is {}".format(word.linked_word.all())
+                updated = [False, False]
+                updated[0] = save_related_words(instance, word, 'linked_word')
+
 
                 # this doesn't work? add m2m_changed to complete this reverse action
-                if not (word in instance.linked_word.all()) and not (instance is word):
-                    print "<<<<<<<< {} add {}".format(instance.name, word.name)
-                    updated[1] = True
-                    instance.linked_word.add(word)
-                    ever_updated = True                      
-                else:
-                    print "a ha 2, instance.linked_word.all is {}".format(instance.linked_word.all())
+                # if not (word in instance.linked_word.all()) and not (instance is word):
+                #     print "<<<<<<<< {} add {}".format(instance.name, word.name)
+                #     updated[1] = True
+                #     instance.linked_word.add(word)
+                #     ever_updated = True                      
+                # else:
+                #     print "a ha 2, instance.linked_word.all is {}".format(instance.linked_word.all())
+                updated[1] = save_related_words(word, instance, 'linked_word')
 
                 if updated[0] or updated[1]:
-                    print "^^^^^^ before save word"
+                    ever_updated = True
                     word.save()
-                    print "^^^^^^ end save word" 
 
-        # if ever_updated:
-        #     print "^^^^^^ before save instance"
-        #     instance.save()
-        #     print "^^^^^^ before save instance"
+    if ever_updated:
+        instance.save()
+
 
 def words_changed1(sender, instance, **kwargs):
-    print "Enter words_changed1"
+    # print "Enter words_changed1"
     instance.slug = slugify(instance.name)
     
     if instance:
+        save_words(instance, 'wordexp')        
         save_words(instance, 'etyma')
         save_words(instance, 'resemblance')
         save_words(instance, 'semantic')
         save_words(instance, 'antonymy')
-        save_words(instance, 'wordexp')
     else:
         print "instance is null"
 
-    print "Exit words_changed1"
+    # print "Exit words_changed1"
 
 pre_save.connect(words_changed1, sender=Word)
 

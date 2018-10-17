@@ -62,4 +62,22 @@ def add_relationship_for_wordexp_word(list_wordexp_for_link):
         if not ins:
             continue    
         if not object in ins.wordexp.all():
-            ins.wordexp.add(object)        
+            ins.wordexp.add(object)
+
+from engdict.models import WordExp, Word
+def migrate_exist_specific_type_related_for_word_throught_wordexp(name, name2):
+    for word in Word.objects.all():
+        for wordexp in getattr(word,name).all():
+            word_related = Word.objects.filter(name=wordexp.name)
+            if word_related and len(word_related):                
+                word_related_obj = word_related[0]
+                print "come on {} {}".format(word.name, word_related_obj.name)
+                if not (word_related_obj in getattr(word,name2).all()):
+                    print "a ha {}".format(word.name)
+                    getattr(word,name2).add(word_related_obj)
+                    getattr(word_related_obj,name2).add(word)
+
+migrate_exist_specific_type_related_for_word_throught_wordexp('etyma', 'etyma_word')                    
+migrate_exist_specific_type_related_for_word_throught_wordexp('resemblance', 'resemblance_word') 
+migrate_exist_specific_type_related_for_word_throught_wordexp('semantic', 'semantic_word') 
+migrate_exist_specific_type_related_for_word_throught_wordexp('antonymy', 'antonymy_word') 

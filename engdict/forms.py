@@ -62,27 +62,27 @@ class WordExpForm(LinkFormAdminForm):
 
 class WordExpEtymaForm(WordExpForm):
     class Meta:
-        verbose_name = 'Etyma'
+        verbose_name = 'Etyma Sentence'
         class_name = "WordExp"
 
 class WordExpResemblanceForm(WordExpForm):
     class Meta:
-        verbose_name = 'Resemblance'
+        verbose_name = 'Resemblance Sentence'
         class_name = "WordExp"
 
 class WordExpSemanticForm(WordExpForm):
     class Meta:
-        verbose_name = 'Semantic'
+        verbose_name = 'Semantic Sentence'
         class_name = "WordExp"
 
 class WordExpAntonymyForm(WordExpForm):
     class Meta:
-        verbose_name = 'Antonymy'
+        verbose_name = 'Antonymy Sentence'
         class_name = "WordExp"  
 
 class WordExpRelatedForm(WordExpForm):
     class Meta:
-        verbose_name = 'Related'
+        verbose_name = 'Related Sentence'
         class_name = "WordExp"
  
 
@@ -138,6 +138,17 @@ class WordDictForm(LinkFormAdminForm):
         return super(WordDictForm, self).is_valid()        
 
 
+class WordAdminForm(forms.ModelForm):
+    class Meta:
+        exclude = [
+            'slug',
+            'linked_word',
+            'etyma_word',
+            'resemblance_word',
+            'semantic_word',
+            'antonymy_word'
+        ]
+
 class WordForm(LinkFormAdminForm):
     class Meta:
         verbose_name = 'Word'
@@ -173,6 +184,26 @@ class WordForm(LinkFormAdminForm):
 
     def is_valid(self):
         return super(WordForm, self).is_valid()  
+
+class WordEtymaForm(WordForm):
+    class Meta:
+        verbose_name = 'Etyma Word'
+        class_name = "Word"
+
+class WordResemblanceForm(WordForm):
+    class Meta:
+        verbose_name = 'Resemblance Word'
+        class_name = "Word"
+
+class WordSemanticForm(WordForm):
+    class Meta:
+        verbose_name = 'Semantic Word'
+        class_name = "Word"
+
+class WordAntonymyForm(WordForm):
+    class Meta:
+        verbose_name = 'Antonymy Word'
+        class_name = "Word"  
 
 class CategoryForm(LinkFormAdminForm):
     class Meta:
