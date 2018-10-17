@@ -275,10 +275,11 @@ class WordAdmin(MyModelAdmin):
 #    form_links = [WordExpLinkFormAdmin, WordDictFormAdmin]
     form_links = [ 
         WordLinkFormAdmin,
-        WordLinkEtymaFormAdmin,
-        WordLinkResemblanceFormAdmin,
-        WordLinkSemanticFormAdmin,
-        WordLinkAntonymyFormAdmin,
+        # below 4 will be automatically updated if change relevant word
+        # WordLinkEtymaFormAdmin,
+        # WordLinkResemblanceFormAdmin,
+        # WordLinkSemanticFormAdmin,
+        # WordLinkAntonymyFormAdmin,
 
         WordExpLinkFormAdmin,
         WordExpEtymaLinkFormAdmin,
