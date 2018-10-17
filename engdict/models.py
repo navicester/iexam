@@ -102,7 +102,8 @@ def save_related_words(instance1, instance2, related_name_reverse):
     updated = False
     object1_reserve_set = getattr(instance2, related_name_reverse).all()
 
-    if not (instance1 in object1_reserve_set) and not (instance1 is instance2):
+    # if not (instance1 in object1_reserve_set) and not (instance1 is instance2):
+    if not getattr(instance2, related_name_reverse).filter(name=instance1.name) and not (instance1.name == instance2.name):
         print "{} add {}".format(instance2.name, instance1.name)
         updated = True
         getattr(instance2, related_name_reverse).add(instance1) # this will trigger another signal   
