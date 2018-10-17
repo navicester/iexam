@@ -24,45 +24,71 @@
         <!-- {% for obj in object.worddict_set.all %}
             {% include "includes/detail_panel.html" with object=obj title=obj.book fields=fields_worddict %}
         {% endfor %} -->
-
-        <h2>Related Word</h2> 
+        
         {% if object.linked_word.all %}
+            <h2>Related Word</h2> 
             {% include "table_relevant.html" with objs=object.linked_word.all  fields=fields_word_name %}
         {% endif %}
         <!-- {% for obj in object.linked_word.all %}
             {% include "includes/detail_panel.html" with object=obj title=obj.name fields=fields_word notitle=True %}
         {% endfor %} -->
 
-        <h2>Etyma</h2>
-        <!-- {% include "table_relevant.html" with objs=object.etyma.all  fields=fields_wordexp_related_name %} -->
-        {% for obj in object.etyma.all %}
-            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
-        {% endfor %}
-        <h2>Resemblance</h2>
-        <!-- {% include "table_relevant.html" with objs=object.resemblance.all  fields=fields_wordexp_related_name %} -->
-        {% for obj in object.resemblance.all %}
-            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
-        {% endfor %}
-        <h2>Semantic</h2>
-        <!-- {% include "table_relevant.html" with objs=object.semantic.all  fields=fields_wordexp_related_name %} -->
-        {% for obj in object.semantic.all %}
-            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
-        {% endfor %}
-        <h2>Antonymy</h2>
-        <!-- {% include "table_relevant.html" with objs=object.antonymy.all  fields=fields_wordexp_related_name %} -->
-        {% for obj in object.antonymy.all %}
-            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
-        {% endfor %}
-        <h2>Related</h2>
-        <!-- {% include "table_relevant.html" with objs=object.related.all  fields=fields_wordexp_related_name %} -->
-        {% for obj in object.related.all %}
-            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
-        {% endfor %}
-        <h2>Word Examples</h2>
-        <!-- {% include "table_relevant.html" with objs=object.wordexp.all  fields=fields_wordexp_related_name %} -->
-        {% for obj in object.wordexp.all %}
-            {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
-        {% endfor %}
+        {% if object.wordexp.all %}
+            <h2>Word Examples</h2>
+            <!-- {% include "table_relevant.html" with objs=object.wordexp.all  fields=fields_wordexp_related_name %} -->
+            {% for obj in object.wordexp.all %}
+                {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+            {% endfor %}
+        {% endif %}
+
+        {% if object.etyma.all %}
+            <h2>Etyma</h2>
+            <!-- {% include "table_relevant.html" with objs=object.etyma.all  fields=fields_wordexp_related_name %} -->
+            {% for obj in object.etyma.all %}                
+                {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+            {% endfor %}
+        {% endif %}
+        
+        {% if object.resemblance.all %}
+            <h2>Resemblance</h2>
+            <!-- {% include "table_relevant.html" with objs=object.resemblance.all  fields=fields_wordexp_related_name %} -->
+            {% for obj in object.resemblance.all %}
+                {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+            {% endfor %}
+        {% endif %}
+
+        {% if object.semantic.all %}
+            <h2>Semantic</h2>
+            <!-- {% include "table_relevant.html" with objs=object.semantic.all  fields=fields_wordexp_related_name %} -->
+            {% for obj in object.semantic.all %}
+                {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+            {% endfor %}
+        {% endif %}
+
+        {% if object.antonymy.all %}
+            <h2>Antonymy</h2>
+            <!-- {% include "table_relevant.html" with objs=object.antonymy.all  fields=fields_wordexp_related_name %} -->
+            {% for obj in object.antonymy.all %}
+                {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+            {% endfor %}
+        {% endif %}
+
+        {% if object.related.all %}
+            <h2>Related</h2>
+            <!-- {% include "table_relevant.html" with objs=object.related.all  fields=fields_wordexp_related_name %} -->
+            {% for obj in object.related.all %}
+                {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+            {% endfor %}
+        {% endif %}
+
+        {% if related_word_exp_lst|length %}
+            <h2>Linked</h2>
+            <!-- {% include "table_relevant.html" with objs=object.related.all  fields=fields_wordexp_related_name %} -->
+            {% for obj in related_word_exp_lst %}
+                {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+            {% endfor %}            
+        {% endif %}
+
     {% endblock %}
 
     {% block nav_update %}

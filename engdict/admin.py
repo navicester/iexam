@@ -13,6 +13,7 @@ csrf_protect_m = method_decorator(csrf_protect)
 class WordDictInline(admin.TabularInline):
     model = WordDict
     extra = 1
+    max_num = 1
 
 class WordDictLinkFormAdmin(LinkFormAdmin):
 
@@ -285,7 +286,7 @@ class WordAdmin(MyModelAdmin):
         WordExpSemanticLinkFormAdmin,
         WordExpAntonymyLinkFormAdmin,
         WordExpRelatedLinkFormAdmin,
-        
+
         CategoryLinkFormAdmin,
         TagLinkFormAdmin,
 

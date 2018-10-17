@@ -25,7 +25,7 @@ class WordListView(TableListViewMixin, ListView):
     fields_exclude = [
         'in_plan',
         'timestamp',
-        'updated'
+        'updated',
         ]
 
     def get_queryset(self, *args, **kwargs):
@@ -56,8 +56,12 @@ class WordDetailView(TableDetailViewMixin, DetailView):
         'in_plan',
         'timestamp',
         'updated',
-        'linked_word'
-
+        'linked_word',
+        'etyma_word',
+        'resemblance_word',
+        'semantic_word',
+        'antonymy_word',
+        'progress'
     ]    
 
     def get_context_data(self, *args, **kwargs):
@@ -107,6 +111,20 @@ class WordDetailView(TableDetailViewMixin, DetailView):
         context["fields_word_name"] = fields_word_name
 
         context["fields_lb_content"] = ['explain', 'sentence']
+
+        obj = self.get_object()
+        related_word_exp_lst = []
+        for related_word in obj.linked_word.all():  # only get linked_word, may extend to etyma_word ... if needed
+            for related_word_exp in related_word.wordexp.all():
+                if ((not related_word_exp in obj.etyma.all()) and 
+                   (not related_word_exp in obj.resemblance.all()) and 
+                   (not related_word_exp in obj.semantic.all()) and 
+                   (not related_word_exp in obj.antonymy.all()) and 
+                   (not related_word_exp in obj.related.all()) and 
+                   (not related_word_exp in obj.wordexp.all()) and 
+                   (not related_word_exp in related_word_exp_lst)):
+                    related_word_exp_lst.append(related_word_exp)
+        context["related_word_exp_lst"] = related_word_exp_lst
 
         return context
     
