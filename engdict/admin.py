@@ -218,7 +218,7 @@ class WordExpAdmin(MyModelAdmin):
     ordering = ['name','book','relation', 'etymon']
     list_filter = ('book','relation', 'etymon')
     # filter_horizontal = ['word']
-    list_editable  = ['explain']
+    list_editable  = ['explain', 'sentence']
     list_per_page = 20
 
     self_form_link = WordExpForm

@@ -74,7 +74,7 @@
         {% endif %}
 
         {% if object.related.all %}
-            <h2>Related</h2>
+            <h2>Related WordExp</h2>
             <!-- {% include "table_relevant.html" with objs=object.related.all  fields=fields_wordexp_related_name %} -->
             {% for obj in object.related.all %}
                 {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
@@ -82,7 +82,7 @@
         {% endif %}
 
         {% if related_word_exp_lst|length %}
-            <h2>Linked</h2>
+            <h2>Linked WordExp</h2>
             <!-- {% include "table_relevant.html" with objs=object.related.all  fields=fields_wordexp_related_name %} -->
             {% for obj in related_word_exp_lst %}
                 {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
