@@ -38,13 +38,17 @@ body.model-paper #changelist table tbody tr td:nth-child(4) {
 /* words*/
 
 body.model-word #changelist table tbody tr td:nth-child(1) {
-    background-color: red;
+    /*background-color: red;*/
 }
 
 body.model-word #changelist table tbody tr th:nth-child(2) {
-    width:50%!important;
+    /*width:50%!important;*/
 }
 
 body.model-word #changelist table tbody tr td:nth-child(3) {
-    width:20px!important;
+    /*width:20px!important;*/
+}
+
+body.model-word #changelist table tbody tr td.field-explain{
+    width:50%!important;
 }
