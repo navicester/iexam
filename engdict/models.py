@@ -207,13 +207,13 @@ def toppings_changed(sender, **kwargs):
         except:
             pass
 
-class CourseQuerySet(models.query.QuerySet):
+class WordExpQuerySet(models.query.QuerySet):
     def notempty(self):
         return self.exclude(sentence=None)
 
 class WordExpManager(models.Manager):
     def get_queryset(self):
-        return CourseQuerySet(self.model, using=self._db)
+        return WordExpQuerySet(self.model, using=self._db)
 
     def all(self, *args, **kwargs):
         return self.get_queryset().notempty()

@@ -123,7 +123,8 @@ class WordDetailView(TableDetailViewMixin, DetailView):
                    (not related_word_exp in obj.related.all()) and 
                    (not related_word_exp in obj.wordexp.all()) and 
                    (not related_word_exp in related_word_exp_lst)):
-                    related_word_exp_lst.append(related_word_exp)
+                    if related_word_exp.sentence:
+                        related_word_exp_lst.append(related_word_exp)
         context["related_word_exp_lst"] = related_word_exp_lst
 
         return context

@@ -33,7 +33,7 @@
             {% include "includes/detail_panel.html" with object=obj title=obj.name fields=fields_word notitle=True %}
         {% endfor %} -->
 
-        {% if object.wordexp.all %}
+        {% if object.wordexp.notempty %}
             <h2 style="color: blue;">WordExp Examples</h2>
             <!-- {% include "table_relevant.html" with objs=object.wordexp.all  fields=fields_wordexp_related_name %} -->
             {% for obj in object.wordexp.all %}
@@ -43,7 +43,7 @@
             {% endfor %}
         {% endif %}
 
-        {% if object.etyma.all %}
+        {% if object.etyma.notempty %}
             <h2>Etyma</h2>
             <!-- {% include "table_relevant.html" with objs=object.etyma.all  fields=fields_wordexp_related_name %} -->
             {% for obj in object.etyma.all %}                
@@ -53,7 +53,7 @@
             {% endfor %}
         {% endif %}
         
-        {% if object.resemblance.all %}
+        {% if object.resemblance.notempty %}
             <h2>Resemblance</h2>
             <!-- {% include "table_relevant.html" with objs=object.resemblance.all  fields=fields_wordexp_related_name %} -->
             {% for obj in object.resemblance.all %}
@@ -63,7 +63,7 @@
             {% endfor %}
         {% endif %}
 
-        {% if object.semantic.all %}
+        {% if object.semantic.notempty %}
             <h2>Semantic</h2>
             <!-- {% include "table_relevant.html" with objs=object.semantic.all  fields=fields_wordexp_related_name %} -->
             {% for obj in object.semantic.all %}
@@ -73,7 +73,7 @@
             {% endfor %}
         {% endif %}
 
-        {% if object.antonymy.all %}
+        {% if object.antonymy.notempty %}
             <h2>Antonymy</h2>
             <!-- {% include "table_relevant.html" with objs=object.antonymy.all  fields=fields_wordexp_related_name %} -->
             {% for obj in object.antonymy.all %}
@@ -83,7 +83,7 @@
             {% endfor %}
         {% endif %}
 
-        {% if object.related.all %}
+        {% if object.related.notempty %}
             <h2>Related WordExp</h2>
             <!-- {% include "table_relevant.html" with objs=object.related.all  fields=fields_wordexp_related_name %} -->
             {% for obj in object.related.all %}
