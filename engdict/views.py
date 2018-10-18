@@ -29,7 +29,7 @@ class WordListView(TableListViewMixin, ListView):
         ]
 
     def get_queryset(self, *args, **kwargs):
-        return super(WordListView, self).get_queryset().filter(in_plan=True)
+        return super(WordListView, self).get_queryset().filter(in_plan=True, progress__lt=100)
 
     # fields = [
     #     'name',

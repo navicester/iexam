@@ -132,8 +132,8 @@ class MyModelAdmin(admin.ModelAdmin):
 
         link_field_name = self._get_related_field_name( fk_model, link_model, **kwargs)
 
-        print ("link_field_name", link_field_name, "fk_obj", fk_obj)
-        print ("fk_model", fk_model, "link_model", link_model)
+        # print ("link_field_name", link_field_name, "fk_obj", fk_obj)
+        # print ("fk_model", fk_model, "link_model", link_model)
 
         if link_field_name:
             link_objs = link_model.objects.filter(**{link_field_name:fk_obj})
@@ -251,7 +251,7 @@ class MyModelAdmin(admin.ModelAdmin):
             #fk = getattr(link_obj, fk_model._meta.many_to_many)
             if not related_name:
                 related_name = fk_model._meta.object_name.lower()        
-            print related_name    
+            # print related_name    
             fk = getattr(link_obj, related_name)
             fk.remove(obj)
             print "_delete_obj"
@@ -361,8 +361,8 @@ class MyModelAdmin(admin.ModelAdmin):
         from django.shortcuts import render_to_response
         from django.utils.html import escape, escapejs
 
-        print self.self_form_link
-        print "-------"
+        # print self.self_form_link
+        # print "-------"
 
         form = self.self_form_link()
 
