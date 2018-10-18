@@ -103,7 +103,7 @@ class WordDetailView(TableDetailViewMixin, DetailView):
             'phonetic',
             'explain',
             # 'sentence', 
-            # 'book', 
+            'book', 
             # 'relation', 
             # 'etymon'
             ]
