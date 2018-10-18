@@ -34,7 +34,7 @@
         {% endfor %} -->
 
         {% if object.wordexp.all %}
-            <h2>Word Examples</h2>
+            <h2>WordExp Examples</h2>
             <!-- {% include "table_relevant.html" with objs=object.wordexp.all  fields=fields_wordexp_related_name %} -->
             {% for obj in object.wordexp.all %}
                 {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
