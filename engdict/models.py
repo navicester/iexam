@@ -209,7 +209,13 @@ def toppings_changed(sender, **kwargs):
 
 class WordExpQuerySet(models.query.QuerySet):
     def notempty(self):
-        return self.exclude(sentence=None)
+        # HOW to exclude \r\n? why sentence__isnull=True not work?
+        sentences = [_.sentence for _ in self.exclude(sentence__isnull=True) if _.sentence]
+
+        return self.filter(sentence__in=sentences)
+        # return self.filter(sentence__isnull=False).distinct()
+        # return self.filter(sentence__icontains=' ')
+        # return self.exclude(sentence__startswith='')
 
 class WordExpManager(models.Manager):
     def get_queryset(self):
@@ -217,6 +223,7 @@ class WordExpManager(models.Manager):
 
     def all(self, *args, **kwargs):
         return self.get_queryset().notempty()
+        # return super(WordExpManager, self).filter(sentence__isnull=False)
 
 class WordExp(models.Model):
     name =  models.CharField(max_length=45)
