@@ -94,7 +94,7 @@
         {% endif %}
 
         {% if related_word_exp_lst|length %}
-            <h2 style="color: yellow;">Linked WordExp</h2>
+            <h2 style="color: orange;">Linked WordExp</h2>
             <!-- {% include "table_relevant.html" with objs=object.related.all  fields=fields_wordexp_related_name %} -->
             {% for obj in related_word_exp_lst %}
                 {% if obj.sentence %}

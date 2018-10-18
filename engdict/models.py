@@ -207,6 +207,17 @@ def toppings_changed(sender, **kwargs):
         except:
             pass
 
+class CourseQuerySet(models.query.QuerySet):
+    def notempty(self):
+        return self.exclude(sentence=None)
+
+class WordExpManager(models.Manager):
+    def get_queryset(self):
+        return CourseQuerySet(self.model, using=self._db)
+
+    def all(self, *args, **kwargs):
+        return self.get_queryset().notempty()
+
 class WordExp(models.Model):
     name =  models.CharField(max_length=45)
     phonetic = models.CharField(max_length=45, null=True, blank=True)
@@ -221,6 +232,8 @@ class WordExp(models.Model):
     word = models.ManyToManyField(Word, related_name='wordexp', blank=True)
     relation = models.CharField(max_length=120, default='Self', choices=RELATION)
     etymon = models.CharField(max_length=45, null=True, blank=True)
+
+    objects = WordExpManager()
 
     def __unicode__(self): 
         return self.explain
