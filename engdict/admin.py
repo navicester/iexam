@@ -264,7 +264,7 @@ class WordAdmin(MyModelAdmin):
     ordering = ['name',]
     list_filter = ('in_plan', 'book', 'progress')
     # filter_horizontal = ['linked_word']
-    list_editable  = ['in_plan']
+    list_editable  = ['in_plan', 'progress']
 
     inlines = [
         WordDictInline,
