@@ -258,7 +258,7 @@ class WordExpAdmin(MyModelAdmin):
         model = WordExp
 
 class WordAdmin(MyModelAdmin):
-    list_display = ['name','phonetic', 'progress','explain','in_plan']
+    list_display = ['name','phonetic', 'book','explain','in_plan', 'progress']
 
     search_fields = ['name','phonetic' ,'explain']
     ordering = ['name',]
