@@ -26,7 +26,7 @@
         {% endfor %} -->
         
         {% if object.linked_word.all %}
-            <h2>Related Word</h2> 
+            <h2 style="color: green;">Related Word</h2> 
             {% include "table_relevant.html" with objs=object.linked_word.all  fields=fields_word_name %}
         {% endif %}
         <!-- {% for obj in object.linked_word.all %}
@@ -34,10 +34,12 @@
         {% endfor %} -->
 
         {% if object.wordexp.all %}
-            <h2>WordExp Examples</h2>
+            <h2 style="color: blue;">WordExp Examples</h2>
             <!-- {% include "table_relevant.html" with objs=object.wordexp.all  fields=fields_wordexp_related_name %} -->
             {% for obj in object.wordexp.all %}
-                {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                {% if obj.sentence %}
+                    {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                {% endif %}
             {% endfor %}
         {% endif %}
 
@@ -45,7 +47,9 @@
             <h2>Etyma</h2>
             <!-- {% include "table_relevant.html" with objs=object.etyma.all  fields=fields_wordexp_related_name %} -->
             {% for obj in object.etyma.all %}                
-                {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                {% if obj.sentence %}
+                    {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                {% endif %}
             {% endfor %}
         {% endif %}
         
@@ -53,7 +57,9 @@
             <h2>Resemblance</h2>
             <!-- {% include "table_relevant.html" with objs=object.resemblance.all  fields=fields_wordexp_related_name %} -->
             {% for obj in object.resemblance.all %}
-                {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                {% if obj.sentence %}
+                    {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                {% endif %}
             {% endfor %}
         {% endif %}
 
@@ -61,7 +67,9 @@
             <h2>Semantic</h2>
             <!-- {% include "table_relevant.html" with objs=object.semantic.all  fields=fields_wordexp_related_name %} -->
             {% for obj in object.semantic.all %}
-                {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                {% if obj.sentence %}
+                    {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                {% endif %}
             {% endfor %}
         {% endif %}
 
@@ -69,7 +77,9 @@
             <h2>Antonymy</h2>
             <!-- {% include "table_relevant.html" with objs=object.antonymy.all  fields=fields_wordexp_related_name %} -->
             {% for obj in object.antonymy.all %}
-                {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                {% if obj.sentence %}
+                    {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                {% endif %}
             {% endfor %}
         {% endif %}
 
@@ -77,15 +87,19 @@
             <h2>Related WordExp</h2>
             <!-- {% include "table_relevant.html" with objs=object.related.all  fields=fields_wordexp_related_name %} -->
             {% for obj in object.related.all %}
-                {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                {% if obj.sentence %}
+                    {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                {% endif %}
             {% endfor %}
         {% endif %}
 
         {% if related_word_exp_lst|length %}
-            <h2>Linked WordExp</h2>
+            <h2 style="color: yellow;">Linked WordExp</h2>
             <!-- {% include "table_relevant.html" with objs=object.related.all  fields=fields_wordexp_related_name %} -->
             {% for obj in related_word_exp_lst %}
-                {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                {% if obj.sentence %}
+                    {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                {% endif %}
             {% endfor %}            
         {% endif %}
 
