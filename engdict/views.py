@@ -71,11 +71,26 @@ class WordDetailView(TableDetailViewMixin, DetailView):
 
     def previous(self, *args, **kwargs):
         obj = self.get_object()
-        return obj.get_previous_by_name(field='updated')  
+        order = self.request.GET.get('order', None)
+        order = "latest" # use session to store later
+        if order and order == "latest":
+            field = "updated"
+            return obj.get_next_by_name(field=field, **kwargs)  
+        else:
+            field = "name"
+            return obj.get_previous_by_name(field=field, **kwargs)  
 
     def next(self, *args, **kwargs):
         obj = self.get_object()
-        return obj.get_next_by_name(field='updated')  
+        order = self.request.GET.get('order', None)
+        order = "latest" # use session to store later
+        if order and order == "latest":
+            field = "updated"
+            return obj.get_previous_by_name(field=field, **kwargs)  
+        else:
+            field = "name"     
+            return obj.get_next_by_name(field=field, **kwargs)     
+        
 
     def get_context_data(self, *args, **kwargs):
         context = super(WordDetailView, self).get_context_data(*args, **kwargs)
@@ -140,8 +155,9 @@ class WordDetailView(TableDetailViewMixin, DetailView):
                         related_word_exp_lst.append(related_word_exp)
         context["related_word_exp_lst"] = related_word_exp_lst
 
-        context["previous"] = self.previous()
-        context["next"] = self.next()
+        param = {'in_plan':True, 'progress__lt':100}
+        context["previous"] = self.previous(**param)
+        context["next"] = self.next(**param)
 
         return context
     

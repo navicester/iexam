@@ -68,17 +68,27 @@ class Word(models.Model):
         except:
             return '#'
 
-    def get_next_by_name(self, field='name'):
-        field = self.__class__._meta.get_field(field)        
+    def reading_required_words(self, **kwargs):
+        if not kwargs:
+            param = {'in_plan':True, 'progress__lt':100}
+            return param
+        return kwargs
+
+    def get_next_by_name(self, field='name', **kwargs):
+        field = self.__class__._meta.get_field(field, 'name') 
+        param = self.reading_required_words(**kwargs)       
+
         try:
-            return self._get_next_or_previous_by_FIELD(field, is_next=True, in_plan=True, progress__lt=100)
+            return self._get_next_or_previous_by_FIELD(field, is_next=True, **param)
         except Word.DoesNotExist:
             return None
 
-    def get_previous_by_name(self, field='name'):
-        field = self.__class__._meta.get_field('name')
+    def get_previous_by_name(self, field='name', **kwargs):
+        field = self.__class__._meta.get_field(field, 'name')
+        param = self.reading_required_words(**kwargs)  
+        print param
         try:
-            return self._get_next_or_previous_by_FIELD(field, is_next=False, in_plan=True, progress__lt=100)
+            return self._get_next_or_previous_by_FIELD(field, is_next=False, **param)
         except Word.DoesNotExist:
             return None
 
