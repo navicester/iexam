@@ -126,6 +126,7 @@
     </div>
 </div>
 
+{% comment %}
 <div class="row">
     <div class="col-xs-6">
         {% if object.get_previous_by_name %}<a href="{{ object.get_previous_by_name.get_absolute_url }}" title="{% trans 'previous' %}">&laquo; {{ object.get_previous_by_name.name }}</a>{% endif %}
@@ -134,5 +135,16 @@
         {% if object.get_next_by_name %}<a href="{{ object.get_next_by_name.get_absolute_url }}" title="{% trans "next" %}">&raquo; {{ object.get_next_by_name.name }}</a>{% endif %}
     </div>
 </div>
+{% endcomment %}
+
+<div class="row">
+    <div class="col-xs-6">
+        {% if previous %}<a href="{{ previous.get_absolute_url }}" title="{% trans 'previous' %}">&laquo; {{ previous.name }}</a>{% endif %}
+    </div>
+    <div class="col-xs-6">
+        {% if next %}<a href="{{ next.get_absolute_url }}" title="{% trans "next" %}">&raquo; {{ next.name }}</a>{% endif %}
+    </div>
+</div>
+
 <br>
 {% endblock %}   

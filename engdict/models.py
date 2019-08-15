@@ -68,14 +68,14 @@ class Word(models.Model):
         except:
             return '#'
 
-    def get_next_by_name(self):
-        field = self.__class__._meta.get_field('name')        
+    def get_next_by_name(self, field='name'):
+        field = self.__class__._meta.get_field(field)        
         try:
             return self._get_next_or_previous_by_FIELD(field, is_next=True, in_plan=True, progress__lt=100)
         except Word.DoesNotExist:
             return None
 
-    def get_previous_by_name(self):
+    def get_previous_by_name(self, field='name'):
         field = self.__class__._meta.get_field('name')
         try:
             return self._get_next_or_previous_by_FIELD(field, is_next=False, in_plan=True, progress__lt=100)

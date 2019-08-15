@@ -29,7 +29,12 @@ class WordListView(TableListViewMixin, ListView):
         ]
 
     def get_queryset(self, *args, **kwargs):
-        return super(WordListView, self).get_queryset().filter(in_plan=True, progress__lt=100)
+        qs = super(WordListView, self).get_queryset().filter(in_plan=True, progress__lt=100)
+        order = self.request.GET.get('order', None)
+
+        if order and 'latest' == order:
+            qs = qs.order_by('-updated')
+        return qs
 
     # fields = [
     #     'name',
@@ -63,6 +68,14 @@ class WordDetailView(TableDetailViewMixin, DetailView):
         'antonymy_word',
         'progress'
     ]    
+
+    def previous(self, *args, **kwargs):
+        obj = self.get_object()
+        return obj.get_previous_by_name(field='updated')  
+
+    def next(self, *args, **kwargs):
+        obj = self.get_object()
+        return obj.get_next_by_name(field='updated')  
 
     def get_context_data(self, *args, **kwargs):
         context = super(WordDetailView, self).get_context_data(*args, **kwargs)
@@ -126,6 +139,9 @@ class WordDetailView(TableDetailViewMixin, DetailView):
                     if related_word_exp.sentence:
                         related_word_exp_lst.append(related_word_exp)
         context["related_word_exp_lst"] = related_word_exp_lst
+
+        context["previous"] = self.previous()
+        context["next"] = self.next()
 
         return context
     
