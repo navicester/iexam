@@ -272,33 +272,79 @@ class WordAdmin(MyModelAdmin):
     search_fields = ['name','phonetic' ,'explain']
     ordering = ['name',]
     list_filter = ('in_plan', 'book', 'progress')
-    # filter_horizontal = ['linked_word']
     list_editable  = ['in_plan', 'progress']
 
+
+    # fields  = [
+    #     'name',
+    #     'phonetic', 
+    #     'linked_word',
+    #     'etyma_word',   
+    #     'resemblance_word',
+    #     'semantic_word',
+    #     'antonymy_word',
+    #     'book',
+    #     'explain',
+    #     'in_plan', 
+    #     'progress',
+    # ]
+
+    fieldsets= (
+        (None,{
+            'classes': ('filedset-left',),
+            'fields':
+                (
+                'name',
+                'phonetic', 
+                'book',
+                'explain',
+                'in_plan', 
+                'progress',
+                 )}),
+        ('M2M',{
+            # 'classes': ('filedset-right collapse0',),
+            'fields':
+                (
+                  # 'linked_word',
+                'etyma_word',                                   
+                'resemblance_word', # shape or phonetic
+                'semantic_word', # 
+                # 'antonymy_word',
+                 )}),        
+        )
+
+    filter_horizontal = [
+        'linked_word',
+        'etyma_word',   
+        'resemblance_word',
+        'semantic_word',
+        'antonymy_word',
+    ]
+    
     inlines = [
         WordDictInline,
     ]
 
     self_form_link = WordForm
 
-#    form_links = [WordExpLinkFormAdmin, WordDictFormAdmin]
     form_links = [ 
-        WordLinkFormAdmin,
-        # below 4 will be automatically updated if change relevant word
+        # WordLinkFormAdmin,
+        # below 4 will be automatically updated if change relevant word exp, comment them to use buit-in m2m instead
         # WordLinkEtymaFormAdmin,
         # WordLinkResemblanceFormAdmin,
         # WordLinkSemanticFormAdmin,
         # WordLinkAntonymyFormAdmin,
 
         WordExpLinkFormAdmin,
-        WordExpEtymaLinkFormAdmin,
-        WordExpResemblanceLinkFormAdmin,
-        WordExpSemanticLinkFormAdmin,
-        WordExpAntonymyLinkFormAdmin,
+        # use Word M2M directly
+        # WordExpEtymaLinkFormAdmin,
+        # WordExpResemblanceLinkFormAdmin,
+        # WordExpSemanticLinkFormAdmin,
+        # WordExpAntonymyLinkFormAdmin,
         WordExpRelatedLinkFormAdmin,
 
-        CategoryLinkFormAdmin,
-        TagLinkFormAdmin,
+        # CategoryLinkFormAdmin,
+        # TagLinkFormAdmin,
 
         # WordDictLinkFormAdmin
     ]
@@ -306,7 +352,13 @@ class WordAdmin(MyModelAdmin):
     class Meta:
         model = Word
 
-    form = WordAdminForm
+    # class Media:
+    #     css = {
+    #         "all": ("css/model_admin.css","css/word.css")
+    #     }
+    #     js = ("js/jquery.min.js","js/model_admin.js",)
+
+    # form = WordAdminForm
 
     @csrf_protect_m
     def add_view(self, request, form_url='', extra_context=None):

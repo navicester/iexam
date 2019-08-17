@@ -13,92 +13,158 @@
     {% endif %}
 
     <br>
+
+    {% if 1 %}
+    <div class="row">
+        <div class="col-sm-12">
+            <p><b>{{object.name}}</b></p>
+            <p>{{object.phonetic}}</p>
+            <p>{{object.explain}}</p>
+            <p>Progess: {{object.progress}} | {{object.book}} | Updated: {{object.updated}}</p>
+            <p></p>
+            <p></p>
+
+        </div>            
+    </div>
+    {% else %}
     {% include "includes/detail_panel.html" with title=object.name fields_lb_content=fields_lb_content %}
+    {% endif %}
+
 
     {% block inline_content %}
-        <hr>        
+        <hr>  
+
         {% if object.worddict_set.all %}
-        <h2>Dictionary</h2>
+        <h3>Dictionary</h3>
+            {% if 1 %}
+            <p><b>{{object.book}}</b></p>
+            <p>{{object.explain}}</p>            
+            {% else %}
             {% include "table_relevant.html" with objs=object.worddict_set.all  fields=fields_worddict_name %}
+            {% endif %}
         {% endif %}
-        <!-- {% for obj in object.worddict_set.all %}
-            {% include "includes/detail_panel.html" with object=obj title=obj.book fields=fields_worddict %}
-        {% endfor %} -->
         
         {% if object.linked_word.all %}
-            <h2 style="color: green;">Related Word</h2> 
+            <h3 style="color: green;">Linked Word</h3> 
+            {% if 1 %}
+                {% for item in object.linked_word.all %}
+                <p><b>{{item.name}}</b></p>
+                <p>{% if item.phonetic %}{{item.phonetic}}{% endif %}</p>              
+                <p>{{item.explain}}</p>
+                <br>
+                {% endfor %}
+            {% else %}
             {% include "table_relevant.html" with objs=object.linked_word.all  fields=fields_word_name %}
+            {% endif %}
         {% endif %}
-        <!-- {% for obj in object.linked_word.all %}
-            {% include "includes/detail_panel.html" with object=obj title=obj.name fields=fields_word notitle=True %}
-        {% endfor %} -->
 
         {% if object.wordexp.all %}
-            <h2 style="color: blue;">WordExp Examples</h2>
-            <!-- {% include "table_relevant.html" with objs=object.wordexp.all  fields=fields_wordexp_related_name %} -->
+            <h3 style="color: blue;">WordExp Examples</h3>
             {% for obj in object.wordexp.all %}
                 {% if obj.sentence %}
+                    {% if 1 %}
+                        <p><b>{{obj.name}}</b></p>
+                        <p>{{obj.phonetic}}</p>
+                        <p>{{obj.explain}}</p>                    
+                    {% else %}
                     {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         {% endif %}
 
         {% if object.etyma.all %}
-            <h2>Etyma</h2>
-            <!-- {% include "table_relevant.html" with objs=object.etyma.all  fields=fields_wordexp_related_name %} -->
+            <h3>Etyma</h3>
             {% for obj in object.etyma.all %}                
                 {% if obj.sentence %}
+                    {% if 1 %}
+                        <p><b>{{obj.name}}</b></p>
+                        <p>{{obj.phonetic}}</p>
+                        <p>{{obj.explain}}</p>
+                        <p>{{obj.sentence}}</p>                    
+                    {% else %}                   
                     {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         {% endif %}
         
         {% if object.resemblance.all %}
-            <h2>Resemblance</h2>
-            <!-- {% include "table_relevant.html" with objs=object.resemblance.all  fields=fields_wordexp_related_name %} -->
+            <h3>Resemblance</h3>
             {% for obj in object.resemblance.all %}
                 {% if obj.sentence %}
+                    {% if 1 %}
+                        <p><b>{{obj.name}}</b></p>
+                        <p>{{obj.phonetic}}</p>
+                        <p>{{obj.explain}}</p>
+                        <p>{{obj.sentence}}</p>                    
+                    {% else %}                
                     {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         {% endif %}
 
         {% if object.semantic.all %}
-            <h2>Semantic</h2>
-            <!-- {% include "table_relevant.html" with objs=object.semantic.all  fields=fields_wordexp_related_name %} -->
+            <h3>Semantic</h3>
             {% for obj in object.semantic.all %}
                 {% if obj.sentence %}
+                    {% if 1 %}
+                        <p><b>{{obj.name}}</b></p>
+                        <p>{{obj.phonetic}}</p>
+                        <p>{{obj.explain}}</p>
+                        <p>{{obj.sentence}}</p>                    
+                    {% else %}                   
                     {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         {% endif %}
 
         {% if object.antonymy.all %}
-            <h2>Antonymy</h2>
-            <!-- {% include "table_relevant.html" with objs=object.antonymy.all  fields=fields_wordexp_related_name %} -->
+            <h3>Antonymy</h3>
             {% for obj in object.antonymy.all %}
                 {% if obj.sentence %}
+                    {% if 1 %}
+                        <p><b>{{obj.name}}</b></p>
+                        <p>{{obj.phonetic}}</p>
+                        <p>{{obj.explain}}</p>
+                        <p>{{obj.sentence}}</p>                    
+                    {% else %}                   
                     {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         {% endif %}
 
         {% if object.related.all %}
-            <h2>Related WordExp</h2>
-            <!-- {% include "table_relevant.html" with objs=object.related.all  fields=fields_wordexp_related_name %} -->
+            <h3>Related WordExp</h3>
             {% for obj in object.related.all %}
                 {% if obj.sentence %}
+                    {% if 1 %}
+                        <p><b>{{obj.name}}</b></p>
+                        <p>{{obj.phonetic}}</p>
+                        <p>{{obj.explain}}</p>
+                        <p>{{obj.sentence}}</p>                    
+                    {% else %}                   
                     {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         {% endif %}
 
         {% if related_word_exp_lst|length %}
-            <h2 style="color: orange;">Linked WordExp</h2>
-            <!-- {% include "table_relevant.html" with objs=object.related.all  fields=fields_wordexp_related_name %} -->
+            <h3 style="color: orange;">Linked WordExp</h3>
             {% for obj in related_word_exp_lst %}
                 {% if obj.sentence %}
+                    {% if 1 %}
+                        <p><b>{{obj.name}}</b></p>
+                        <p>{{obj.phonetic}}</p>
+                        <p>{{obj.explain}}</p>
+                        <p>{{obj.sentence}}</p>                    
+                    {% else %}                   
                     {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
+                    {% endif %}
                 {% endif %}
             {% endfor %}            
         {% endif %}
@@ -126,7 +192,7 @@
     </div>
 </div>
 
-{% comment %}
+{% if 0 %}
 <div class="row">
     <div class="col-xs-6">
         {% if object.get_previous_by_name %}<a href="{{ object.get_previous_by_name.get_absolute_url }}" title="{% trans 'previous' %}">&laquo; {{ object.get_previous_by_name.name }}</a>{% endif %}
@@ -135,8 +201,7 @@
         {% if object.get_next_by_name %}<a href="{{ object.get_next_by_name.get_absolute_url }}" title="{% trans "next" %}">&raquo; {{ object.get_next_by_name.name }}</a>{% endif %}
     </div>
 </div>
-{% endcomment %}
-
+{% else %}
 <div class="row">
     <div class="col-xs-6">
         {% if previous %}<a href="{{ previous.get_absolute_url }}" title="{% trans 'previous' %}">&laquo; {{ previous.name }}</a>{% endif %}
@@ -145,6 +210,7 @@
         {% if next %}<a href="{{ next.get_absolute_url }}" title="{% trans "next" %}">&raquo; {{ next.name }}</a>{% endif %}
     </div>
 </div>
+{% endif %}
 
 <br>
 {% endblock %}   

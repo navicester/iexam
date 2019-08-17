@@ -86,7 +86,7 @@ class Word(models.Model):
     def get_previous_by_name(self, field='name', **kwargs):
         field = self.__class__._meta.get_field(field, 'name')
         param = self.reading_required_words(**kwargs)  
-        print param
+        
         try:
             return self._get_next_or_previous_by_FIELD(field, is_next=False, **param)
         except Word.DoesNotExist:
