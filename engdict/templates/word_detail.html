@@ -65,7 +65,8 @@
                     {% if 1 %}
                         <p><b>{{obj.name}}</b></p>
                         <p>{{obj.phonetic}}</p>
-                        <p>{{obj.explain}}</p>                    
+                        <p>{{obj.explain}}</p> 
+                        <p>{{obj.sentence}}</p>                   
                     {% else %}
                     {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
                     {% endif %}
