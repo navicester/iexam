@@ -315,6 +315,8 @@ class WordAdmin(MyModelAdmin):
 
     self_form_link = WordForm
 
+    form = WordAdminForm # comments this if you want to use fieldsets
+
     form_links = [ 
 
         WordExpLinkFormAdmin,
@@ -331,7 +333,7 @@ class WordAdmin(MyModelAdmin):
         WordLinkResemblanceFormAdmin,
         WordLinkSemanticFormAdmin,
         WordLinkAntonymyFormAdmin,
-        
+
         # CategoryLinkFormAdmin,
         # TagLinkFormAdmin,
 
@@ -347,7 +349,6 @@ class WordAdmin(MyModelAdmin):
     #     }
     #     js = ("js/jquery.min.js","js/model_admin.js",)
 
-    # form = WordAdminForm
 
     @csrf_protect_m
     def add_view(self, request, form_url='', extra_context=None):
