@@ -275,51 +275,39 @@ class WordAdmin(MyModelAdmin):
     list_editable  = ['in_plan', 'progress']
 
 
-    # fields  = [
-    #     'name',
-    #     'phonetic', 
+    # time consuming
+
+    # fieldsets= (
+    #     (None,{
+    #         'classes': ('filedset-left',),
+    #         'fields':
+    #             (
+    #             'name',
+    #             'phonetic', 
+    #             'book',
+    #             'explain',
+    #             'in_plan', 
+    #             'progress',
+    #              )}),
+    #     ('M2M',{
+    #         # 'classes': ('filedset-right collapse0',),
+    #         'fields':
+    #             (
+    #               # 'linked_word',
+    #             'etyma_word',                                   
+    #             'resemblance_word', # shape or phonetic
+    #             'semantic_word', # 
+    #             # 'antonymy_word',
+    #              )}),        
+    #     )
+
+    # filter_horizontal = [
     #     'linked_word',
     #     'etyma_word',   
     #     'resemblance_word',
     #     'semantic_word',
     #     'antonymy_word',
-    #     'book',
-    #     'explain',
-    #     'in_plan', 
-    #     'progress',
     # ]
-
-    fieldsets= (
-        (None,{
-            'classes': ('filedset-left',),
-            'fields':
-                (
-                'name',
-                'phonetic', 
-                'book',
-                'explain',
-                'in_plan', 
-                'progress',
-                 )}),
-        ('M2M',{
-            # 'classes': ('filedset-right collapse0',),
-            'fields':
-                (
-                  # 'linked_word',
-                'etyma_word',                                   
-                'resemblance_word', # shape or phonetic
-                'semantic_word', # 
-                # 'antonymy_word',
-                 )}),        
-        )
-
-    filter_horizontal = [
-        'linked_word',
-        'etyma_word',   
-        'resemblance_word',
-        'semantic_word',
-        'antonymy_word',
-    ]
     
     inlines = [
         WordDictInline,
@@ -328,12 +316,6 @@ class WordAdmin(MyModelAdmin):
     self_form_link = WordForm
 
     form_links = [ 
-        # WordLinkFormAdmin,
-        # below 4 will be automatically updated if change relevant word exp, comment them to use buit-in m2m instead
-        # WordLinkEtymaFormAdmin,
-        # WordLinkResemblanceFormAdmin,
-        # WordLinkSemanticFormAdmin,
-        # WordLinkAntonymyFormAdmin,
 
         WordExpLinkFormAdmin,
         # use Word M2M directly
@@ -343,6 +325,13 @@ class WordAdmin(MyModelAdmin):
         # WordExpAntonymyLinkFormAdmin,
         WordExpRelatedLinkFormAdmin,
 
+        # WordLinkFormAdmin,
+        # below 4 will be automatically updated if change relevant word exp, comment them to use buit-in m2m instead
+        WordLinkEtymaFormAdmin,
+        WordLinkResemblanceFormAdmin,
+        WordLinkSemanticFormAdmin,
+        WordLinkAntonymyFormAdmin,
+        
         # CategoryLinkFormAdmin,
         # TagLinkFormAdmin,
 
