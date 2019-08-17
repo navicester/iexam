@@ -24,8 +24,13 @@ class WordListView(TableListViewMixin, ListView):
 
     fields_exclude = [
         'in_plan',
+        'linked_word',
+        'etyma_word',
+        'resemblance_word',
+        'semantic_word',
+        'antonymy_word',        
         'timestamp',
-        'updated',
+        # 'updated',
         ]
 
     def get_queryset(self, *args, **kwargs):
@@ -36,13 +41,9 @@ class WordListView(TableListViewMixin, ListView):
             qs = qs.order_by('-updated')
         return qs
 
-    # fields = [
-    #     'name',
-    #     'phonetic',
-    #     'explain',
-    #     'progress',
-    #     'updated'
-    # ]
+    exclude = [
+
+    ]
 
 class WordDetailView(TableDetailViewMixin, DetailView):
     model = Word
