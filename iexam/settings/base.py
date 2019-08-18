@@ -123,6 +123,8 @@ else:
 if socket.gethostname() == "PC-20130414CBMY":
     DB_MYSQL = False
 
+DB_MYSQL = True
+
 if DB_MYSQL:
     DATABASES = {
         'default': {
