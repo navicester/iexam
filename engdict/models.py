@@ -86,7 +86,7 @@ class Word(models.Model):
     def get_previous_by_name(self, field='name', **kwargs):
         field = self.__class__._meta.get_field(field, 'name')
         param = self.reading_required_words(**kwargs)  
-        
+
         try:
             return self._get_next_or_previous_by_FIELD(field, is_next=False, **param)
         except Word.DoesNotExist:
@@ -264,9 +264,12 @@ class WordExp(models.Model):
 DICT = (
     ('youdao', 'YOUDAO'),
     ('kingsoft', 'kingsoft'),
+    ('nce3', 'nce3'),
+    ('nce4', 'nce4'),
 )
 class WordDict(models.Model):
     word =  models.ForeignKey(Word)
+    phonetic = models.CharField(max_length=45, null=True, blank=True)
     explain = models.TextField(blank=True, null=True)
     book = models.CharField(max_length=120, choices=DICT, default='youdao')
 
