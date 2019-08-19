@@ -379,6 +379,8 @@ class WordDictAdmin(admin.ModelAdmin):
     ordering = ['book',]
     list_filter = ('book',)
     raw_id_fields = ['word']
+
+    extra = 1
     
 
 class ExampleWordInline(admin.TabularInline):
