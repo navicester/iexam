@@ -12,7 +12,7 @@ csrf_protect_m = method_decorator(csrf_protect)
 
 class WordDictInline(admin.TabularInline):
     model = WordDict
-    # extra = 1
+    extra = 0
     # max_num = 1
 
 class WordDictLinkFormAdmin(LinkFormAdmin):
@@ -379,7 +379,7 @@ class WordDictAdmin(admin.ModelAdmin):
     ordering = ['book',]
     list_filter = ('book',)
     raw_id_fields = ['word']
-    
+
 
 class ExampleWordInline(admin.TabularInline):
     model = ExampleWord
