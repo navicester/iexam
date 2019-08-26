@@ -17,10 +17,11 @@
     {% if 1 %}
     <div class="row">
         <div class="col-sm-12">
-            <p><b>{{object.name}}</b></p>
+            <h3 style="color:#345186;">{{object.name}}</h3>
+            <hr>
             <p>{{object.phonetic}}</p>
             <p>{{object.explain}}</p>
-            <p>Progess: {{object.progress}} | {{object.book}} | Updated: {{object.updated}}</p>
+            <p style="color:grey;"><small>Progess: {{object.progress}}  |  {{object.book}}  |  Updated: {{object.updated |date:"d M Y"}}</small></p>
             <p></p>
             <p></p>
 
@@ -42,10 +43,11 @@
             {% else %}
             {% include "table_relevant.html" with objs=object.worddict_set.all  fields=fields_worddict_name %}
             {% endif %}
+            <hr>
         {% endif %}
         
         {% if object.linked_word.all %}
-            <h3 style="color: green;">Linked Word</h3> 
+            <h3>Linked Word</h3> 
             {% if 1 %}
                 {% for item in object.linked_word.all %}
                 <p><b>{{item.name}}</b></p>
@@ -56,6 +58,7 @@
             {% else %}
             {% include "table_relevant.html" with objs=object.linked_word.all  fields=fields_word_name %}
             {% endif %}
+            <hr>
         {% endif %}
 
         {% if object.wordexp.all %}
@@ -72,6 +75,7 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
+            <hr>
         {% endif %}
 
         {% if object.etyma.all %}
@@ -88,6 +92,7 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
+            <hr>
         {% endif %}
         
         {% if object.resemblance.all %}
@@ -104,6 +109,7 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
+            <hr>
         {% endif %}
 
         {% if object.semantic.all %}
@@ -120,6 +126,7 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
+            <hr>
         {% endif %}
 
         {% if object.antonymy.all %}
@@ -136,6 +143,7 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
+            <hr>
         {% endif %}
 
         {% if object.related.all %}
@@ -152,6 +160,7 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
+            <hr>
         {% endif %}
 
         {% if related_word_exp_lst|length %}
@@ -167,7 +176,8 @@
                     {% include "includes/detail_panel.html" with object=obj title=obj.exp fields=fields_wordexp_related notitle=False %}
                     {% endif %}
                 {% endif %}
-            {% endfor %}            
+            {% endfor %}
+            <hr>          
         {% endif %}
 
     {% endblock %}
