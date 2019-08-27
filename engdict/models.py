@@ -113,12 +113,14 @@ def save_related_words(instance1, instance2, related_name_reverse):
     object1_reserve_set = getattr(instance2, related_name_reverse).all()
 
     # if not (instance1 in object1_reserve_set) and not (instance1 is instance2):
-    if not getattr(instance2, related_name_reverse).filter(name=instance1.name) and not (instance1.name == instance2.name):
+    if not getattr(instance2, related_name_reverse).filter(name=instance1.name).count() \
+            and not (instance1.name == instance2.name):
         print "{} add {}".format(instance2.name, instance1.name)
         updated = True
         getattr(instance2, related_name_reverse).add(instance1) # this will trigger another signal   
     else:
-        print "instance2 related set is {}".format(object1_reserve_set)   
+        # print "instance2 related set is {}".format(object1_reserve_set) 
+        pass  
 
     return updated 
 
@@ -167,9 +169,7 @@ def save_words(instance, name):
     if ever_updated:
         instance.save()
 
-
-def words_changed1(sender, instance, **kwargs):
-    # print "Enter words_changed1"
+def words_changed(sender, instance, **kwargs):
     instance.slug = slugify(instance.name)
     
     if instance:
@@ -178,16 +178,40 @@ def words_changed1(sender, instance, **kwargs):
         save_words(instance, 'resemblance')
         save_words(instance, 'semantic')
         save_words(instance, 'antonymy')
-    else:
-        print "instance is null"
 
-    # print "Exit words_changed1"
+# if you want to remove one relationship, to avoid the recursively deadlock, delete one work link, 
+# DON'T save the 2nd time before you delete the link in the relevant word 
+def save_words1(instance, name):
+    qs = getattr(instance, name)
+    for _ in qs.get_queryset():
+        obj = getattr(_,name)
+        if not instance in obj.get_queryset():
+            obj.add(instance)
+            _.save()
 
-pre_save.connect(words_changed1, sender=Word)
+def words_changed1(sender, instance, **kwargs):
+    instance.slug = slugify(instance.name)
+    
+    if instance:
+        save_words1(instance, 'etyma_word')
+        save_words1(instance, 'resemblance_word')
+        save_words1(instance, 'semantic_word')
+        save_words1(instance, 'antonymy_word')
+
+
+def words_changed2(sender, instance, **kwargs):
+    if not instance.wordexp.get_queryset().filter(sentence__isnull=True).count():
+        obj = WordExp(name=instance.name)
+        obj.save()
+        obj.word.add(instance)
+        obj.save()
+
+post_save.connect(words_changed1, sender=Word)
+post_save.connect(words_changed2, sender=Word)
 
 
 def toppings_changed2(sender, instance, **kwargs):
-    # be carefule, this can introduce reclusively calling if not process properly
+    # be carefule, this can introduce recursively calling if not process properly
     for _ in instance.linked_word.all():
         if not (instance in _.linked_word.all()) and not (_ is instance):
             _.linked_word.add(instance)
@@ -197,6 +221,27 @@ def toppings_changed2(sender, instance, **kwargs):
             instance.save()
 
 m2m_changed.connect(toppings_changed2, sender=Word.linked_word.through)
+
+def move_all_wordexp_relationship_to_word():
+    from engdict.models import Word
+    for _ in Word.objects.all():
+        if _.etyma.count():
+            for __ in _.etyma.get_queryset():
+                obj = Word.objects.filter(name=__.name).first()
+                _.etyma_word.add(obj)
+        if _.resemblance.count():
+            for __ in _.resemblance.get_queryset():
+                obj = Word.objects.filter(name=__.name).first()
+                _.resemblance_word.add()
+        if _.semantic.count():
+            for __ in _.semantic.get_queryset():
+                obj = Word.objects.filter(name=__.name).first()
+                _.semantic_word.add()
+        if _.antonymy.count():
+            for __ in _.antonymy.get_queryset():
+                obj = Word.objects.filter(name=__.name).first()
+                _.antonymy_word.add()                                                
+        _.save()
 
 
 RELATION = (
