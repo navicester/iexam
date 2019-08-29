@@ -272,7 +272,12 @@ class WordAdmin(MyModelAdmin):
     search_fields = ['name','phonetic' ,'explain']
     ordering = ['name',]
     list_filter = ('in_plan', 'book', 'progress')
-    list_editable  = ['in_plan', 'progress']
+    list_editable  = [
+        'in_plan', 
+        'progress'，
+        'book',
+        'explain',        
+        ]
 
 
     # time consuming
