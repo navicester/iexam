@@ -276,7 +276,7 @@ class WordAdmin(MyModelAdmin):
         'in_plan', 
         'progress',
         'book',
-        'explain',        
+        # 'explain',        
         ]
 
 
