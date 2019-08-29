@@ -274,7 +274,7 @@ class WordAdmin(MyModelAdmin):
     list_filter = ('in_plan', 'book', 'progress')
     list_editable  = [
         'in_plan', 
-        'progress'，
+        'progress',
         'book',
         'explain',        
         ]
