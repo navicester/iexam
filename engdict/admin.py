@@ -411,51 +411,68 @@ class WordAdmin(MyModelAdmin):
                 if _.sentence:
                     if not _.sentence in sentences:
                         sentences.append(_.sentence)
-            for etyma in  obj.etyma_word.all():
-                if etyma.explain:
-                    sentences.append(_.name)
-                    if _.phonetic:
-                        sentences.append(_.phonetic)                    
-                    sentences.append(_.explain)
-                for _ in etyma.wordexp.all():
-                    if _.sentence:
-                        if not _.sentence in sentences:
-                            sentences.append(_.sentence)
-            for resemblance in  obj.resemblance_word.all():
-                if resemblance.explain:
-                    sentences.append(_.name)
-                    if _.phonetic:
-                        sentences.append(_.phonetic)   
-                    sentences.append(_.explain)
-                for _ in resemblance.wordexp.all():
-                    if _.sentence:
-                        if not _.sentence in sentences:
-                            sentences.append(_.sentence)
-            for semantic in  obj.semantic_word.all():
-                if semantic.explain:
-                    sentences.append(_.name)
-                    if _.phonetic:
-                        sentences.append(_.phonetic)   
-                    sentences.append(_.explain)
-                for _ in semantic.wordexp.all():
-                    if _.sentence:
-                        if not _.sentence in sentences:
-                            sentences.append(_.sentence)
-            for antonymy in  obj.antonymy_word.all():
-                if antonymy.explain:
-                    sentences.append(_.name)
-                    if _.phonetic:
-                        sentences.append(_.phonetic)   
-                    sentences.append(_.explain)
-                for _ in antonymy.wordexp.all():
-                    if _.sentence:
-                        if not _.sentence in sentences:
-                            sentences.append(_.sentence)
-            # for linked in  obj.linked_word.all():
-            #     for _ in linked.wordexp.all():
+            #  
+            qs = [
+                    obj.etyma_word.all(), 
+                    obj.resemblance_word.all(), 
+                    obj.semantic_word.all(), 
+                    obj.antonymy_word.all()
+                ]
+                
+            for linked_words_qs in qs:
+                for word_obj in  linked_words_qs:
+                    sentences.append(word_obj.name)                        
+                    if word_obj.phonetic:
+                        sentences.append(word_obj.phonetic)   
+                    if word_obj.explain:                 
+                        sentences.append(word_obj.explain)
+                    for _ in word_obj.wordexp.all():
+                        if _.sentence:
+                            if not _.sentence in sentences:
+                                sentences.append(_.sentence)
+
+
+            # for etyma in  obj.etyma_word.all():
+            #     if etyma.explain:
+            #         sentences.append(etyma.name)
+            #         if etyma.phonetic:
+            #             sentences.append(etyma.phonetic)                    
+            #         sentences.append(etyma.explain)
+            #     for _ in etyma.wordexp.all():
             #         if _.sentence:
             #             if not _.sentence in sentences:
             #                 sentences.append(_.sentence)
+            # for resemblance in  obj.resemblance_word.all():
+            #     if resemblance.explain:
+            #         sentences.append(resemblance.name)
+            #         if resemblance.phonetic:
+            #             sentences.append(resemblance.phonetic)   
+            #         sentences.append(resemblance.explain)
+            #     for _ in resemblance.wordexp.all():
+            #         if _.sentence:
+            #             if not _.sentence in sentences:
+            #                 sentences.append(_.sentence)
+            # for semantic in  obj.semantic_word.all():
+            #     if semantic.explain:
+            #         sentences.append(semantic.name)
+            #         if semantic.phonetic:
+            #             sentences.append(semantic.phonetic)   
+            #         sentences.append(semantic.explain)
+            #     for _ in semantic.wordexp.all():
+            #         if _.sentence:
+            #             if not _.sentence in sentences:
+            #                 sentences.append(_.sentence)
+            # for antonymy in  obj.antonymy_word.all():
+            #     if antonymy.explain:
+            #         sentences.append(antonymy.name)
+            #         if antonymy.phonetic:
+            #             sentences.append(antonymy.phonetic)   
+            #         sentences.append(antonymy.explain)
+            #     for _ in antonymy.wordexp.all():
+            #         if _.sentence:
+            #             if not _.sentence in sentences:
+            #                 sentences.append(_.sentence)
+
             sentence = "\r\n".join(sentences)
             row.append(sentence)
             writer.writerow(row)    
