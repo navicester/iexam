@@ -264,6 +264,7 @@ class WordAdmin(MyModelAdmin):
         'book',
         'explain',
         'in_plan', 
+        'is_favorite',
         'progress',
         'timestamp', 
         'updated'
