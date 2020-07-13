@@ -412,21 +412,41 @@ class WordAdmin(MyModelAdmin):
                     if not _.sentence in sentences:
                         sentences.append(_.sentence)
             for etyma in  obj.etyma_word.all():
+                if etyma.explain:
+                    sentences.append(_.name)
+                    if _.phonetic:
+                        sentences.append(_.phonetic)                    
+                    sentences.append(_.explain)
                 for _ in etyma.wordexp.all():
                     if _.sentence:
                         if not _.sentence in sentences:
                             sentences.append(_.sentence)
             for resemblance in  obj.resemblance_word.all():
+                if resemblance.explain:
+                    sentences.append(_.name)
+                    if _.phonetic:
+                        sentences.append(_.phonetic)   
+                    sentences.append(_.explain)
                 for _ in resemblance.wordexp.all():
                     if _.sentence:
                         if not _.sentence in sentences:
                             sentences.append(_.sentence)
             for semantic in  obj.semantic_word.all():
+                if semantic.explain:
+                    sentences.append(_.name)
+                    if _.phonetic:
+                        sentences.append(_.phonetic)   
+                    sentences.append(_.explain)
                 for _ in semantic.wordexp.all():
                     if _.sentence:
                         if not _.sentence in sentences:
                             sentences.append(_.sentence)
             for antonymy in  obj.antonymy_word.all():
+                if antonymy.explain:
+                    sentences.append(_.name)
+                    if _.phonetic:
+                        sentences.append(_.phonetic)   
+                    sentences.append(_.explain)
                 for _ in antonymy.wordexp.all():
                     if _.sentence:
                         if not _.sentence in sentences:
