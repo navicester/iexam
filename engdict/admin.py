@@ -426,7 +426,7 @@ class WordAdmin(MyModelAdmin):
                     if _.sentence:
                         if not _.sentence in sentences:
                             sentences.append(_.sentence)
-            for antonymy_ in  obj.antonymy_word.all():
+            for antonymy in  obj.antonymy_word.all():
                 for _ in antonymy.wordexp.all():
                     if _.sentence:
                         if not _.sentence in sentences:
