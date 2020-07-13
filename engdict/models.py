@@ -44,6 +44,7 @@ class Word(models.Model):
     explain = models.TextField(max_length=500,blank=True, null=True, default = '')
     progress = models.DecimalField(max_digits=50, decimal_places=0, default = 0 )
     in_plan = models.BooleanField(default=False)
+    is_favorite = models.BooleanField(default=False)
     # members = models.ManyToManyField('Word', through='Membership')
     # linked_word = models.ManyToManyField('Word', related_name='related_word',  blank=True)
     linked_word = models.ManyToManyField('Word',  blank=True, null=True)
