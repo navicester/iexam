@@ -322,7 +322,7 @@ class WordAdmin(MyModelAdmin):
         WordDictInline,
     ]
 
-    actions = ['export_selected']    
+    actions = ['export_selected', 'export_all_favorite', ]    
 
     self_form_link = WordForm
 
@@ -442,6 +442,9 @@ class WordAdmin(MyModelAdmin):
 
 
         return response
+
+    def export_all_favorite(self, request, queryset):
+        return self.export_selected(request, Word.objects.filter(is_favorite=True))
 
 class WordDictAdmin(admin.ModelAdmin):
     list_display = ['word','book']
