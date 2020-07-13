@@ -1,5 +1,7 @@
 from django.contrib import admin
-
+from django.http import HttpResponse
+import csv
+import codecs
 # Register your models here.
 from .models import *
 
@@ -320,6 +322,8 @@ class WordAdmin(MyModelAdmin):
         WordDictInline,
     ]
 
+    actions = ['export_selected']    
+
     self_form_link = WordForm
 
     form = WordAdminForm # comments this if you want to use fieldsets
@@ -378,7 +382,66 @@ class WordAdmin(MyModelAdmin):
         return super(WordAdmin, self).change_view(request,object_id, form_url,extra_context)
 
 
+    def export_selected(self, request, queryset):
+        print queryset
+        qs = queryset
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="words.csv"'
+        response.write(codecs.BOM_UTF8) # add bom header
+        writer = csv.writer(response)
 
+        
+        writer.writerow(['id', 'name','phonetic','explain', 'progress', 'in_plan', 'is_favorite','book','sentence'])
+        for obj in qs:
+            row = []
+            row.append(obj.pk)
+            row.append(obj.name)
+            row.append(obj.phonetic)
+            row.append(obj.explain)
+            row.append(obj.progress)
+            row.append(obj.in_plan)
+            row.append(obj.is_favorite)
+            row.append(obj.book)
+            sentences = []          
+            for _ in obj.wordexp.all():
+                if _.sentence:
+                    if not _.sentence in sentences:
+                        sentences.append(_.sentence)
+            for _ in obj.related.all():
+                if _.sentence:
+                    if not _.sentence in sentences:
+                        sentences.append(_.sentence)
+            for etyma in  obj.etyma_word.all():
+                for _ in etyma.wordexp.all():
+                    if _.sentence:
+                        if not _.sentence in sentences:
+                            sentences.append(_.sentence)
+            for resemblance in  obj.resemblance_word.all():
+                for _ in resemblance.wordexp.all():
+                    if _.sentence:
+                        if not _.sentence in sentences:
+                            sentences.append(_.sentence)
+            for semantic in  obj.semantic_word.all():
+                for _ in semantic.wordexp.all():
+                    if _.sentence:
+                        if not _.sentence in sentences:
+                            sentences.append(_.sentence)
+            for antonymy_ in  obj.antonymy_word.all():
+                for _ in antonymy.wordexp.all():
+                    if _.sentence:
+                        if not _.sentence in sentences:
+                            sentences.append(_.sentence)
+            # for linked in  obj.linked_word.all():
+            #     for _ in linked.wordexp.all():
+            #         if _.sentence:
+            #             if not _.sentence in sentences:
+            #                 sentences.append(_.sentence)
+            sentence = "\r\n".join(sentences)
+            row.append(sentence)
+            writer.writerow(row)    
+
+
+        return response
 
 class WordDictAdmin(admin.ModelAdmin):
     list_display = ['word','book']

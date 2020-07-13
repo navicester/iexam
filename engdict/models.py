@@ -287,10 +287,12 @@ class WordExp(models.Model):
     explain = models.CharField(max_length=120, default = '')
     sentence = models.TextField(blank=True, null=True)
     book = models.CharField(max_length=120, choices=BOOK_NAME)
+    ##///
     etyma = models.ManyToManyField(Word, related_name='etyma', blank=True)
     resemblance = models.ManyToManyField(Word, related_name='resemblance', blank=True)
     semantic = models.ManyToManyField(Word, related_name='semantic', blank=True)
     antonymy = models.ManyToManyField(Word, related_name='antonymy', blank=True)
+    #//
     related = models.ManyToManyField(Word, related_name='related', blank=True)
     word = models.ManyToManyField(Word, related_name='wordexp', blank=True)
     relation = models.CharField(max_length=120, default='Self', choices=RELATION)
