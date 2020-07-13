@@ -421,7 +421,7 @@ class WordAdmin(MyModelAdmin):
 
             for linked_words_qs in qs:
                 for word_obj in  linked_words_qs:
-                     sentences.append('\r\n')
+                    sentences.append('\r\n')
                     sentences.append(word_obj.name)                        
                     if word_obj.phonetic:
                         sentences.append(word_obj.phonetic)   
