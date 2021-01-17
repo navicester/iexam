@@ -406,18 +406,20 @@ class WordAdmin(MyModelAdmin):
             for _ in obj.wordexp.all():
                 if _.sentence:
                     if not _.sentence in sentences:
+                        if sentences:
+                            sentences.append('')                    
                         if not (_.name == obj.name):
                             sentences.append(_.name)
-                            pass
                         if _.explain:
                             sentences.append(_.explain)
                         sentences.append(_.sentence)
             for _ in obj.related.all():
                 if _.sentence:
                     if not _.sentence in sentences:
+                        if sentences:
+                            sentences.append('')                    
                         if not (_.name == obj.name):
                             sentences.append(_.name)
-                            pass
                         if _.explain:
                             sentences.append(_.explain)
                         sentences.append(_.sentence)
