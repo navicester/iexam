@@ -450,9 +450,6 @@ class WordAdmin(MyModelAdmin):
                                 if _.explain:
                                     sentences.append(_.explain)
                                 sentences.append(_.sentence)   
-                                
-                                sentences.append(_.sentence)
-
 
             # for etyma in  obj.etyma_word.all():
             #     if etyma.explain:
