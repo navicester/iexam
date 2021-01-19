@@ -443,6 +443,14 @@ class WordAdmin(MyModelAdmin):
                     for _ in word_obj.wordexp.all():
                         if _.sentence:
                             if not _.sentence in sentences:
+                                if sentences:
+                                    sentences.append('')                    
+                                if not (_.name == word_obj.name):
+                                    sentences.append(_.name)
+                                if _.explain:
+                                    sentences.append(_.explain)
+                                sentences.append(_.sentence)   
+                                
                                 sentences.append(_.sentence)
 
 
