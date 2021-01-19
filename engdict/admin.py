@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.http import HttpResponse
 import csv
 import codecs
+import datetime
 # Register your models here.
 from .models import *
 
@@ -386,7 +387,9 @@ class WordAdmin(MyModelAdmin):
         print queryset
         qs = queryset
         response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="words.csv"'
+        curr_time = datetime.datetime.now()
+        time_str = datetime.datetime.strftime(curr_time,'%Y-%m-%d %H:%M:%S')
+        response['Content-Disposition'] = 'attachment; filename="words-{}.csv"'.format(time_str)
         response.write(codecs.BOM_UTF8) # add bom header
         writer = csv.writer(response)
 
